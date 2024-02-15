@@ -1,5 +1,11 @@
-Compile all with 
+### Development
+Install all dependencies with:
 ```
-npx webpack
+npm ci
 ```
-Refresh `index.html`.
+
+Compile and bundle:
+```
+npm run build
+```
+Then, refresh `dist/index.html`.
