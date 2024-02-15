@@ -1,14 +1,23 @@
 {
+  "name": "parity-games",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "description": "",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack"
+  },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
     "webpack": "^5.90.2",
     "webpack-cli": "^5.1.4"
   },
-  "name": "code",
-  "version": "1.0.0",
-  "main": "intex.js",
   "dependencies": {
     "ansi-escapes": "^4.3.2",
     "ansi-regex": "^5.0.1",
@@ -197,12 +206,5 @@
     "yargs": "^17.7.2",
     "yargs-parser": "^21.1.1",
     "yocto-queue": "^0.1.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  }
 }

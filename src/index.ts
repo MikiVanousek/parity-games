@@ -1,4 +1,5 @@
-// get test-btn
+import { greeter } from './dependency';
+
 let btn = document.getElementById('test-btn')
 
 if (!btn) {
@@ -6,6 +7,6 @@ if (!btn) {
 }
 
 btn.addEventListener('click', (event) => {
-  document.body.textContent = 'Button pressed'
+  document.body.textContent = greeter('Kryštof')
 })
 
