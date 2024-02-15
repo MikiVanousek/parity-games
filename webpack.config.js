@@ -1,4 +1,5 @@
 const path = require('path')
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -15,4 +16,11 @@ module.exports = {
       { test: /\.tsx?$/, loader: 'ts-loader' },
     ],
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: 'src/*.html', to: '[name].[ext]' },
+      ],
+    }),
+  ],
 };
