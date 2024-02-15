@@ -1,3 +1,6 @@
+# Parity Games
+![Try it!](https://mikivanousek.github.io/parity-games/)
+
 ### Development
 Install all dependencies with:
 ```
