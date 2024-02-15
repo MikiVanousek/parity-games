@@ -19,7 +19,7 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: 'src/*.html', to: '[name].[ext]' },
+        { from: 'src/*.html', to: '[name][ext]' },
       ],
     }),
   ],
