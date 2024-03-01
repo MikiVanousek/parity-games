@@ -4,7 +4,7 @@ export module PG {
 
     export class Node {
         priority: number
-        index: number
+        index: number // The index of this node in ParityGame.nodes
         player: PG.Player
         label: string
     }
@@ -32,6 +32,10 @@ export module PG {
     export class PGDBoard {
         nodes: DNode[] = []
         links: DLink[] = []
+
+        constructor(pg: ParityGame) {
+
+        }
     }
 
     export class Trace {
