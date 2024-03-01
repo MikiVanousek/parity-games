@@ -14,7 +14,7 @@ test('PG model test', () => {
 test('.pg parsing test', () => {
     var filestr = fs.readFileSync('test/pg_examples/ex1.pg').toString()
     // console.log(filestr)
-    let pg = PGParser.parse_pg_format(filestr)
+    let pg = PGParser.import_pg_format(filestr)
     expect(pg.nodes.length).toBe(6)
     expect(pg.links.length).toBe(8)
     expect(pg.nodes[0].label).toBe("0")
@@ -24,4 +24,8 @@ test('.pg parsing test', () => {
     expect(pg.nodes[2].player).toBe(PG.Player.Even)
     expect(pg.nodes[0].priority).toBe(0)
     expect(pg.nodes[5].priority).toBe(3)
+
+    let exp_str = PGParser.export_pg_format(pg)
+    console.log(exp_str)
+    expect(exp_str).toBe(filestr)
 })

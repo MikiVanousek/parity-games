@@ -4,14 +4,16 @@ import { PG } from './pg_diagram'
 
 export module PGParser {
     // Broken if vertex label includes space
-    export function parse_pg_format(file: string): PG.ParityGame {
+    export function import_pg_format(file: string): PG.ParityGame {
         // create a list of lines
         var lines = file.split("\n")
 
         let pg = new PG.ParityGame()
         let arc_id_pairs: [number, number][] = []
         for (let l of lines.slice(1)) {
-
+            if (l.length == 0) { // Empty line at the end of the file?!
+                break
+            }
             assert(l.slice(l.length - 2, l.length) == '";')
             let i = l.indexOf('"')
             let j = l.length - 2// It is the same as l.indexOf('"')
@@ -27,7 +29,7 @@ export module PGParser {
             var player = player_str === "1" ? PG.Player.Odd : PG.Player.Even
 
             var arcs_str = components[3]
-            var targets = arcs_str.split(",").map(parseInt)
+            var targets = arcs_str.split(",").map((i) => parseInt(i))
             for (let t of targets) {
                 arc_id_pairs.push([id, t])
             }
@@ -41,5 +43,15 @@ export module PGParser {
         }
         assert(lines[0] === `parity ${pg.nodes.length};`)
         return pg
+    }
+
+    export function export_pg_format(pg: PG.ParityGame): string {
+        var res = `parity ${pg.nodes.length};`
+        for (let n of pg.nodes) {
+            res += "\n"
+            let arc_str = pg.target_neighbors(n).map((x) => x.index).join(",")
+            res += `${n.index} ${n.priority} ${n.player} ${arc_str} "${n.label}";`
+        }
+        return res
     }
 }

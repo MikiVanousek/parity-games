@@ -1,6 +1,8 @@
 // Parity Game -- no information about how to visualize it
 export module PG {
-    export enum Player { Odd, Even }
+    export enum Player {
+        Odd = 1, Even = 0
+    }
 
     export class Node {
         priority: number
@@ -18,6 +20,13 @@ export module PG {
         nodes: Node[] = []
         links: Link[] = []
 
+        target_neighbors(n: Node): Node[] {
+            return this.links.filter((l) => l.source === n).map((l) => l.target)
+        }
+
+        source_neighbors(n: Node): Node[] {
+            return this.links.filter((l) => l.target === n).map((l) => l.source)
+        }
     }
 
 
@@ -34,7 +43,7 @@ export module PG {
         links: DLink[] = []
 
         constructor(pg: ParityGame) {
-
+            throw new Error("Not implemented!")
         }
     }
 
@@ -56,9 +65,5 @@ export module PG {
     export class LinkSet {
         name: string
         link_source_target_ids: [number, number][]
-    }
-
-    export function import_oink_pg() {
-
     }
 }
