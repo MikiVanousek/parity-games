@@ -1,12 +1,4 @@
-import { greeter } from './dependency';
+import { greeter } from "./dependency";
+import { d3test } from "./d3test";
 
-let btn = document.getElementById('test-btn')
-
-if (!btn) {
-  throw new Error('Button not found!');
-}
-
-btn.addEventListener('click', (event) => {
-  document.body.textContent = greeter('Kryštof')
-})
-
+d3test(document.querySelector<HTMLElement>("#d3-test")!);
