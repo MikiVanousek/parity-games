@@ -4,8 +4,9 @@ export module PG {
 
     export class Node {
         priority: number
-        id: number
+        index: number
         player: PG.Player
+        label: string
     }
 
     export class Link {
@@ -16,7 +17,9 @@ export module PG {
     export class ParityGame {
         nodes: Node[] = []
         links: Link[] = []
+
     }
+
 
     export class DNode extends Node {
         x: number
@@ -51,4 +54,7 @@ export module PG {
         link_source_target_ids: [number, number][]
     }
 
+    export function import_oink_pg() {
+
+    }
 }
