@@ -11,8 +11,9 @@ export module PGParser {
         let pg = new PG.ParityGame()
         let arc_id_pairs: [number, number][] = []
         for (let l of lines.slice(1)) {
-            if (l.length == 0) { // Empty line at the end of the file?!
-                break
+            if (l.length == 0) {
+                // Empty line at the end of the file? If not, the assert on number of vertices will fail.
+                continue
             }
             assert(l.slice(l.length - 2, l.length) == '";')
             let i = l.indexOf('"')
@@ -46,11 +47,10 @@ export module PGParser {
     }
 
     export function export_pg_format(pg: PG.ParityGame): string {
-        var res = `parity ${pg.nodes.length};`
+        var res = `parity ${pg.nodes.length};\n`
         for (let n of pg.nodes) {
-            res += "\n"
             let arc_str = pg.target_neighbors(n).map((x) => x.index).join(",")
-            res += `${n.index} ${n.priority} ${n.player} ${arc_str} "${n.label}";`
+            res += `${n.index} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`
         }
         return res
     }
