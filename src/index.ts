@@ -65,6 +65,18 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
       addNodeAtPosition(modelX, modelY, false);
       break;
     }
+    case "q": {
+      var selectedNodes = cy.$('node:selected');
+        selectedNodes.forEach(node => {
+            let currentIsEven = node.data('isEven');
+            if (currentIsEven === "true") {
+                node.data('isEven', "false");
+            } else {
+                node.data('isEven', "true");
+            }
+        });
+        break;
+    }
     case "Delete": {
       var selectedElements = cy.$(":selected");
 
