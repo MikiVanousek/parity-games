@@ -1,24 +1,43 @@
+import { number } from "yargs";
+
 // Parity Game -- no information about how to visualize it
 export module PG {
     export enum Player {
-        Odd = 1, Even = 0
+        Odd = 1,
+        Even = 0,
     }
 
     export class Node {
-        priority: number
-        index: number // The index of this node in ParityGame.nodes
-        player: PG.Player
-        label: string
+        priority: number;
+        id: number;
+        player: PG.Player;
+        label: string;
+
+        constructor(priority: number, id: number, player: PG.Player) {
+            this.priority = priority
+            this.id = id
+            this.player = player
+        }
     }
 
     export class Link {
-        source: Node
-        target: Node
+        source: Node;
+        target: Node;
     }
 
     export class ParityGame {
-        nodes: Node[] = []
-        links: Link[] = []
+        nodes: Node[] = [];
+        adjList: Map<Node, Set<Node>> = new Map()
+        links: Link[] = [];
+        auto_id: number = 0
+
+        addNode(priority: number, player: Player): number {
+            var node = new Node(priority, this.auto_id, player)
+            this.nodes.push(node)
+            this.adjList.set(node, new Set())
+            this.auto_id++
+            return node.id
+        }
 
         target_neighbors(n: Node): Node[] {
             return this.links.filter((l) => l.source === n).map((l) => l.target)
@@ -29,14 +48,16 @@ export module PG {
         }
     }
 
-
     export class DNode extends Node {
         x: number
         y: number
     }
 
     export class DLink extends Link {
+        x: number
+        y: number
     }
+
 
     export class PGDBoard {
         nodes: DNode[] = []
@@ -47,9 +68,6 @@ export module PG {
         }
     }
 
-    export class Trace {
-        steps: TraceStep[] = []
-    }
 
     export class TraceStep {
         node_sets: NodeSet[] = []

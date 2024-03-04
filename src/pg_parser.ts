@@ -36,7 +36,7 @@ export module PGParser {
             }
 
 
-            let n: PG.Node = { priority: priority, index: id, player: player, label: node_label }
+            let n: PG.Node = { priority: priority, id: id, player: player, label: node_label }
             pg.nodes.push(n)
         }
         for (let [s, t] of arc_id_pairs) {
@@ -49,8 +49,8 @@ export module PGParser {
     export function export_pg_format(pg: PG.ParityGame): string {
         var res = `parity ${pg.nodes.length};\n`
         for (let n of pg.nodes) {
-            let arc_str = pg.target_neighbors(n).map((x) => x.index).join(",")
-            res += `${n.index} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`
+            let arc_str = pg.target_neighbors(n).map((x) => x.id).join(",")
+            res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`
         }
         return res
     }

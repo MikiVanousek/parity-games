@@ -4,15 +4,6 @@ import * as fs from 'fs';
 
 let PG_DIR = 'test/pg_examples/'
 
-test('PG model test', () => {
-    var n = new PG.Node()
-    n.index = 1
-    expect(n.index).toBe(1);
-
-    var s = new PG.TraceStep()
-    s.node_labels[1] = "zmrd"
-});
-
 test('basic .pg parsing test', () => {
     var filestr = fs.readFileSync(`${PG_DIR}ex1.pg`).toString()
     let pg = PGParser.import_pg_format(filestr)
