@@ -45,17 +45,24 @@ document.addEventListener('mousemove', (event: MouseEvent) => {
 });
 
 document.addEventListener('keydown', (event: KeyboardEvent) => {
-  const position = cy.container().getBoundingClientRect();
-  const relativeX = mouseX - position.left + window.scrollX; // Adjusting for scrolling
-  const relativeY = mouseY - position.top + window.scrollY; // Adjusting for scrolling
+  // const position = cy.container().getBoundingClientRect();
+  // const relativeX = mouseX - position.left + window.scrollX; // Adjusting for scrolling
+  // const relativeY = mouseY - position.top + window.scrollY; // Adjusting for scrolling
+
+  const zoom = cy.zoom();
+  const pan = cy.pan();
+
+  // Convert the mouse coordinates to the model coordinates
+  const modelX = (mouseX - pan.x) / zoom;
+  const modelY = (mouseY - pan.y) / zoom;
 
   switch(event.key) {
     case 'e': {
-      addNodeAtPosition(relativeX, relativeY, true)
+      addNodeAtPosition(modelX, modelY, true)
       break;
     }
     case('o'): {
-      addNodeAtPosition(relativeX, relativeY, false)
+      addNodeAtPosition(modelX, modelY, false)
       break;
     }
   } 
