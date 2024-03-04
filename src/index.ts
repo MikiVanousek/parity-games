@@ -24,7 +24,15 @@ let cy = cytoscape({
           // Define other styles as needed
         }
       },
-      
+      {
+      selector: 'edge',
+      style: {
+        'curve-style': 'bezier', // This makes the edge curved, which helps visually with arrow positioning
+        'target-arrow-shape': 'triangle', // This creates a directed edge with an arrow pointing to the target node
+        //'target-arrow-color': '#000', // Optionally set the arrow color
+        //'line-color': '#000' // Optionally set the line color
+      }
+    }
     ],
   });
 let mouseX: number = 0;
