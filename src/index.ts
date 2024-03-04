@@ -65,6 +65,14 @@ document.addEventListener('keydown', (event: KeyboardEvent) => {
       addNodeAtPosition(modelX, modelY, false)
       break;
     }
+    case('Delete'): {
+      var selectedElements = cy.$(':selected');
+
+        // Remove selected elements from the graph
+        if (selectedElements.length > 0) {
+            selectedElements.remove();
+        }
+    }
   } 
 });
 
