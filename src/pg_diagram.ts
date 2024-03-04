@@ -1,3 +1,5 @@
+import { number } from "yargs";
+
 // Parity Game -- no information about how to visualize it
 export module PG {
   export enum Player {
@@ -9,6 +11,12 @@ export module PG {
     priority: number;
     id: number;
     player: PG.Player;
+
+    constructor(priority: number, id: number, player: PG.Player) {
+      this.priority = priority
+      this.id = id
+      this.player = player
+    }
   }
 
   export class Link {
@@ -18,7 +26,17 @@ export module PG {
 
   export class ParityGame {
     nodes: Node[] = [];
+    adjList: Map<Node, Set<Node>> = new Map()
     links: Link[] = [];
+    auto_id:number = 0
+
+    addNode(priority:number, player: Player): number {
+      var node = new Node(priority, this.auto_id, player)
+      this.nodes.push(node)
+      this.adjList.set(node, new Set())
+      this.auto_id++
+      return node.id
+    }
   }
 
   export class DNode extends Node {
