@@ -32,11 +32,14 @@ export module PG {
         auto_id: number = 0
 
         addNode(priority: number, player: Player): number {
-            var node = new Node(priority, this.auto_id, player)
+            var node = new Node(priority, this.get_id(), player)
             this.nodes.push(node)
             this.adjList.set(node, new Set())
-            this.auto_id++
             return node.id
+        }
+
+        get_id() {
+            return this.auto_id++
         }
 
         target_neighbors(n: Node): Node[] {
