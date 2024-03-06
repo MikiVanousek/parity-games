@@ -35,6 +35,7 @@ let cy = cytoscape({
     },
   ],
 });
+const cyContainer = cy.container();
 let mouseX: number = 0;
 let mouseY: number = 0;
 let firstNodeId: string = null;
@@ -101,37 +102,72 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   cy.resize();
 }
 
-function addEdge(nodeId: number) {
-  cy.add({
-    group: "edges",
-    data: { source: firstNodeId, target: nodeId },
-  });
-}
+// function addEdge(nodeId: number) {
+//   cy.add({
+//     group: "edges",
+//     data: { source: firstNodeId, target: nodeId },
+//   });
+// }
 
-cy.on("tap", "node", function (evt) {
-  const nodeId = evt.target.id();
-  if (firstNodeId === null) {
-    // If no node is selected yet, store the current node's ID
-    firstNodeId = nodeId;
-  } else {
-    // If a different node is clicked, create an edge from the first node to this one
-    addEdge(nodeId);
+// cy.on("tap", "node", function (evt) {
+//   const nodeId = evt.target.id();
+//   if (firstNodeId === null) {
+//     // If no node is selected yet, store the current node's ID
+//     firstNodeId = nodeId;
+//   } else {
+//     // If a different node is clicked, create an edge from the first node to this one
+//     addEdge(nodeId);
 
-    // Reset firstNodeId for the next selection
-    firstNodeId = null;
-  }
+//     // Reset firstNodeId for the next selection
+//     firstNodeId = null;
+//   }
 
-  cy.on("tap", function (event) {
-    const evtTarget = event.target;
+//   cy.on("tap", function (event) {
+//     const evtTarget = event.target;
 
-    if (evtTarget === cy) {
-      // The tap was on the core background, not on any element
-      firstNodeId = null; // Deselect any selected node
+//     if (evtTarget === cy) {
+//       // The tap was on the core background, not on any element
+//       firstNodeId = null; // Deselect any selected node
 
-      // Optional: remove any visual indication of selection
-      // This could be adjusting styles or classes on previously selected nodes
+//       // Optional: remove any visual indication of selection
+//       // This could be adjusting styles or classes on previously selected nodes
+//     }
+//   });
+//   // If the same node is clicked again, you might want to reset firstNodeId or do nothing
+//   // This part of logic can be adjusted based on the desired behavior
+// });
+
+
+
+cy.on('click', 'node', (event) => {
+  const node = event.target;
+  const isAltPressed = event.originalEvent.altKey;
+  if (!isAltPressed) 
+    return
+
+  event.preventDefault(); 
+
+  // Get all currently selected nodes
+  const selectedNodes = cy.$('node:selected');
+
+  // Create an edge from each selected node to the shift-clicked node
+  selectedNodes.forEach((selectedNode) => {
+    const existingEdge = cy.edges().some(edge => {
+      return edge.data('source') === selectedNode.id() && edge.data('target') === node.id()
+    });
+    if(!existingEdge) {
+      cy.add({
+        group: 'edges',
+        data: { source: selectedNode.id(), target: node.id() }
+    });
     }
   });
-  // If the same node is clicked again, you might want to reset firstNodeId or do nothing
-  // This part of logic can be adjusted based on the desired behavior
 });
+
+cyContainer.addEventListener('mousedown', (event) => {
+  if (event.ctrlKey) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+}, true);
+
