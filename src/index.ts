@@ -12,6 +12,10 @@ let cy = cytoscape({
       selector: 'node[isEven = "true"]',
       style: {
         shape: "ellipse", // Round shape for even nodes
+        content: "data(priority)",
+        "text-valign": "center",
+        "text-halign": "center",
+        color: "white",
         //'background-color': '#66CCFF', // Example color
         // Define other styles as needed
       },
@@ -20,6 +24,10 @@ let cy = cytoscape({
       selector: 'node[isEven = "false"]',
       style: {
         shape: "rectangle", // Square shape for odd nodes
+        content: "data(priority)",
+        "text-valign": "center",
+        "text-halign": "center",
+        color: "white",
         //'background-color': '#FF6666', // Example color
         // Define other styles as needed
       },
@@ -67,16 +75,16 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
       break;
     }
     case "q": {
-      var selectedNodes = cy.$('node:selected');
-        selectedNodes.forEach(node => {
-            let currentIsEven = node.data('isEven');
-            if (currentIsEven === "true") {
-                node.data('isEven', "false");
-            } else {
-                node.data('isEven', "true");
-            }
-        });
-        break;
+      var selectedNodes = cy.$("node:selected");
+      selectedNodes.forEach((node) => {
+        let currentIsEven = node.data("isEven");
+        if (currentIsEven === "true") {
+          node.data("isEven", "false");
+        } else {
+          node.data("isEven", "true");
+        }
+      });
+      break;
     }
     case "Delete": {
       var selectedElements = cy.$(":selected");
@@ -85,6 +93,22 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
       if (selectedElements.length > 0) {
         selectedElements.remove();
       }
+    }
+    case "+": {
+      var selectedNodes = cy.$("node:selected");
+      selectedNodes.forEach((node) => {
+        var priority = node.data("priority") || 0;
+        node.data("priority", priority + 1);
+      });
+      break;
+    }
+    case "-": {
+      var selectedNodes = cy.$("node:selected");
+      selectedNodes.forEach((node) => {
+        var priority = node.data("priority") || 0;
+        node.data("priority", priority - 1);
+      });
+      break;
     }
   }
 });
@@ -96,6 +120,7 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
     data: {
       id: String(id),
       isEven: String(isEven), // Store isEven as a string to match the selector
+      priority: 1,
     },
     position: { x: x, y: y },
   });
@@ -137,37 +162,40 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
 //   // This part of logic can be adjusted based on the desired behavior
 // });
 
-
-
-cy.on('click', 'node', (event) => {
+cy.on("click", "node", (event) => {
   const node = event.target;
   const isAltPressed = event.originalEvent.altKey;
-  if (!isAltPressed) 
-    return
+  if (!isAltPressed) return;
 
-  event.preventDefault(); 
+  event.preventDefault();
 
   // Get all currently selected nodes
-  const selectedNodes = cy.$('node:selected');
+  const selectedNodes = cy.$("node:selected");
 
   // Create an edge from each selected node to the shift-clicked node
   selectedNodes.forEach((selectedNode) => {
-    const existingEdge = cy.edges().some(edge => {
-      return edge.data('source') === selectedNode.id() && edge.data('target') === node.id()
+    const existingEdge = cy.edges().some((edge) => {
+      return (
+        edge.data("source") === selectedNode.id() &&
+        edge.data("target") === node.id()
+      );
     });
-    if(!existingEdge) {
+    if (!existingEdge) {
       cy.add({
-        group: 'edges',
-        data: { source: selectedNode.id(), target: node.id() }
-    });
+        group: "edges",
+        data: { source: selectedNode.id(), target: node.id() },
+      });
     }
   });
 });
 
-cyContainer.addEventListener('mousedown', (event) => {
-  if (event.ctrlKey) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-}, true);
-
+cyContainer.addEventListener(
+  "mousedown",
+  (event) => {
+    if (event.ctrlKey) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  },
+  true
+);
