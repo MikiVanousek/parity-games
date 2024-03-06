@@ -36,9 +36,9 @@ let cy = cytoscape({
   ],
 });
 const cyContainer = cy.container();
+let copiedElements: cytoscape.ElementDefinition[] = [];
 let mouseX: number = 0;
 let mouseY: number = 0;
-let firstNodeId: string = null;
 
 document.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;
@@ -46,10 +46,6 @@ document.addEventListener("mousemove", (event: MouseEvent) => {
 });
 
 document.addEventListener("keydown", (event: KeyboardEvent) => {
-  // const position = cy.container().getBoundingClientRect();
-  // const relativeX = mouseX - position.left + window.scrollX; // Adjusting for scrolling
-  // const relativeY = mouseY - position.top + window.scrollY; // Adjusting for scrolling
-
   const zoom = cy.zoom();
   const pan = cy.pan();
 
@@ -87,7 +83,49 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
       }
     }
   }
+
+  if (event.ctrlKey && event.key === 'c') {
+    copySelectedElements()
+  }
+  // Paste with Ctrl+V
+  else if (event.ctrlKey && event.key === 'v') {
+      pasteCopiedElements()
+  }
 });
+
+
+function copySelectedElements() {
+  const selectedEles = cy.$(':selected').jsons();
+  // Deep copy and store in global variable
+  copiedElements = JSON.parse(JSON.stringify(selectedEles));
+}
+
+function pasteCopiedElements() {
+
+  if (copiedElements.length > 0) {
+    cy.$(':selected').unselect();
+    const offset = 10; // Offset for the pasted elements' position
+    const newElements = copiedElements.map(ele => {
+      if (ele.group === 'nodes') {
+        // Adjust positions to avoid overlap
+        ele.data.id = `copied_${ele.data.id}`; // Modify the ID to ensure uniqueness
+        ele.position.x += offset;
+        ele.position.y += offset;
+      } else if (ele.group === 'edges') {
+        // Adjust source and target for edges to point to the new copied node IDs
+        ele.data.id = `copied_${ele.data.id}`; // Modify the ID to ensure uniqueness
+        ele.data.source = `copied_${ele.data.source}`;
+        ele.data.target = `copied_${ele.data.target}`;
+      }
+      return ele;
+    });
+    
+    cy.add(newElements); // Add the new elements to the Cytoscape instance
+    copySelectedElements();
+    //cy.layout({ name: 'preset' }).run(); // Re-run layout to refresh the view, if needed
+  }
+}
+
 
 function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   id = pg.addNode(0, isEven ? PG.Player.Even : PG.Player.Odd);
@@ -101,43 +139,6 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   });
   cy.resize();
 }
-
-// function addEdge(nodeId: number) {
-//   cy.add({
-//     group: "edges",
-//     data: { source: firstNodeId, target: nodeId },
-//   });
-// }
-
-// cy.on("tap", "node", function (evt) {
-//   const nodeId = evt.target.id();
-//   if (firstNodeId === null) {
-//     // If no node is selected yet, store the current node's ID
-//     firstNodeId = nodeId;
-//   } else {
-//     // If a different node is clicked, create an edge from the first node to this one
-//     addEdge(nodeId);
-
-//     // Reset firstNodeId for the next selection
-//     firstNodeId = null;
-//   }
-
-//   cy.on("tap", function (event) {
-//     const evtTarget = event.target;
-
-//     if (evtTarget === cy) {
-//       // The tap was on the core background, not on any element
-//       firstNodeId = null; // Deselect any selected node
-
-//       // Optional: remove any visual indication of selection
-//       // This could be adjusting styles or classes on previously selected nodes
-//     }
-//   });
-//   // If the same node is clicked again, you might want to reset firstNodeId or do nothing
-//   // This part of logic can be adjusted based on the desired behavior
-// });
-
-
 
 cy.on('click', 'node', (event) => {
   const node = event.target;
