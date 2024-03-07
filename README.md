@@ -1,6 +1,6 @@
 # Parity Games
 
-![Try it!](https://mikivanousek.github.io/parity-games/)
+Try it! https://mikivanousek.github.io/parity-games/
 
 ### Development
 
