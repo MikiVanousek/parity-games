@@ -1,8 +1,4 @@
 import { PG } from "./pg_diagram";
-// import * as cytoscape from "cytoscape";
-// import * as edgeEditing from "cytoscape-edge-editing";
-//import * as $ from "jquery";
-//import konva from "konva";
 
 declare global {
   interface Window {
@@ -134,6 +130,11 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
       });
       break;
     }
+    case "p": {
+      cy.elements().forEach(function (ele) {
+        console.log(ele.data());
+      });
+    }
   }
 
   if (event.ctrlKey && event.key === "c") {
@@ -155,33 +156,56 @@ function pasteCopiedElements() {
   if (copiedElements.length > 0) {
     cy.$(":selected").unselect();
     const offset = 10; // Offset for the pasted elements' position
+    let oldid_newid = {};
+    let maxId = getNewMaxId();
+
+    const sortedCopiedElements = copiedElements.sort((a, b) => {
+      if (a.group === "nodes" && b.group === "edges") {
+        return -1;
+      }
+      if (a.group === "edges" && b.group === "nodes") {
+        return 1;
+      }
+      return 0;
+    });
+
     const newElements = copiedElements.map((ele) => {
       if (ele.group === "nodes") {
-        // Adjust positions to avoid overlap
-        ele.data.id = `copied_${ele.data.id}`; // Modify the ID to ensure uniqueness
+        oldid_newid[ele.data.id] = maxId;
+        ele.data.id = `${maxId}`; // Modify the ID to ensure uniqueness
         ele.position.x += offset;
         ele.position.y += offset;
+        maxId++;
       } else if (ele.group === "edges") {
         // Adjust source and target for edges to point to the new copied node IDs
-        ele.data.id = `copied_${ele.data.id}`; // Modify the ID to ensure uniqueness
-        ele.data.source = `copied_${ele.data.source}`;
-        ele.data.target = `copied_${ele.data.target}`;
+        ele.data.id = undefined; // Modify the ID to ensure uniqueness
+        ele.data.source = `${oldid_newid[ele.data.source]}`;
+        ele.data.target = `${oldid_newid[ele.data.target]}`;
       }
       return ele;
     });
 
+    console.log(newElements);
     cy.add(newElements); // Add the new elements to the Cytoscape instance
     copySelectedElements();
-    //cy.layout({ name: 'preset' }).run(); // Re-run layout to refresh the view, if needed
+    // cy.layout({ name: "preset" }).run(); // Re-run layout to refresh the view, if needed
   }
 }
 
+function getNewMaxId() {
+  return (
+    cy.nodes().reduce((max, node) => {
+      const id = parseInt(node.data("id"));
+      return isNaN(id) ? max : Math.max(max, id);
+    }, 0) + 1
+  );
+}
+
 function addNodeAtPosition(x: number, y: number, isEven: boolean) {
-  id = pg.addNode(0, isEven ? PG.Player.Even : PG.Player.Odd);
   cy.add({
     group: "nodes",
     data: {
-      id: String(id),
+      id: String(getNewMaxId()),
       isEven: String(isEven), // Store isEven as a string to match the selector
       priority: 1,
     },
@@ -227,3 +251,15 @@ cyContainer.addEventListener(
   },
   true
 );
+
+cy.on("add", "node, edge", function (event) {
+  // update PG Board shit
+});
+
+cy.on("remove", "node, edge", function (event) {
+  // update PG Board shit
+});
+
+cy.on("data", "node, edge", function (event) {
+  // update PG Board shit
+});
