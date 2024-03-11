@@ -1,10 +1,15 @@
 import { PG } from "./pg_diagram";
-import * as cytoscape from "cytoscape";
-import * as edgeEditing from "cytoscape-edge-editing";
-import * as $ from "jquery";
-import konva from "konva";
+// import * as cytoscape from "cytoscape";
+// import * as edgeEditing from "cytoscape-edge-editing";
+//import * as $ from "jquery";
+//import konva from "konva";
 
-edgeEditing(cytoscape, $, konva);
+var cytoscape = require("cytoscape");
+var jquery = require("jquery");
+var konva = require("konva");
+var edgeEditing = require("cytoscape-edge-editing");
+console.log(jquery);
+edgeEditing(cytoscape, jquery, konva);
 cytoscape.use(edgeEditing);
 
 let pg = new PG.ParityGame();
@@ -51,6 +56,15 @@ let cy = cytoscape({
 });
 const cyContainer = cy.container();
 let copiedElements: cytoscape.ElementDefinition[] = [];
+
+cy.edgeEditing({
+  bendRemovalSensitivity: 16,
+  enableMultipleAnchorRemovalOption: true,
+  initAnchorsAutomatically: false,
+  useTrailingDividersAfterContextMenuOptions: false,
+  enableCreateAnchorOnDrag: true,
+});
+
 let mouseX: number = 0;
 let mouseY: number = 0;
 
