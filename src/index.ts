@@ -11,7 +11,9 @@ var jquery = require("jquery");
 var konva = require("konva");
 var edgeEditing = require("cytoscape-edge-editing");
 var contextMenus = require("cytoscape-context-menus");
+var undoRedo = require("cytoscape-undo-redo");
 window.$ = jquery;
+undoRedo(cytoscape);
 contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
 
@@ -65,9 +67,17 @@ cy.edgeEditing({
   enableMultipleAnchorRemovalOption: true,
   enableCreateAnchorOnDrag: true,
   zIndex: 0,
+  undoable: true,
 });
 
 cy.style().update();
+
+let ur = cy.undoRedo({
+  isDebug: true,
+});
+cy.on("afterDo", function (e, name) {
+  console.log("afterDo", name);
+});
 
 let mouseX: number = 0;
 let mouseY: number = 0;
@@ -106,12 +116,13 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
       });
       break;
     }
+    case "Backspace":
     case "Delete": {
       var selectedElements = cy.$(":selected");
 
       // Remove selected elements from the graph
       if (selectedElements.length > 0) {
-        selectedElements.remove();
+        ur.do("remove", selectedElements);
       }
     }
     case "+": {
@@ -141,8 +152,16 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     copySelectedElements();
   }
   // Paste with Ctrl+V
-  else if (event.ctrlKey && event.key === "v") {
+  if (event.ctrlKey && event.key === "v") {
     pasteCopiedElements();
+  }
+
+  if (event.ctrlKey && event.key === "z") {
+    ur.undo();
+  }
+
+  if (event.ctrlKey && event.key === "y") {
+    ur.redo();
   }
 });
 
@@ -186,7 +205,7 @@ function pasteCopiedElements() {
     });
 
     console.log(newElements);
-    cy.add(newElements); // Add the new elements to the Cytoscape instance
+    ur.do("add", newElements); // Add the new elements to the Cytoscape instance
     copySelectedElements();
     // cy.layout({ name: "preset" }).run(); // Re-run layout to refresh the view, if needed
   }
@@ -202,7 +221,7 @@ function getNewMaxId() {
 }
 
 function addNodeAtPosition(x: number, y: number, isEven: boolean) {
-  cy.add({
+  ur.do("add", {
     group: "nodes",
     data: {
       id: String(getNewMaxId()),
@@ -233,7 +252,7 @@ cy.on("click", "node", (event) => {
       );
     });
     if (!existingEdge) {
-      cy.add({
+      ur.do("add", {
         group: "edges",
         data: { source: selectedNode.id(), target: node.id() },
       });
