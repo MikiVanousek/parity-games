@@ -1,4 +1,5 @@
 import { PG } from "./pg_diagram";
+import Player = PG.Player;
 import * as cytoscape from "cytoscape";
 const cola = require("cytoscape-cola");
 
@@ -11,7 +12,7 @@ cytoscape.use(cola);
 var colaLayout: any = {
   name: "cola",
   animate: true, // whether to show the layout as it's running
-  refresh: 1, // number of ticks per frame; higher is faster but more jerky
+  refresh: 50, // number of ticks per frame; higher is faster but more jerky
   maxSimulationTime: 4000, // max length in ms to run the layout
   ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
   fit: true, // on every layout reposition of nodes, fit the viewport
@@ -29,9 +30,12 @@ var colaLayout: any = {
   handleDisconnected: true, // if true, avoids disconnected components from overlapping
   convergenceThreshold: 0.01, // when the alpha value (system energy) falls below this value, the layout stops
   nodeSpacing: function (node: any) {
-    return 10;
+    return 5;
   }, // extra spacing around nodes
-  flow: undefined, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
+  flow: {
+    axis: "y",
+    minSeparation: 30,
+  }, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
   alignment: undefined, // relative alignment constraints on nodes, e.g. {vertical: [[{node: node1, offset: 0}, {node: node2, offset: 5}]], horizontal: [[{node: node3}, {node: node4}], [{node: node5}, {node: node6}]]}
   gapInequalities: undefined, // list of inequality constraints for the gap between the nodes, e.g. [{"axis":"y", "left":node1, "right":node2, "gap":25}]
   centerGraph: true, // adjusts the node positions initially to center the graph (pass false if you want to start the layout from the current position)
@@ -48,42 +52,40 @@ var colaLayout: any = {
   allConstIter: undefined, // initial layout iterations with all constraints including non-overlap
 };
 
+pg.addNode(1, Player.Even);
+pg.addNode(8, Player.Odd);
+pg.addNode(9, Player.Even);
+pg.addNode(5, Player.Odd);
+pg.addNode(7, Player.Even);
+pg.addNode(3, Player.Odd);
+pg.addNode(6, Player.Even);
+pg.addNode(4, Player.Odd);
+pg.addNode(0, Player.Even);
+pg.addNode(2, Player.Odd);
+
+// Adding links between nodes
+pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
+pg.addLinkFromNodes(pg.nodes[1], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[2], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[3], pg.nodes[2]);
+pg.addLinkFromNodes(pg.nodes[4], pg.nodes[7]);
+pg.addLinkFromNodes(pg.nodes[5], pg.nodes[8]);
+pg.addLinkFromNodes(pg.nodes[6], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[7], pg.nodes[6]);
+pg.addLinkFromNodes(pg.nodes[8], pg.nodes[2]);
+pg.addLinkFromNodes(pg.nodes[9], pg.nodes[0]);
+pg.addLinkFromNodes(pg.nodes[3], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[2], pg.nodes[1]);
+pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
+pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
+pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
+
+console.log(JSON.stringify(pg.getElementDefinition()));
+
 let cy = cytoscape({
   container: document.getElementById("cy"),
-  autounselectify: true,
-
-  elements: [
-    // Nodes
-    {
-      data: { id: "n0", priority: 0, isEven: "true" },
-    },
-    {
-      data: { id: "n1", priority: 1, isEven: "false" },
-    },
-    {
-      data: { id: "n2", priority: 2, isEven: "true" },
-    },
-    {
-      data: { id: "n3", priority: 3, isEven: "false" },
-    },
-    {
-      data: { id: "n4", priority: 4, isEven: "true" },
-    },
-    {
-      data: { id: "n5", priority: 5, isEven: "false" },
-    },
-    {
-      data: { id: "n6", priority: 6, isEven: "true" },
-    },
-
-    // Edges
-    { data: { id: "e0", priority: 0, source: "n0", target: "n1" } },
-    { data: { id: "e1", priority: 1, source: "n1", target: "n2" } },
-    { data: { id: "e2", priority: 2, source: "n2", target: "n3" } },
-    { data: { id: "e3", priority: 3, source: "n3", target: "n4" } },
-    { data: { id: "e4", priority: 4, source: "n4", target: "n0" } },
-  ],
-
+  autounselectify: false,
+  elements: pg.getElementDefinition(),
   style: [
     {
       selector: 'node[isEven = "true"]',
@@ -121,12 +123,48 @@ let cy = cytoscape({
   ],
 });
 
+
 const cyContainer = cy.container();
-// apply layout with name
-cy.layout(colaLayout).run();
+var layout = cy.layout(colaLayout);
+layout.run();
+
+cy.on("drag", "node", function () {
+  // use throttle function to make layout smooth
+  layout.run();
+});
+
 let copiedElements: cytoscape.ElementDefinition[] = [];
 let mouseX: number = 0;
 let mouseY: number = 0;
+
+document.getElementById('file').addEventListener('change', function(event) {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) {
+        console.log("No file selected.");
+        return;
+    }
+
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        // Asserting that e.target is a FileReader
+        const fileContent = (e.target as FileReader).result;
+        loadParityGameFromFileContent(fileContent as string);
+    };
+    reader.readAsText(file);
+});
+
+function loadParityGameFromFileContent(fileContent: any) {
+  pg.loadFromFile(fileContent);
+
+  // Re-initialize cytoscape with the new elements
+  cy.elements().remove(); // Remove existing elements
+  cy.json({elements: pg.getElementDefinition()})
+  console.log(JSON.stringify(pg.getElementDefinition()))
+
+  // Apply layout again if needed
+  layout.run();
+}
 
 document.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;
@@ -257,7 +295,7 @@ cy.on("click", "node", (event) => {
     const existingEdge = cy.edges().some((edge) => {
       return (
         edge.data("source") === selectedNode.id() &&
-        edge.data("target") === node.id()
+          edge.data("target") === node.id()
       );
     });
     if (!existingEdge) {
