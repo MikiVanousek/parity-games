@@ -18,6 +18,7 @@ contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
 
 let pg = new PG.ParityGame();
+// const pgUI = new PG.PGDBoard(pg);
 let id = 0;
 let isDragging = false;
 let cy = cytoscape({
@@ -96,6 +97,7 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
 
   switch (event.key) {
     case "e": {
+      console.log("e pressed");
       addNodeAtPosition(modelX, modelY, true);
       break;
     }
@@ -212,7 +214,6 @@ function pasteCopiedElements() {
 
     console.log(newElements);
     ur.do("add", newElements); // Add the new elements to the Cytoscape instance
-    copySelectedElements();
     // cy.layout({ name: "preset" }).run(); // Re-run layout to refresh the view, if needed
   }
 }
@@ -278,7 +279,7 @@ cyContainer.addEventListener(
       event.stopPropagation();
     }
   },
-  true
+  true,
 );
 
 cy.on("add", "node, edge", function (event) {

@@ -1,0 +1,16 @@
+{
+    "name": "Algorithm trace file",
+    "description": "This file contains the trace of the algorithm",
+    "steps": [
+        {
+            "step": 1,
+            "description": "The algorithm starts",
+            "highlights": [
+                ["1", "4", "2->3"],
+                ["4", "3", "1->2", "3->5"]
+                
+            ]
+        }
+    ]
+}
+
