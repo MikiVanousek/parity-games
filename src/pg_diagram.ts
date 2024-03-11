@@ -11,16 +11,34 @@ export module PG {
     player: PG.Player;
     label: string;
 
-    constructor(priority: number, id: number, player: PG.Player) {
+    constructor(priority: number, id: number, player: PG.Player, label?: string) {
       this.priority = priority;
       this.id = id;
       this.player = player;
+      this.label = label || "";
+    }
+
+    getElementDefinition() {
+      return {
+        data: { id: `n${this.id}`, priority: this.priority, isEven: this.player === Player.Even ? "true" : "false", label: this.label }
+      };
     }
   }
 
   export class Link {
     source: Node;
     target: Node;
+
+    constructor(source: Node, target: Node) {
+      this.source = source;
+      this.target = target;
+    }
+
+    getElementDefinition() {
+      return {
+        data: { source: `n${this.source.id}`, target: `n${this.target.id}` },
+      };
+    }
   }
 
   export class ParityGame {
@@ -30,51 +48,81 @@ export module PG {
     name: string = "Parity Game";
     maxNodeId: number = 0;
 
+    emptyBoard() {
+      this.nodes = [];
+      this.links = [];
+      this.adjList = new Map();
+      this.maxNodeId = 0;
+    }
+
+    
     loadFromFile(fileContent: string): void {
+      this.emptyBoard();
       const lines = fileContent.split("\n");
+      let edgeData = []; // Temporary storage for edge data
+
+      // First Pass: Create nodes
       lines.forEach((line) => {
         if (line.trim() && line.startsWith("parity")) {
           this.name = line;
-        }
-        if (line.trim() && !line.startsWith("parity")) {
+        } else if (line.trim()) {
           const parts = line.split(" ");
           const nodeId = parseInt(parts[0]);
           const priority = parseInt(parts[1]);
           const player = parseInt(parts[2]) === 1 ? Player.Odd : Player.Even;
-          const edges = parts[3]
-            .split(",")
-            .map((id) => parseInt(id))
-            .filter((id) => !isNaN(id));
+          const label = parts.slice(4).join(" ").replace(/"/g, ""); // Remove quotes
 
-          // Add node
-          const newNodeId = this.addNode(priority, player, nodeId);
-          const newNode = this.nodes.find((node) => node.id === newNodeId);
+          // Add node (assuming addNode handles duplicates gracefully or that node IDs are unique)
+          this.addNode(priority, player, nodeId, label);
 
-          edges.forEach((targetId) => {
-            const targetNode = this.nodes.find((node) => node.id === targetId);
-            if (newNode && targetNode) {
-              this.addLink(newNode, targetNode);
-            }
-          });
+          // Store edge data for the second pass
+          if (parts[3] !== "") { // Check if there are edges
+            edgeData.push({
+              sourceId: nodeId,
+              targets: parts[3].split(",").map(id => parseInt(id))
+            });
+          }
         }
+      });
+
+      // Second Pass: Create edges
+      edgeData.forEach(({ sourceId, targets }) => {
+        const sourceNode = this.nodes.find(node => node.id === sourceId);
+        targets.forEach(targetId => {
+          const targetNode = this.nodes.find(node => node.id === targetId);
+          if (sourceNode && targetNode) {
+            this.addLinkFromNodes(sourceNode, targetNode);
+          }
+        });
       });
     }
 
-    addLink(source: Node, target: Node): void {
-      const link = new Link();
-      link.source = source;
-      link.target = target;
-      this.links.push(link);
+    getElementDefinition() {
+      const nodes = this.nodes.map((node) => node.getElementDefinition());
+      const links = this.links.map((link) => link.getElementDefinition());
 
-      let adjSet = this.adjList.get(source);
-      if (!adjSet) {
-        adjSet = new Set<Node>();
-        this.adjList.set(source, adjSet);
-      }
-      adjSet.add(target);
+      return [
+        ...nodes,
+        ...links
+      ]
     }
 
-    addNode(priority: number, player: Player, id?: number): number {
+    addLinkFromNodes(source: Node, target: Node): void {
+      this.addLink(new Link(source, target));
+    }
+
+    addLink(link: Link): void {
+      this.links.push(link);
+
+      let adjSet = this.adjList.get(link.source);
+      if (!adjSet) {
+        adjSet = new Set<Node>();
+        this.adjList.set(link.source, adjSet);
+      }
+      adjSet.add(link.target);
+    }
+
+    addNode(priority: number, player: Player, id?: number, label?: string): number {
       if (id === undefined || id <= this.maxNodeId) {
         // If no ID is provided or the provided ID is not higher than the current max
         id = this.maxNodeId + 1; // Assign the next available ID
@@ -82,7 +130,7 @@ export module PG {
         this.maxNodeId = id; // Update maxNodeId if the provided ID is higher
       }
 
-      const node = new Node(priority, id, player);
+      const node = new Node(priority, id, player, label)
       this.nodes.push(node);
       this.adjList.set(node, new Set());
 
