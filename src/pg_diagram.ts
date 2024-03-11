@@ -10,8 +10,14 @@ export module PG {
     id: number;
     player: PG.Player;
     label: string;
+    degree: number = 0;
 
-    constructor(priority: number, id: number, player: PG.Player, label?: string) {
+    constructor(
+      priority: number,
+      id: number,
+      player: PG.Player,
+      label?: string,
+    ) {
       this.priority = priority;
       this.id = id;
       this.player = player;
@@ -20,8 +26,21 @@ export module PG {
 
     getElementDefinition() {
       return {
-        data: { id: `n${this.id}`, priority: this.priority, isEven: this.player === Player.Even ? "true" : "false", label: this.label }
+        data: {
+          id: `n${this.id}`,
+          priority: this.priority,
+          isEven: this.player === Player.Even ? "true" : "false",
+          label: this.label,
+        },
       };
+    }
+
+    setDegree(degree: number) {
+      this.degree = degree;
+    }
+
+    getDegree() {
+      return this.degree;
     }
   }
 
@@ -55,7 +74,6 @@ export module PG {
       this.maxNodeId = 0;
     }
 
-    
     loadFromFile(fileContent: string): void {
       this.emptyBoard();
       const lines = fileContent.split("\n");
@@ -76,10 +94,11 @@ export module PG {
           this.addNode(priority, player, nodeId, label);
 
           // Store edge data for the second pass
-          if (parts[3] !== "") { // Check if there are edges
+          if (parts[3] !== "") {
+            // Check if there are edges
             edgeData.push({
               sourceId: nodeId,
-              targets: parts[3].split(",").map(id => parseInt(id))
+              targets: parts[3].split(",").map((id) => parseInt(id)),
             });
           }
         }
@@ -87,9 +106,9 @@ export module PG {
 
       // Second Pass: Create edges
       edgeData.forEach(({ sourceId, targets }) => {
-        const sourceNode = this.nodes.find(node => node.id === sourceId);
-        targets.forEach(targetId => {
-          const targetNode = this.nodes.find(node => node.id === targetId);
+        const sourceNode = this.nodes.find((node) => node.id === sourceId);
+        targets.forEach((targetId) => {
+          const targetNode = this.nodes.find((node) => node.id === targetId);
           if (sourceNode && targetNode) {
             this.addLinkFromNodes(sourceNode, targetNode);
           }
@@ -101,10 +120,7 @@ export module PG {
       const nodes = this.nodes.map((node) => node.getElementDefinition());
       const links = this.links.map((link) => link.getElementDefinition());
 
-      return [
-        ...nodes,
-        ...links
-      ]
+      return [...nodes, ...links];
     }
 
     addLinkFromNodes(source: Node, target: Node): void {
@@ -122,7 +138,13 @@ export module PG {
       adjSet.add(link.target);
     }
 
-    addNode(priority: number, player: Player, id?: number, label?: string): number {
+    addNode(
+      priority: number,
+      player: Player,
+      id?: number,
+      label?: string,
+      degree?: number,
+    ): number {
       if (id === undefined || id <= this.maxNodeId) {
         // If no ID is provided or the provided ID is not higher than the current max
         id = this.maxNodeId + 1; // Assign the next available ID
@@ -130,7 +152,10 @@ export module PG {
         this.maxNodeId = id; // Update maxNodeId if the provided ID is higher
       }
 
-      const node = new Node(priority, id, player, label)
+      const node = new Node(priority, id, player, label);
+      if (degree !== undefined) {
+        node.setDegree(degree);
+      }
       this.nodes.push(node);
       this.adjList.set(node, new Set());
 

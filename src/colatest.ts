@@ -12,8 +12,6 @@ cytoscape.use(cola);
 var colaLayout: any = {
   name: "cola",
   animate: true, // whether to show the layout as it's running
-  refresh: 50, // number of ticks per frame; higher is faster but more jerky
-  maxSimulationTime: 4000, // max length in ms to run the layout
   ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
   fit: true, // on every layout reposition of nodes, fit the viewport
   padding: 100, // padding around the simulation
@@ -32,17 +30,14 @@ var colaLayout: any = {
   nodeSpacing: function (node: any) {
     return 5;
   }, // extra spacing around nodes
-  flow: {
-    axis: "y",
-    minSeparation: 30,
-  }, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
+  flow: undefined, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
   alignment: undefined, // relative alignment constraints on nodes, e.g. {vertical: [[{node: node1, offset: 0}, {node: node2, offset: 5}]], horizontal: [[{node: node3}, {node: node4}], [{node: node5}, {node: node6}]]}
   gapInequalities: undefined, // list of inequality constraints for the gap between the nodes, e.g. [{"axis":"y", "left":node1, "right":node2, "gap":25}]
   centerGraph: true, // adjusts the node positions initially to center the graph (pass false if you want to start the layout from the current position)
 
   // different methods of specifying edge length
   // each can be a constant numerical value or a function like `function( edge ){ return 2; }`
-  edgeLength: undefined, // sets edge length directly in simulation
+  edgeLength: undefined,
   edgeSymDiffLength: undefined, // symmetric diff edge length in simulation
   edgeJaccardLength: undefined, // jaccard edge length in simulation
 
@@ -80,12 +75,13 @@ pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
 pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
 pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
 
-console.log(JSON.stringify(pg.getElementDefinition()));
+// console.log(JSON.stringify(pg.getElementDefinition()));
 
 let cy = cytoscape({
   container: document.getElementById("cy"),
   autounselectify: false,
   elements: pg.getElementDefinition(),
+  boxSelectionEnabled: false,
   style: [
     {
       selector: 'node[isEven = "true"]',
@@ -123,7 +119,6 @@ let cy = cytoscape({
   ],
 });
 
-
 const cyContainer = cy.container();
 var layout = cy.layout(colaLayout);
 layout.run();
@@ -137,21 +132,21 @@ let copiedElements: cytoscape.ElementDefinition[] = [];
 let mouseX: number = 0;
 let mouseY: number = 0;
 
-document.getElementById('file').addEventListener('change', function(event) {
+document.getElementById("file").addEventListener("change", function (event) {
   const input = event.target as HTMLInputElement;
   if (!input.files || input.files.length === 0) {
-        console.log("No file selected.");
-        return;
-    }
+    console.log("No file selected.");
+    return;
+  }
 
-    const file = input.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        // Asserting that e.target is a FileReader
-        const fileContent = (e.target as FileReader).result;
-        loadParityGameFromFileContent(fileContent as string);
-    };
-    reader.readAsText(file);
+  const file = input.files[0];
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    // Asserting that e.target is a FileReader
+    const fileContent = (e.target as FileReader).result;
+    loadParityGameFromFileContent(fileContent as string);
+  };
+  reader.readAsText(file);
 });
 
 function loadParityGameFromFileContent(fileContent: any) {
@@ -159,8 +154,8 @@ function loadParityGameFromFileContent(fileContent: any) {
 
   // Re-initialize cytoscape with the new elements
   cy.elements().remove(); // Remove existing elements
-  cy.json({elements: pg.getElementDefinition()})
-  console.log(JSON.stringify(pg.getElementDefinition()))
+  cy.json({ elements: pg.getElementDefinition() });
+  console.log(JSON.stringify(pg.getElementDefinition()));
 
   // Apply layout again if needed
   layout.run();
@@ -269,7 +264,6 @@ function pasteCopiedElements() {
 function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   id = pg.addNode(0, isEven ? PG.Player.Even : PG.Player.Odd);
   cy.add({
-    group: "nodes",
     data: {
       id: String(id),
       isEven: String(isEven), // Store isEven as a string to match the selector
@@ -277,7 +271,7 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
     },
     position: { x: x, y: y },
   });
-  cy.resize();
+  cy.fit(cy.elements(), 20);
 }
 
 cy.on("click", "node", (event) => {
@@ -295,7 +289,7 @@ cy.on("click", "node", (event) => {
     const existingEdge = cy.edges().some((edge) => {
       return (
         edge.data("source") === selectedNode.id() &&
-          edge.data("target") === node.id()
+        edge.data("target") === node.id()
       );
     });
     if (!existingEdge) {
