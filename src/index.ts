@@ -4,13 +4,20 @@ import { PG } from "./pg_diagram";
 //import * as $ from "jquery";
 //import konva from "konva";
 
+declare global {
+  interface Window {
+    $: typeof import("jquery");
+  }
+}
+
 var cytoscape = require("cytoscape");
 var jquery = require("jquery");
 var konva = require("konva");
 var edgeEditing = require("cytoscape-edge-editing");
-console.log(jquery);
+var contextMenus = require("cytoscape-context-menus");
+window.$ = jquery;
+contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
-cytoscape.use(edgeEditing);
 
 let pg = new PG.ParityGame();
 let id = 0;
@@ -46,7 +53,7 @@ let cy = cytoscape({
     {
       selector: "edge",
       style: {
-        "curve-style": "unbundled-bezier", // This makes the edge curved, which helps visually with arrow positioning
+        "curve-style": "straight", // This makes the edge curved, which helps visually with arrow positioning
         "target-arrow-shape": "triangle", // This creates a directed edge with an arrow pointing to the target node
         //'target-arrow-color': '#000', // Optionally set the arrow color
         //'line-color': '#000' // Optionally set the line color
@@ -58,12 +65,13 @@ const cyContainer = cy.container();
 let copiedElements: cytoscape.ElementDefinition[] = [];
 
 cy.edgeEditing({
-  bendRemovalSensitivity: 16,
+  anchorShapeSizeFactor: 6,
   enableMultipleAnchorRemovalOption: true,
-  initAnchorsAutomatically: false,
-  useTrailingDividersAfterContextMenuOptions: false,
   enableCreateAnchorOnDrag: true,
+  zIndex: 0,
 });
+
+cy.style().update();
 
 let mouseX: number = 0;
 let mouseY: number = 0;
