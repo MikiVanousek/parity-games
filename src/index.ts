@@ -1,9 +1,27 @@
 import { PG } from "./pg_diagram";
-import * as cytoscape from "cytoscape";
-//d3test(document.querySelector<HTMLElement>("#d3-test")!);
+// import * as cytoscape from "cytoscape";
+// import * as edgeEditing from "cytoscape-edge-editing";
+//import * as $ from "jquery";
+//import konva from "konva";
+
+declare global {
+  interface Window {
+    $: typeof import("jquery");
+  }
+}
+
+var cytoscape = require("cytoscape");
+var jquery = require("jquery");
+var konva = require("konva");
+var edgeEditing = require("cytoscape-edge-editing");
+var contextMenus = require("cytoscape-context-menus");
+window.$ = jquery;
+contextMenus(cytoscape); // This line is crucial
+edgeEditing(cytoscape, jquery, konva);
 
 let pg = new PG.ParityGame();
 let id = 0;
+let isDragging = false;
 let cy = cytoscape({
   container: document.getElementById("cy"),
   elements: [],
@@ -35,7 +53,7 @@ let cy = cytoscape({
     {
       selector: "edge",
       style: {
-        "curve-style": "bezier", // This makes the edge curved, which helps visually with arrow positioning
+        "curve-style": "straight", // This makes the edge curved, which helps visually with arrow positioning
         "target-arrow-shape": "triangle", // This creates a directed edge with an arrow pointing to the target node
         //'target-arrow-color': '#000', // Optionally set the arrow color
         //'line-color': '#000' // Optionally set the line color
@@ -45,6 +63,16 @@ let cy = cytoscape({
 });
 const cyContainer = cy.container();
 let copiedElements: cytoscape.ElementDefinition[] = [];
+
+cy.edgeEditing({
+  anchorShapeSizeFactor: 6,
+  enableMultipleAnchorRemovalOption: true,
+  enableCreateAnchorOnDrag: true,
+  zIndex: 0,
+});
+
+cy.style().update();
+
 let mouseX: number = 0;
 let mouseY: number = 0;
 
@@ -108,34 +136,32 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     }
   }
 
-  if (event.ctrlKey && event.key === 'c') {
-    copySelectedElements()
+  if (event.ctrlKey && event.key === "c") {
+    copySelectedElements();
   }
   // Paste with Ctrl+V
-  else if (event.ctrlKey && event.key === 'v') {
-      pasteCopiedElements()
+  else if (event.ctrlKey && event.key === "v") {
+    pasteCopiedElements();
   }
 });
 
-
 function copySelectedElements() {
-  const selectedEles = cy.$(':selected').jsons();
+  const selectedEles = cy.$(":selected").jsons();
   // Deep copy and store in global variable
   copiedElements = JSON.parse(JSON.stringify(selectedEles));
 }
 
 function pasteCopiedElements() {
-
   if (copiedElements.length > 0) {
-    cy.$(':selected').unselect();
+    cy.$(":selected").unselect();
     const offset = 10; // Offset for the pasted elements' position
-    const newElements = copiedElements.map(ele => {
-      if (ele.group === 'nodes') {
+    const newElements = copiedElements.map((ele) => {
+      if (ele.group === "nodes") {
         // Adjust positions to avoid overlap
         ele.data.id = `copied_${ele.data.id}`; // Modify the ID to ensure uniqueness
         ele.position.x += offset;
         ele.position.y += offset;
-      } else if (ele.group === 'edges') {
+      } else if (ele.group === "edges") {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = `copied_${ele.data.id}`; // Modify the ID to ensure uniqueness
         ele.data.source = `copied_${ele.data.source}`;
@@ -143,13 +169,12 @@ function pasteCopiedElements() {
       }
       return ele;
     });
-    
+
     cy.add(newElements); // Add the new elements to the Cytoscape instance
     copySelectedElements();
     //cy.layout({ name: 'preset' }).run(); // Re-run layout to refresh the view, if needed
   }
 }
-
 
 function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   id = pg.addNode(0, isEven ? PG.Player.Even : PG.Player.Odd);
@@ -165,7 +190,7 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   cy.resize();
 }
 
-cy.on('click', 'node', (event) => {
+cy.on("click", "node", (event) => {
   const node = event.target;
   const isAltPressed = event.originalEvent.altKey;
   if (!isAltPressed) return;
