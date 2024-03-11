@@ -7,39 +7,39 @@ export module PG {
     Even,
   }
 
-  export class Node {
+  export class NodeA {
     priority: number;
     id: number;
     player: PG.Player;
 
     constructor(priority: number, id: number, player: PG.Player) {
-      this.priority = priority
-      this.id = id
-      this.player = player
+      this.priority = priority;
+      this.id = id;
+      this.player = player;
     }
   }
 
   export class Link {
-    source: Node;
-    target: Node;
+    source: NodeA;
+    target: NodeA;
   }
 
   export class ParityGame {
-    nodes: Node[] = [];
-    adjList: Map<Node, Set<Node>> = new Map()
+    nodes: NodeA[] = [];
+    adjList: Map<NodeA, Set<NodeA>> = new Map();
     links: Link[] = [];
-    auto_id:number = 0
+    auto_id: number = 0;
 
-    addNode(priority:number, player: Player): number {
-      var node = new Node(priority, this.auto_id, player)
-      this.nodes.push(node)
-      this.adjList.set(node, new Set())
-      this.auto_id++
-      return node.id
+    addNode(priority: number, player: Player): number {
+      var node = new NodeA(priority, this.auto_id, player);
+      this.nodes.push(node);
+      this.adjList.set(node, new Set());
+      this.auto_id++;
+      return node.id;
     }
   }
 
-  export class DNode extends Node {
+  export class DNode extends NodeA {
     x: number;
     y: number;
   }
