@@ -1,26 +1,26 @@
-const path = require('path')
-const CopyPlugin = require('copy-webpack-plugin');
+const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
+  mode: "development",
+  entry: "./src/colatest.ts",
   output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: "main.js",
+    path: path.resolve(__dirname, "dist"),
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: [".ts", ".tsx", ".js"],
   },
   module: {
-    rules: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
-    ],
+    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }],
   },
   plugins: [
     new CopyPlugin({
-      patterns: [
-        { from: 'src/*.html', to: '[name][ext]' },
-      ],
+      patterns: [{ from: "src/*.html", to: "[name][ext]" }],
+    }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery",
     }),
   ],
 };
