@@ -25,27 +25,26 @@ let cy = cytoscape({
   elements: [],
   style: [
     {
-      selector: 'node[isEven = "true"]',
+      selector: "node",
       style: {
-        shape: "ellipse", // Round shape for even nodes
+        width: "60",
+        height: "60",
         content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
-        //'background-color': '#66CCFF', // Example color
-        // Define other styles as needed
+      },
+    },
+    {
+      selector: 'node[isEven = "true"]',
+      style: {
+        shape: "ellipse", // Round shape for even nodes
       },
     },
     {
       selector: 'node[isEven = "false"]',
       style: {
         shape: "rectangle", // Square shape for odd nodes
-        content: "data(priority)",
-        "text-valign": "center",
-        "text-halign": "center",
-        color: "white",
-        //'background-color': '#FF6666', // Example color
-        // Define other styles as needed
       },
     },
     {
@@ -148,19 +147,19 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     }
   }
 
-  if (event.ctrlKey && event.key === "c") {
+  if ((event.ctrlKey || event.metaKey) && event.key === "c") {
     copySelectedElements();
   }
-  // Paste with Ctrl+V
-  if (event.ctrlKey && event.key === "v") {
+  // Paste with Ctrl+V or Cmd+V
+  if ((event.ctrlKey || event.metaKey) && event.key === "v") {
     pasteCopiedElements();
   }
 
-  if (event.ctrlKey && event.key === "z") {
+  if ((event.ctrlKey || event.metaKey) && event.key === "z") {
     ur.undo();
   }
 
-  if (event.ctrlKey && event.key === "y") {
+  if ((event.ctrlKey || event.metaKey) && event.key === "y") {
     ur.redo();
   }
 });
@@ -236,7 +235,9 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
 cy.on("click", "node", (event) => {
   const node = event.target;
   const isAltPressed = event.originalEvent.altKey;
-  if (!isAltPressed) return;
+  const isShiftCmdPressed =
+    event.originalEvent.shiftKey && event.originalEvent.metaKey;
+  if (!isAltPressed && !isShiftCmdPressed) return;
 
   event.preventDefault();
 
@@ -258,6 +259,8 @@ cy.on("click", "node", (event) => {
       });
     }
   });
+
+  selectedNodes.unselect();
 });
 
 cyContainer.addEventListener(
