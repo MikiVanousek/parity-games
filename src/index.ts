@@ -136,7 +136,8 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
       var selectedNodes = cy.$("node:selected");
       selectedNodes.forEach((node) => {
         var priority = node.data("priority") || 0;
-        node.data("priority", priority - 1);
+        // Ensure priority does not go below 0
+        node.data("priority", Math.max(0, priority - 1));
       });
       break;
     }
