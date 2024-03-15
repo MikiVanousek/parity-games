@@ -97,8 +97,8 @@ let cy = cytoscape({
       style: {
         "curve-style": "bezier", // This makes the edge curved, which helps visually with arrow positioning
         "target-arrow-shape": "triangle", // This creates a directed edge with an arrow pointing to the target node
-        width: "1",
-        "arrow-scale": "0.5",
+        //width: "1",
+        //"arrow-scale": "0.5",
         //'target-arrow-color': '#000', // Optionally set the arrow color
         //'line-color': '#000' // Optionally set the line color
       },
@@ -108,7 +108,7 @@ let cy = cytoscape({
       style: {
         'line-color': SELECTION_COLOR, // Example selection color for edges
         'target-arrow-color': SELECTION_COLOR, // Make sure the arrow matches the line
-        'width': 4, // Optionally increase the width for visibility
+        //'width': 4, // Optionally increase the width for visibility
       }
     },
     
