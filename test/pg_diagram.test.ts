@@ -1,5 +1,5 @@
-import { PG } from '../src/pg_diagram'
-import { PGParser } from '../src/pg_parser'
+import { Player } from '../src/board/Node';
+import { PGParser } from '../src/board/pg_parser'
 import * as fs from 'fs';
 
 let PG_DIR = 'test/pg_examples/'
@@ -13,8 +13,8 @@ test('basic .pg parsing test', () => {
     expect(pg.nodes[0].label).toBe("0")
     expect(pg.nodes[1].label).toBe("1")
     expect(pg.nodes[2].label).toBe('2 3"4')
-    expect(pg.nodes[0].player).toBe(PG.Player.Odd)
-    expect(pg.nodes[2].player).toBe(PG.Player.Even)
+    expect(pg.nodes[0].player).toBe(Player.Odd)
+    expect(pg.nodes[2].player).toBe(Player.Even)
     expect(pg.nodes[0].priority).toBe(0)
     expect(pg.nodes[5].priority).toBe(3)
 
