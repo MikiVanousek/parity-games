@@ -3,7 +3,7 @@ export const colaLayout: any = {
     refresh: 1, // number of ticks per frame; higher is faster but more jerky
     animate: true, // whether to show the layout as it's running
     ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
-    fit: true, // on every layout reposition of nodes, fit the viewport
+    fit: false, // on every layout reposition of nodes, fit the viewport
     padding: 100, // padding around the simulation
     boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
     nodeDimensionsIncludeLabels: false, // whether labels should be included in determining the space used by a node
