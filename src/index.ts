@@ -1,5 +1,5 @@
 import { PG } from "./board/PGBoard";
-import { Player } from './board/Node'
+import { Player } from "./board/Node";
 import LayoutManager from "./layoutManager";
 
 declare global {
@@ -70,27 +70,27 @@ let cy = cytoscape({
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
-        "font-size": "10px"
+        "font-size": "10px",
       },
     },
     {
       selector: 'node[isEven = "true"]',
       style: {
-        'shape': "ellipse", // Round shape for even nodes
-        'background-color': EVEN_COLOR,
+        shape: "ellipse", // Round shape for even nodes
+        "background-color": EVEN_COLOR,
       },
     },
     {
       selector: 'node[isEven = "false"]',
       style: {
-        'shape': "rectangle", // Square shape for odd nodes
-        'background-color': ODD_COLOR,
+        shape: "rectangle", // Square shape for odd nodes
+        "background-color": ODD_COLOR,
       },
     },
     {
-      selector: 'node:selected',
+      selector: "node:selected",
       style: {
-        'background-color': SELECTION_COLOR,
+        "background-color": SELECTION_COLOR,
       },
     },
     {
@@ -105,14 +105,13 @@ let cy = cytoscape({
       },
     },
     {
-      selector: 'edge:selected',
+      selector: "edge:selected",
       style: {
-        'line-color': SELECTION_COLOR, // Example selection color for edges
-        'target-arrow-color': SELECTION_COLOR, // Make sure the arrow matches the line
+        "line-color": SELECTION_COLOR, // Example selection color for edges
+        "target-arrow-color": SELECTION_COLOR, // Make sure the arrow matches the line
         //'width': 4, // Optionally increase the width for visibility
-      }
+      },
     },
-    
   ],
 });
 const cyContainer = cy.container();
@@ -132,12 +131,12 @@ let ur = cy.undoRedo({
   isDebug: true,
 });
 
-cy.add(pg.getElementDefinition())
+cy.add(pg.getElementDefinition());
 const layoutManager = new LayoutManager(cy);
-layoutManager.runColaLayout()
+layoutManager.runColaLayout();
 
 cy.on("drag", "node", function () {
-  layoutManager.runColaLayout()
+  layoutManager.runColaLayout();
 });
 
 cy.on("afterDo", function (e, name) {
@@ -148,17 +147,19 @@ let mouseX: number = 0;
 let mouseY: number = 0;
 
 function updateLayoutButtonText() {
-  const buttonText = layoutManager.isEnabled ? 'Force Directed - On' : 'Force Directed - Off';
-  document.querySelector('#cola-toggle-button').textContent = buttonText;
+  const buttonText = layoutManager.isEnabled
+    ? "Force Directed - On"
+    : "Force Directed - Off";
+  document.querySelector("#cola-toggle-button").textContent = buttonText;
 }
 
-(window as any).toggleColaLayout = function() {
+(window as any).toggleColaLayout = function () {
   layoutManager.toggleLayout();
   updateLayoutButtonText();
 };
 
 // Initialize button text on load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   updateLayoutButtonText();
 });
 
@@ -259,8 +260,6 @@ function pasteCopiedElements() {
     const offset = 10; // Offset for the pasted elements' position
     let oldid_newid = {};
     let maxId = getNewMaxId();
-    console.log(maxId);
-    console.log("Copied Elements:", copiedElements);
 
     copiedElements.sort((a, b) => {
       if (a.group === "nodes" && b.group === "edges") {
@@ -294,9 +293,8 @@ function pasteCopiedElements() {
       }
     }, []);
 
-    console.log("New Elements:", newElements);
     ur.do("add", newElements); // Add the new elements to the Cytoscape instance
-    // cy.layout({ name: "preset" }).run(); // Re-run layout to refresh the view, if needed
+    copySelectedElements(); // Copy the newly pasted elements
   }
 }
 
