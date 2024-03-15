@@ -178,7 +178,7 @@ function pasteCopiedElements() {
     let oldid_newid = {};
     let maxId = getNewMaxId();
 
-    const sortedCopiedElements = copiedElements.sort((a, b) => {
+    copiedElements.sort((a, b) => {
       if (a.group === "nodes" && b.group === "edges") {
         return -1;
       }
@@ -188,21 +188,27 @@ function pasteCopiedElements() {
       return 0;
     });
 
-    const newElements = copiedElements.map((ele) => {
+    const newElements = copiedElements.reduce((acc, ele) => {
       if (ele.group === "nodes") {
         oldid_newid[ele.data.id] = maxId;
         ele.data.id = `${maxId}`; // Modify the ID to ensure uniqueness
         ele.position.x += offset;
         ele.position.y += offset;
         maxId++;
-      } else if (ele.group === "edges") {
+        acc.push(ele);
+      } else if (
+        ele.group === "edges" &&
+        oldid_newid.hasOwnProperty(ele.data.source) &&
+        oldid_newid.hasOwnProperty(ele.data.target)
+      ) {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = undefined; // Modify the ID to ensure uniqueness
         ele.data.source = `${oldid_newid[ele.data.source]}`;
         ele.data.target = `${oldid_newid[ele.data.target]}`;
+        acc.push(ele);
       }
-      return ele;
-    });
+      return acc;
+    }, []);
 
     console.log(newElements);
     ur.do("add", newElements); // Add the new elements to the Cytoscape instance
