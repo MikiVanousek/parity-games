@@ -7,6 +7,9 @@ declare global {
     $: typeof import("jquery");
   }
 }
+const EVEN_COLOR = "#7A7A7A";
+const ODD_COLOR = "#ADADAD";
+const SELECTION_COLOR = "#0169D9";
 
 var cytoscape = require("cytoscape");
 var jquery = require("jquery");
@@ -73,13 +76,21 @@ let cy = cytoscape({
     {
       selector: 'node[isEven = "true"]',
       style: {
-        shape: "ellipse", // Round shape for even nodes
+        'shape': "ellipse", // Round shape for even nodes
+        'background-color': EVEN_COLOR,
       },
     },
     {
       selector: 'node[isEven = "false"]',
       style: {
-        shape: "rectangle", // Square shape for odd nodes
+        'shape': "rectangle", // Square shape for odd nodes
+        'background-color': ODD_COLOR,
+      },
+    },
+    {
+      selector: 'node:selected',
+      style: {
+        'background-color': SELECTION_COLOR,
       },
     },
     {
@@ -93,6 +104,15 @@ let cy = cytoscape({
         //'line-color': '#000' // Optionally set the line color
       },
     },
+    {
+      selector: 'edge:selected',
+      style: {
+        'line-color': SELECTION_COLOR, // Example selection color for edges
+        'target-arrow-color': SELECTION_COLOR, // Make sure the arrow matches the line
+        'width': 4, // Optionally increase the width for visibility
+      }
+    },
+    
   ],
 });
 const cyContainer = cy.container();
