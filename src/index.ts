@@ -1,6 +1,5 @@
 import { PG } from "./board/PGBoard";
-import { Player } from "./board/Node";
-import { colaLayout } from "./colaLayout";
+import { Player } from './board/Node'
 import LayoutManager from "./layoutManager";
 
 declare global {

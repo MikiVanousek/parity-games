@@ -1,74 +1,74 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Graph Visualizer</title>
-  </head>
-  <body>
-    <!-- <div id="d3-test"></div> -->
-    <div id="cy"></div>
-    <div class="navbar">
-      <div class="navbar-group">
-        <button id="cola-toggle-button" onclick="toggleColaLayout()">Toggle Cola Layout</button>
+  <!doctype html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Graph Visualizer</title>
+    </head>
+    <body>
+      <!-- <div id="d3-test"></div> -->
+      <div id="cy"></div>
+      <div class="navbar">
+        <div class="navbar-heading">Parity Game</div>
+        <div class="navbar-group">
+          <button id="cola-toggle-button" onclick="toggleColaLayout()">Toggle Cola Layout</button>
+        </div>
       </div>
-    </div>
-    <script src="main.js"></script>
-    <style>
-      body, html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        font-family: Arial, sans-serif;
-        background-color: #1d1d1d;
-        color: white;
-      }
+      <script src="main.js"></script>
+      <style>
+        body, html {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          font-family: Arial, sans-serif;
+          background-color: #1d1d1d;
+          color: white;
+        }
 
-      #cy {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 80%;
-        height: 100%;
-        background: #1d1d1d;
-      }
+        #cy {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 80%;
+          height: 100%;
+          background: #1d1d1d;
+        }
 
-      .navbar {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 20%; /* This should complement the width of #cy */
-        height: 100%;
-        background-color: #333;
-        padding: 10px;
-        box-sizing: border-box; /* Ensures padding doesn't add to the width */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+        .navbar {
+          position: absolute;
+          right: 0;
+          top: 50%; /* Start at the middle of the page */
+          transform: translateY(-50%) translateX(-40px); /* Move it up by half its own height */
+          width: 250px; /* Complementing the width of #cy */
+          background-color: #333;
+          padding: 30px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          border-radius: 20px;
+        }
 
-      .navbar-group {
-        margin-top: 20px;
-      }
+        .navbar-group {
+          margin-top: 20px;
+        }
 
-      .navbar-group button {
-        background-color: #1d1d1d;
-        border-radius: 10px;
-        color: white;
-        padding: 15px 20px;
-        border: none;
-        cursor: pointer;
-        margin-bottom: 10px;
-        box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
-      }
+        .navbar-group button {
+          background-color: #1d1d1d;
+          border-radius: 10px;
+          color: white;
+          padding: 15px 20px;
+          border: none;
+          cursor: pointer;
+          margin-bottom: 10px;
+          box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+        }
 
-      .navbar-group button:hover {
-        opacity: 0.7;
-      }
+        .navbar-group button:hover {
+          opacity: 0.7;
+        }
 
-    </style>
-
+      </style>
   </body>
 </html>
