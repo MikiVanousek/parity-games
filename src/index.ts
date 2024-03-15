@@ -62,8 +62,8 @@ let cy = cytoscape({
     {
       selector: "node",
       style: {
-        width: "20",
-        height: "20",
+        width: "40",
+        height: "40",
         content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
