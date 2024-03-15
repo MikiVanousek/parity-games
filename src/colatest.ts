@@ -1,5 +1,5 @@
-import { PG } from "./pg_diagram";
-import Player = PG.Player;
+import { PG } from "./board/PGBoard";
+import { Player } from "./board/Node";
 import * as cytoscape from "cytoscape";
 const cola = require("cytoscape-cola");
 
@@ -82,7 +82,7 @@ pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
 let cy = cytoscape({
   container: document.getElementById("cy"),
   autounselectify: false,
-  elements: pg.getElementDefinition(),
+  elements: [],
   boxSelectionEnabled: false,
   style: [
     {
@@ -264,7 +264,7 @@ function pasteCopiedElements() {
 }
 
 function addNodeAtPosition(x: number, y: number, isEven: boolean) {
-  id = pg.addNode(0, isEven ? PG.Player.Even : PG.Player.Odd);
+  id = pg.addNode(0, isEven ? Player.Even : Player.Odd);
   cy.add({
     data: {
       id: String(id) + "testing node",
