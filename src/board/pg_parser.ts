@@ -6,9 +6,12 @@ import { Link } from './Link'
 
 export module PGParser {
   // Broken if vertex label includes spac
-  export function import_pg_format(pg: PG.ParityGame, file: string): PG.ParityGame {
+  export function import_pg_format(file: string, pg?: PG.ParityGame): PG.ParityGame {
     // create a list of lines
     var lines = file.split("\n")
+    if (pg === undefined) {
+      pg = new PG.ParityGame()
+    }
 
     let arc_id_pairs: [number, number][] = []
     for (let l of lines.slice(1)) {
