@@ -64,12 +64,13 @@ let cy = cytoscape({
     {
       selector: "node",
       style: {
-        width: "60",
-        height: "60",
+        width: "25",
+        height: "25",
         content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
+        "font-size": "10px"
       },
     },
     {
