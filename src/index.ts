@@ -1,4 +1,6 @@
-import { PG } from "./pg_diagram";
+import { PG } from "./board/PGBoard";
+import { Player } from "./board/Node";
+import { colaLayout } from "./colaLayout";
 
 declare global {
   interface Window {
@@ -15,12 +17,44 @@ var konva = require("konva");
 var edgeEditing = require("cytoscape-edge-editing");
 var contextMenus = require("cytoscape-context-menus");
 var undoRedo = require("cytoscape-undo-redo");
+var cola = require("cytoscape-cola");
 window.$ = jquery;
 undoRedo(cytoscape);
 contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
+cytoscape.use(cola);
 
 let pg = new PG.ParityGame();
+// pg.addNode(1, Player.Even);
+// pg.addNode(8, Player.Odd);
+// pg.addNode(9, Player.Even);
+// pg.addNode(5, Player.Odd);
+// pg.addNode(7, Player.Even);
+// pg.addNode(3, Player.Odd);
+// pg.addNode(6, Player.Even);
+// pg.addNode(4, Player.Odd);
+// pg.addNode(0, Player.Even);
+// pg.addNode(2, Player.Odd);
+// // pg.addNode(10, Player.Even);
+
+// // Adding links between nodes
+// pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
+// pg.addLinkFromNodes(pg.nodes[1], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[2], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[3], pg.nodes[2]);
+// pg.addLinkFromNodes(pg.nodes[4], pg.nodes[7]);
+// pg.addLinkFromNodes(pg.nodes[5], pg.nodes[8]);
+// pg.addLinkFromNodes(pg.nodes[6], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[7], pg.nodes[6]);
+// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[2]);
+// pg.addLinkFromNodes(pg.nodes[9], pg.nodes[0]);
+// pg.addLinkFromNodes(pg.nodes[3], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[2], pg.nodes[1]);
+// pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
+// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
+// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
+
+// const pgUI = new PG.PGDBoard(pg);
 let id = 0;
 let isDragging = false;
 let cy = cytoscape({
@@ -30,12 +64,13 @@ let cy = cytoscape({
     {
       selector: "node",
       style: {
-        width: "60",
-        height: "60",
+        width: "26",
+        height: "26",
         content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
+        "font-size": "10px",
       },
     },
     {
@@ -61,8 +96,10 @@ let cy = cytoscape({
     {
       selector: "edge",
       style: {
-        "curve-style": "straight", // This makes the edge curved, which helps visually with arrow positioning
+        "curve-style": "bezier", // This makes the edge curved, which helps visually with arrow positioning
         "target-arrow-shape": "triangle", // This creates a directed edge with an arrow pointing to the target node
+        width: "1",
+        "arrow-scale": "0.5",
         //'target-arrow-color': '#000', // Optionally set the arrow color
         //'line-color': '#000' // Optionally set the line color
       },
@@ -81,6 +118,8 @@ let cy = cytoscape({
 const cyContainer = cy.container();
 let copiedElements: cytoscape.ElementDefinition[] = [];
 
+// console.log(JSON.stringify(pg.getElementDefinition()))
+
 cy.edgeEditing({
   anchorShapeSizeFactor: 6,
   enableMultipleAnchorRemovalOption: true,
@@ -94,6 +133,15 @@ cy.style().update();
 let ur = cy.undoRedo({
   isDebug: true,
 });
+
+// cy.add(pg.getElementDefinition())
+var layout = cy.layout(colaLayout);
+layout.run();
+
+cy.on("drag", "node", function () {
+  layout.run();
+});
+
 cy.on("afterDo", function (e, name) {
   console.log("afterDo", name);
 });
@@ -116,6 +164,7 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
 
   switch (event.key) {
     case "e": {
+      console.log("e pressed");
       addNodeAtPosition(modelX, modelY, true);
       break;
     }
@@ -189,6 +238,7 @@ function copySelectedElements() {
   const selectedEles = cy.$(":selected").jsons();
   // Deep copy and store in global variable
   copiedElements = JSON.parse(JSON.stringify(selectedEles));
+  console.log(copiedElements);
 }
 
 function pasteCopiedElements() {
@@ -198,7 +248,7 @@ function pasteCopiedElements() {
     let oldid_newid = {};
     let maxId = getNewMaxId();
 
-    copiedElements.sort((a, b) => {
+    const sortedCopiedElements = copiedElements.sort((a, b) => {
       if (a.group === "nodes" && b.group === "edges") {
         return -1;
       }
@@ -208,27 +258,21 @@ function pasteCopiedElements() {
       return 0;
     });
 
-    const newElements = copiedElements.reduce((acc, ele) => {
+    const newElements = copiedElements.map((ele) => {
       if (ele.group === "nodes") {
         oldid_newid[ele.data.id] = maxId;
         ele.data.id = `${maxId}`; // Modify the ID to ensure uniqueness
         ele.position.x += offset;
         ele.position.y += offset;
         maxId++;
-        acc.push(ele);
-      } else if (
-        ele.group === "edges" &&
-        oldid_newid.hasOwnProperty(ele.data.source) &&
-        oldid_newid.hasOwnProperty(ele.data.target)
-      ) {
+      } else if (ele.group === "edges") {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = undefined; // Modify the ID to ensure uniqueness
         ele.data.source = `${oldid_newid[ele.data.source]}`;
         ele.data.target = `${oldid_newid[ele.data.target]}`;
-        acc.push(ele);
       }
-      return acc;
-    }, []);
+      return ele;
+    });
 
     console.log(newElements);
     ur.do("add", newElements); // Add the new elements to the Cytoscape instance
