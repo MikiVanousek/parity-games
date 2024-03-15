@@ -1,6 +1,8 @@
 var assert = require('assert')
 
-import { PG } from './pg_diagram'
+import { PG } from './PGBoard'
+import { Node, Player } from './Node'
+import { Link } from './Link'
 
 export module PGParser {
   // Broken if vertex label includes spac
@@ -26,7 +28,7 @@ export module PGParser {
 
       var player_str = components[2]
       assert(player_str == "1" || player_str == "0")
-      var player = player_str === "1" ? PG.Player.Odd : PG.Player.Even
+      var player = player_str === "1" ? Player.Odd : Player.Even
 
       var arcs_str = components[3]
       var targets = arcs_str.split(",").map((i) => parseInt(i))
@@ -34,14 +36,14 @@ export module PGParser {
         arc_id_pairs.push([id, t])
       }
 
-      let n = new PG.Node(priority, id, player, node_label)
+      let n = new Node(priority, id, player, node_label)
       pg.nodes.push(n)
     }
     for (let [s, t] of arc_id_pairs) {
       let sourceNode = pg.nodes.find(node => node.id === s)
       let targetNode = pg.nodes.find(node => node.id === t)
       if (sourceNode && targetNode) {
-        pg.addLink(new PG.Link(sourceNode, targetNode))
+        pg.addLink(new Link(sourceNode, targetNode))
       }
     }
 

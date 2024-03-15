@@ -4,7 +4,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: "./src/colatest.ts",
+  entry: "./src/index.ts",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),

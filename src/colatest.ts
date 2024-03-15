@@ -11,6 +11,7 @@ cytoscape.use(cola);
 // default layout options
 var colaLayout: any = {
   name: "cola",
+  refresh: 1, // number of ticks per frame; higher is faster but more jerky
   animate: true, // whether to show the layout as it's running
   ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
   fit: true, // on every layout reposition of nodes, fit the viewport
@@ -57,6 +58,7 @@ pg.addNode(6, Player.Even);
 pg.addNode(4, Player.Odd);
 pg.addNode(0, Player.Even);
 pg.addNode(2, Player.Odd);
+// pg.addNode(10, Player.Even);
 
 // Adding links between nodes
 pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
@@ -265,7 +267,7 @@ function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   id = pg.addNode(0, isEven ? PG.Player.Even : PG.Player.Odd);
   cy.add({
     data: {
-      id: String(id),
+      id: String(id) + "testing node",
       isEven: String(isEven), // Store isEven as a string to match the selector
       priority: 1,
     },
