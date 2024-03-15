@@ -62,8 +62,8 @@ let cy = cytoscape({
     {
       selector: "node",
       style: {
-        width: "20",
-        height: "20",
+        width: "26",
+        height: "26",
         content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
@@ -88,6 +88,8 @@ let cy = cytoscape({
       style: {
         "curve-style": "straight", // This makes the edge curved, which helps visually with arrow positioning
         "target-arrow-shape": "triangle", // This creates a directed edge with an arrow pointing to the target node
+        "width": "1",
+        "arrow-scale": "0.5"
         //'target-arrow-color': '#000', // Optionally set the arrow color
         //'line-color': '#000' // Optionally set the line color
       },
@@ -116,6 +118,11 @@ let ur = cy.undoRedo({
 cy.add(pg.getElementDefinition())
 var layout = cy.layout(colaLayout);
 layout.run();
+
+cy.on("drag", "node", function () {
+  // use throttle function to make layout smooth
+  layout.run();
+});
 
 cy.on("afterDo", function (e, name) {
   console.log("afterDo", name);
