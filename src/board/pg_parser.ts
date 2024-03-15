@@ -19,7 +19,7 @@ export module PGParser {
         // Empty line at the end of the file? If not, the assert on number of vertices will fail.
         continue
       }
-      assert(l.slice(l.length - 2, l.length) == '"')
+      assert(l.slice(l.length - 2, l.length) == '";')
       let i = l.indexOf('"')
       let j = l.length - 2// It is the same as l.indexOf('"')
       var node_label = l.slice(i + 1, j)
@@ -50,15 +50,15 @@ export module PGParser {
       }
     }
 
-    assert(lines[0] === `parity ${pg.nodes.length}`)
+    assert(lines[0] === `parity ${pg.nodes.length};`)
     return pg
   }
 
   export function export_pg_format(pg: PG.ParityGame): string {
-    var res = `parity ${pg.nodes.length}\n`
+    var res = `parity ${pg.nodes.length};\n`
     for (let n of pg.nodes) {
       let arc_str = pg.target_neighbors(n).map((x) => x.id).join(",")
-      res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}"\n`
+      res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`
     }
     return res
   }
