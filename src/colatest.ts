@@ -1,5 +1,6 @@
 import { PG } from "./board/PGBoard";
 import { Player } from "./board/Node";
+
 import * as cytoscape from "cytoscape";
 const cola = require("cytoscape-cola");
 
@@ -265,6 +266,7 @@ function pasteCopiedElements() {
 
 function addNodeAtPosition(x: number, y: number, isEven: boolean) {
   id = pg.addNode(0, isEven ? Player.Even : Player.Odd);
+
   cy.add({
     data: {
       id: String(id) + "testing node",
