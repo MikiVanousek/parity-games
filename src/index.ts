@@ -14,7 +14,7 @@ const SELECTION_COLOR = "#0169D9";
 var cytoscape = require("cytoscape");
 var jquery = require("jquery");
 var konva = require("konva");
-var edgeEditing = require("cytoscape-edge-editing");
+var edgeEditing = require("./cytoscape-edge-editing/src/index.js");
 var contextMenus = require("cytoscape-context-menus");
 var undoRedo = require("cytoscape-undo-redo");
 var cola = require("cytoscape-cola");
@@ -25,34 +25,34 @@ edgeEditing(cytoscape, jquery, konva);
 cytoscape.use(cola);
 
 let pg = new PG.ParityGame();
-// pg.addNode(1, Player.Even);
-// pg.addNode(8, Player.Odd);
-// pg.addNode(9, Player.Even);
-// pg.addNode(5, Player.Odd);
-// pg.addNode(7, Player.Even);
-// pg.addNode(3, Player.Odd);
-// pg.addNode(6, Player.Even);
-// pg.addNode(4, Player.Odd);
-// pg.addNode(0, Player.Even);
-// pg.addNode(2, Player.Odd);
-// // pg.addNode(10, Player.Even);
+pg.addNode(1, Player.Even);
+pg.addNode(8, Player.Odd);
+pg.addNode(9, Player.Even);
+pg.addNode(5, Player.Odd);
+pg.addNode(7, Player.Even);
+pg.addNode(3, Player.Odd);
+pg.addNode(6, Player.Even);
+pg.addNode(4, Player.Odd);
+pg.addNode(0, Player.Even);
+pg.addNode(2, Player.Odd);
+// pg.addNode(10, Player.Even);
 
-// // Adding links between nodes
-// pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
-// pg.addLinkFromNodes(pg.nodes[1], pg.nodes[9]);
-// pg.addLinkFromNodes(pg.nodes[2], pg.nodes[9]);
-// pg.addLinkFromNodes(pg.nodes[3], pg.nodes[2]);
-// pg.addLinkFromNodes(pg.nodes[4], pg.nodes[7]);
-// pg.addLinkFromNodes(pg.nodes[5], pg.nodes[8]);
-// pg.addLinkFromNodes(pg.nodes[6], pg.nodes[9]);
-// pg.addLinkFromNodes(pg.nodes[7], pg.nodes[6]);
-// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[2]);
-// pg.addLinkFromNodes(pg.nodes[9], pg.nodes[0]);
-// pg.addLinkFromNodes(pg.nodes[3], pg.nodes[9]);
-// pg.addLinkFromNodes(pg.nodes[2], pg.nodes[1]);
-// pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
-// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
-// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
+// Adding links between nodes
+pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
+pg.addLinkFromNodes(pg.nodes[1], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[2], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[3], pg.nodes[2]);
+pg.addLinkFromNodes(pg.nodes[4], pg.nodes[7]);
+pg.addLinkFromNodes(pg.nodes[5], pg.nodes[8]);
+pg.addLinkFromNodes(pg.nodes[6], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[7], pg.nodes[6]);
+pg.addLinkFromNodes(pg.nodes[8], pg.nodes[2]);
+pg.addLinkFromNodes(pg.nodes[9], pg.nodes[0]);
+pg.addLinkFromNodes(pg.nodes[3], pg.nodes[9]);
+pg.addLinkFromNodes(pg.nodes[2], pg.nodes[1]);
+pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
+pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
+pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
 
 // const pgUI = new PG.PGDBoard(pg);
 let id = 0;
@@ -64,13 +64,12 @@ let cy = cytoscape({
     {
       selector: "node",
       style: {
-        width: "26",
-        height: "26",
+        width: "60",
+        height: "60",
         content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
-        "font-size": "10px",
       },
     },
     {
@@ -118,8 +117,6 @@ let cy = cytoscape({
 const cyContainer = cy.container();
 let copiedElements: cytoscape.ElementDefinition[] = [];
 
-// console.log(JSON.stringify(pg.getElementDefinition()))
-
 cy.edgeEditing({
   anchorShapeSizeFactor: 6,
   enableMultipleAnchorRemovalOption: true,
@@ -134,13 +131,9 @@ let ur = cy.undoRedo({
   isDebug: true,
 });
 
-// cy.add(pg.getElementDefinition())
-var layout = cy.layout(colaLayout);
-layout.run();
-
-cy.on("drag", "node", function () {
-  layout.run();
-});
+// cy.add(pg.getElementDefinition());
+// var layout = cy.layout(colaLayout);
+// layout.run();
 
 cy.on("afterDo", function (e, name) {
   console.log("afterDo", name);
@@ -235,10 +228,9 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
 });
 
 function copySelectedElements() {
-  const selectedEles = cy.$(":selected").jsons();
+  let selectedEles = cy.$(":selected").jsons();
   // Deep copy and store in global variable
   copiedElements = JSON.parse(JSON.stringify(selectedEles));
-  console.log(copiedElements);
 }
 
 function pasteCopiedElements() {
@@ -247,8 +239,10 @@ function pasteCopiedElements() {
     const offset = 10; // Offset for the pasted elements' position
     let oldid_newid = {};
     let maxId = getNewMaxId();
+    console.log(maxId);
+    console.log("Copied Elements:", copiedElements);
 
-    const sortedCopiedElements = copiedElements.sort((a, b) => {
+    copiedElements.sort((a, b) => {
       if (a.group === "nodes" && b.group === "edges") {
         return -1;
       }
@@ -258,25 +252,30 @@ function pasteCopiedElements() {
       return 0;
     });
 
-    const newElements = copiedElements.map((ele) => {
+    let newElements = [];
+    copiedElements.map((ele) => {
       if (ele.group === "nodes") {
         oldid_newid[ele.data.id] = maxId;
         ele.data.id = `${maxId}`; // Modify the ID to ensure uniqueness
         ele.position.x += offset;
         ele.position.y += offset;
         maxId++;
-      } else if (ele.group === "edges") {
+        newElements.push(ele);
+      } else if (
+        ele.group === "edges" &&
+        oldid_newid.hasOwnProperty(ele.data.source) &&
+        oldid_newid.hasOwnProperty(ele.data.target)
+      ) {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = undefined; // Modify the ID to ensure uniqueness
         ele.data.source = `${oldid_newid[ele.data.source]}`;
         ele.data.target = `${oldid_newid[ele.data.target]}`;
+        newElements.push(ele);
       }
-      return ele;
-    });
+    }, []);
 
-    console.log(newElements);
+    console.log("New Elements:", newElements);
     ur.do("add", newElements); // Add the new elements to the Cytoscape instance
-    copySelectedElements();
     // cy.layout({ name: "preset" }).run(); // Re-run layout to refresh the view, if needed
   }
 }
