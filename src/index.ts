@@ -1,5 +1,5 @@
 import { PG } from "./board/PGBoard";
-import { Player } from './board/Node'
+import { Player } from "./board/Node";
 import { colaLayout } from "./colaLayout";
 
 declare global {
@@ -20,7 +20,6 @@ undoRedo(cytoscape);
 contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
 cytoscape.use(cola);
-
 
 let pg = new PG.ParityGame();
 // pg.addNode(1, Player.Even);
@@ -86,10 +85,10 @@ let cy = cytoscape({
     {
       selector: "edge",
       style: {
-        "curve-style": "straight", // This makes the edge curved, which helps visually with arrow positioning
+        "curve-style": "bezier", // This makes the edge curved, which helps visually with arrow positioning
         "target-arrow-shape": "triangle", // This creates a directed edge with an arrow pointing to the target node
-        "width": "1",
-        "arrow-scale": "0.5"
+        width: "1",
+        "arrow-scale": "0.5",
         //'target-arrow-color': '#000', // Optionally set the arrow color
         //'line-color': '#000' // Optionally set the line color
       },
@@ -219,7 +218,7 @@ function copySelectedElements() {
   const selectedEles = cy.$(":selected").jsons();
   // Deep copy and store in global variable
   copiedElements = JSON.parse(JSON.stringify(selectedEles));
-  console.log(copiedElements)
+  console.log(copiedElements);
 }
 
 function pasteCopiedElements() {
@@ -323,7 +322,7 @@ cyContainer.addEventListener(
       event.stopPropagation();
     }
   },
-  true,
+  true
 );
 
 cy.on("add", "node, edge", function (event) {
