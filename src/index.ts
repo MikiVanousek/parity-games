@@ -23,34 +23,34 @@ cytoscape.use(cola);
 
 
 let pg = new PG.ParityGame();
-pg.addNode(1, Player.Even);
-pg.addNode(8, Player.Odd);
-pg.addNode(9, Player.Even);
-pg.addNode(5, Player.Odd);
-pg.addNode(7, Player.Even);
-pg.addNode(3, Player.Odd);
-pg.addNode(6, Player.Even);
-pg.addNode(4, Player.Odd);
-pg.addNode(0, Player.Even);
-pg.addNode(2, Player.Odd);
-// pg.addNode(10, Player.Even);
+// pg.addNode(1, Player.Even);
+// pg.addNode(8, Player.Odd);
+// pg.addNode(9, Player.Even);
+// pg.addNode(5, Player.Odd);
+// pg.addNode(7, Player.Even);
+// pg.addNode(3, Player.Odd);
+// pg.addNode(6, Player.Even);
+// pg.addNode(4, Player.Odd);
+// pg.addNode(0, Player.Even);
+// pg.addNode(2, Player.Odd);
+// // pg.addNode(10, Player.Even);
 
-// Adding links between nodes
-pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
-pg.addLinkFromNodes(pg.nodes[1], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[2], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[3], pg.nodes[2]);
-pg.addLinkFromNodes(pg.nodes[4], pg.nodes[7]);
-pg.addLinkFromNodes(pg.nodes[5], pg.nodes[8]);
-pg.addLinkFromNodes(pg.nodes[6], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[7], pg.nodes[6]);
-pg.addLinkFromNodes(pg.nodes[8], pg.nodes[2]);
-pg.addLinkFromNodes(pg.nodes[9], pg.nodes[0]);
-pg.addLinkFromNodes(pg.nodes[3], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[2], pg.nodes[1]);
-pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
-pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
-pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
+// // Adding links between nodes
+// pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
+// pg.addLinkFromNodes(pg.nodes[1], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[2], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[3], pg.nodes[2]);
+// pg.addLinkFromNodes(pg.nodes[4], pg.nodes[7]);
+// pg.addLinkFromNodes(pg.nodes[5], pg.nodes[8]);
+// pg.addLinkFromNodes(pg.nodes[6], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[7], pg.nodes[6]);
+// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[2]);
+// pg.addLinkFromNodes(pg.nodes[9], pg.nodes[0]);
+// pg.addLinkFromNodes(pg.nodes[3], pg.nodes[9]);
+// pg.addLinkFromNodes(pg.nodes[2], pg.nodes[1]);
+// pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
+// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
+// pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
 
 // const pgUI = new PG.PGDBoard(pg);
 let id = 0;
@@ -99,7 +99,7 @@ let cy = cytoscape({
 const cyContainer = cy.container();
 let copiedElements: cytoscape.ElementDefinition[] = [];
 
-console.log(JSON.stringify(pg.getElementDefinition()))
+// console.log(JSON.stringify(pg.getElementDefinition()))
 
 cy.edgeEditing({
   anchorShapeSizeFactor: 6,
@@ -115,12 +115,11 @@ let ur = cy.undoRedo({
   isDebug: true,
 });
 
-cy.add(pg.getElementDefinition())
+// cy.add(pg.getElementDefinition())
 var layout = cy.layout(colaLayout);
 layout.run();
 
 cy.on("drag", "node", function () {
-  // use throttle function to make layout smooth
   layout.run();
 });
 
@@ -230,7 +229,7 @@ function pasteCopiedElements() {
     let oldid_newid = {};
     let maxId = getNewMaxId();
 
-    copiedElements.sort((a, b) => {
+    const sortedCopiedElements = copiedElements.sort((a, b) => {
       if (a.group === "nodes" && b.group === "edges") {
         return -1;
       }
@@ -240,30 +239,25 @@ function pasteCopiedElements() {
       return 0;
     });
 
-    const newElements = copiedElements.reduce((acc, ele) => {
+    const newElements = copiedElements.map((ele) => {
       if (ele.group === "nodes") {
         oldid_newid[ele.data.id] = maxId;
         ele.data.id = `${maxId}`; // Modify the ID to ensure uniqueness
         ele.position.x += offset;
         ele.position.y += offset;
         maxId++;
-        acc.push(ele);
-      } else if (
-        ele.group === "edges" &&
-        oldid_newid.hasOwnProperty(ele.data.source) &&
-        oldid_newid.hasOwnProperty(ele.data.target)
-      ) {
+      } else if (ele.group === "edges") {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = undefined; // Modify the ID to ensure uniqueness
         ele.data.source = `${oldid_newid[ele.data.source]}`;
         ele.data.target = `${oldid_newid[ele.data.target]}`;
-        acc.push(ele);
       }
-      return acc;
-    }, []);
+      return ele;
+    });
 
     console.log(newElements);
     ur.do("add", newElements); // Add the new elements to the Cytoscape instance
+    copySelectedElements();
     // cy.layout({ name: "preset" }).run(); // Re-run layout to refresh the view, if needed
   }
 }
