@@ -1,6 +1,7 @@
 import { PG } from "./board/PGBoard";
 import { Player } from "./board/Node";
 import { colaLayout } from "./colaLayout";
+import LayoutManager from "./layoutManager";
 
 declare global {
   interface Window {
@@ -131,9 +132,13 @@ let ur = cy.undoRedo({
   isDebug: true,
 });
 
-// cy.add(pg.getElementDefinition());
-// var layout = cy.layout(colaLayout);
-// layout.run();
+cy.add(pg.getElementDefinition())
+const layoutManager = new LayoutManager(cy);
+layoutManager.runColaLayout()
+
+cy.on("drag", "node", function () {
+  layoutManager.runColaLayout()
+});
 
 cy.on("afterDo", function (e, name) {
   console.log("afterDo", name);
@@ -141,6 +146,21 @@ cy.on("afterDo", function (e, name) {
 
 let mouseX: number = 0;
 let mouseY: number = 0;
+
+function updateLayoutButtonText() {
+  const buttonText = layoutManager.isEnabled ? 'Force Directed - On' : 'Force Directed - Off';
+  document.querySelector('#cola-toggle-button').textContent = buttonText;
+}
+
+(window as any).toggleColaLayout = function() {
+  layoutManager.toggleLayout();
+  updateLayoutButtonText();
+};
+
+// Initialize button text on load
+document.addEventListener('DOMContentLoaded', function() {
+  updateLayoutButtonText();
+});
 
 document.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;

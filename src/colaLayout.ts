@@ -1,9 +1,9 @@
 export const colaLayout: any = {
     name: "cola",
-    refresh: 1, // number of ticks per frame; higher is faster but more jerky
+    // refresh: 2, // number of ticks per frame; higher is faster but more jerky
     animate: true, // whether to show the layout as it's running
     ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
-    fit: false, // on every layout reposition of nodes, fit the viewport
+    fit: true, // on every layout reposition of nodes, fit the viewport
     padding: 100, // padding around the simulation
     boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
     nodeDimensionsIncludeLabels: false, // whether labels should be included in determining the space used by a node
@@ -18,7 +18,7 @@ export const colaLayout: any = {
     handleDisconnected: true, // if true, avoids disconnected components from overlapping
     convergenceThreshold: 0.01, // when the alpha value (system energy) falls below this value, the layout stops
     nodeSpacing: function (node: any) {
-      return 5;
+      return 1;
     }, // extra spacing around nodes
     flow: undefined, // use DAG/tree flow layout if specified, e.g. { axis: 'y', minSeparation: 30 }
     alignment: undefined, // relative alignment constraints on nodes, e.g. {vertical: [[{node: node1, offset: 0}, {node: node2, offset: 5}]], horizontal: [[{node: node3}, {node: node4}], [{node: node5}, {node: node6}]]}
