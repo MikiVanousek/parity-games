@@ -15,7 +15,13 @@
           <label for="file-input">Upload File</label>
         </div>
         <div class="navbar-group">
-          <button id="cola-toggle-button" onclick="toggleColaLayout()">Toggle Cola Layout</button>
+          <div class="navbar-group-heading">Layouts Setting</div>
+          <select id="layout-select" onchange="changeLayout(event)">
+            <option value="cola">Force directed</option>
+            <option value="static">Static layout</option>
+            <option value="random">Random</option>
+          </select>
+          <button id="cola-toggle-button" onclick="toggleColaLayout()">Toggle Layout</button>
         </div>
       </div>
       <script src="main.js"></script>
@@ -64,11 +70,17 @@
         .navbar-group {
           display: flex;
           flex-direction: column;
-          gap: 15px;
+          gap: 8px;
           justify-content: space-around;
           height: 100%;
           width: 100%;
           margin-top: 20px;
+        }
+
+        .navbar-group-heading {
+          font-size: 10px;
+          color: white;
+          text-align: center;
         }
 
         .navbar-group button, .navbar-group label {
@@ -93,6 +105,18 @@
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+        }
+
+        #layout-select {
+          width: 100%;
+          padding: 15px 20px;
+          border-radius: 10px;
+          text-align: center;
+          border: none;
+          background-color: #1d1d1d;
+          color: white;
+          font-size: 12px;
+          cursor: pointer;
         }
         </style>
     </body>

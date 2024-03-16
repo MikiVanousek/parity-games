@@ -1,6 +1,6 @@
 import { PG } from "./board/PGBoard";
 import { Player } from "./board/Node";
-import LayoutManager from "./layoutManager";
+import LayoutManager from "./layout/layoutManager";
 
 declare global {
   interface Window {
@@ -148,8 +148,8 @@ let mouseY: number = 0;
 
 function updateLayoutButtonText() {
   const buttonText = layoutManager.isEnabled
-    ? "Force Directed - On"
-    : "Force Directed - Off";
+    ? "Layout - On"
+    : "Layout - Off";
   document.querySelector("#cola-toggle-button").textContent = buttonText;
 }
 
@@ -394,6 +394,33 @@ cyContainer.addEventListener(
   },
   true
 );
+
+// Right click context menu
+cy.on("cxttap", "node", (event) => {
+  const node = event.target;
+
+  // Prevent context menu from showing when shift+cmd is pressed
+  const isShiftCmdPressed =
+    event.originalEvent.shiftKey && event.originalEvent.metaKey;
+  if (isShiftCmdPressed) return;
+
+  event.preventDefault();
+
+  const contextMenu = document.getElementById("context-menu");
+  if (contextMenu) {
+    contextMenu.style.display = "block";
+    contextMenu.style.left = event.originalEvent.clientX + "px";
+    contextMenu.style.top = event.originalEvent.clientY + "px";
+  }
+
+  const deleteButton = document.getElementById("delete-button");
+  if (deleteButton) {
+    deleteButton.onclick = () => {
+      ur.do("remove", node);
+      contextMenu.style.display = "none";
+    };
+  }
+});
 
 cy.on("add", "node, edge", function (event) {
   // update PG Board 
