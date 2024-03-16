@@ -43,7 +43,7 @@ class LayoutManager {
     }
   }
 
-  private runLayout() {
+  public runLayout() {
     if (this.isEnabled) {
       this.cy.layout(this.colaLayoutOptions).run();
     }
@@ -51,9 +51,7 @@ class LayoutManager {
 
   // Optionally, you can expose a method to run the layout directly
   public runColaLayout() {
-    if (this.isEnabled) {
-      this.cy.layout(this.colaLayoutOptions).run();
-    }
+    this.cy.layout(this.colaLayoutOptions).run();
   }
 
   // Method to enable the layout

@@ -136,7 +136,7 @@ const layoutManager = new LayoutManager(cy);
 layoutManager.runColaLayout();
 
 cy.on("drag", "node", function () {
-  layoutManager.runColaLayout();
+  layoutManager.runLayout()
 });
 
 cy.on("afterDo", function (e, name) {
@@ -153,7 +153,40 @@ function updateLayoutButtonText() {
   document.querySelector("#cola-toggle-button").textContent = buttonText;
 }
 
-(window as any).toggleColaLayout = function () {
+(window as any).handleFileSelect = function(event) {
+  const file = event.target.files[0];
+
+  if (file) {
+    const fileNameDisplay = document.getElementById('file-name-display');
+    if (fileNameDisplay) {
+      fileNameDisplay.textContent = "File: " + file.name;
+      fileNameDisplay.title = file.name;
+    }
+    
+    const reader = new FileReader();
+
+    reader.onload = function(loadEvent) {
+      const fileContent = loadEvent.target.result as string;
+      
+      pg.loadFromFile(fileContent);
+      
+      updateBoardVisuals();
+    };
+
+    reader.readAsText(file);
+  }
+};
+
+
+function updateBoardVisuals() {
+  const elements = pg.getElementDefinition();
+  cy.elements().remove(); // Clear the current graph
+  cy.add(elements); // Add the new elements
+  layoutManager.runColaLayout();
+}
+
+
+(window as any).toggleColaLayout = function() {
   layoutManager.toggleLayout();
   updateLayoutButtonText();
 };
@@ -363,11 +396,13 @@ cyContainer.addEventListener(
 );
 
 cy.on("add", "node, edge", function (event) {
-  // update PG Board shit
+  // update PG Board 
+  // pg.addNode(event.target.data("id"), event.target.data("isEven") === "true" ? Player.Even : Player.Odd);
 });
 
 cy.on("remove", "node, edge", function (event) {
   // update PG Board shit
+  
 });
 
 cy.on("data", "node, edge", function (event) {
