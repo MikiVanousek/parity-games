@@ -1,19 +1,22 @@
 import { colaLayout } from "./colaLayout";
 import { randomLayout } from "./randomLayout";
+import { gridLayout } from "./gridLayout";
 
 class LayoutManager {
   private cy: cytoscape.Core;
   public isEnabled: boolean;
-  public currentLayout: string;
-  private colaLayoutOptions: any;
-  private randomLayoutOptions: any;
+  public currentLayout: any;
+  private colaLayoutOptions: any = colaLayout;
+  public layouts = {
+    "Force directed": colaLayout,
+    "Random layout": randomLayout,
+    "Grid layout": gridLayout
+  }
 
   constructor(cyInstance: any, defaultLayout?: string) {
     this.cy = cyInstance;
     this.isEnabled = false
-    this.currentLayout = defaultLayout || "cola"
-    this.colaLayoutOptions = colaLayout
-    this.randomLayoutOptions = randomLayout
+    this.currentLayout = this.layouts[defaultLayout] || colaLayout
   }
 
   public toggleLayout() {
@@ -24,44 +27,17 @@ class LayoutManager {
   }
 
   public changeLayout(layout: string) {
-    this.currentLayout = layout;
+    this.currentLayout = this.layouts[layout] || this.colaLayoutOptions;
   }
 
   public runLayout() {
     if (this.isEnabled) {
-      switch (this.currentLayout) {
-        case "cola":
-          this.runColaLayout();
-          break;
-        case "random":
-          this.runRandomLayout();
-          break;
-        default:
-          this.runColaLayout();
-      }
+      this.cy.layout(this.currentLayout).run();
     }
   }
 
   public runOnce() {
-    switch (this.currentLayout) {
-      case "cola":
-        this.runColaLayout();
-        break;
-      case "random":
-        this.runRandomLayout();
-        break;
-      default:
-        this.runColaLayout();
-    }
-  }
-
-  // Optionally, you can expose a method to run the layout directly
-  public runColaLayout() {
-    this.cy.layout(this.colaLayoutOptions).run();
-  }
-
-  public runRandomLayout() {
-    this.cy.layout(this.randomLayoutOptions).run();
+    this.cy.layout(this.currentLayout).run();
   }
 
   // Method to enable the layout

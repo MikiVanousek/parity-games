@@ -114,7 +114,7 @@ let cy = cytoscape({
 });
 const cyContainer = cy.container();
 let copiedElements: cytoscape.ElementDefinition[] = [];
-const defaultLayout = "cola"
+const defaultLayout = "Force directed";
 
 cy.edgeEditing({
   anchorShapeSizeFactor: 6,
@@ -132,10 +132,20 @@ let ur = cy.undoRedo({
 
 cy.add(pg.getElementDefinition());
 const layoutManager = new LayoutManager(cy, defaultLayout);
-layoutManager.runColaLayout();
+layoutManager.runOnce();
 
 document.addEventListener("DOMContentLoaded", function () {
   const layoutSelect = document.getElementById('layout-select') as HTMLSelectElement;
+
+  // Dynamically populate the layout select dropdown
+  for (const layoutName in layoutManager.layouts) {
+    if (layoutManager.layouts.hasOwnProperty(layoutName)) {
+      const option = document.createElement('option');
+      option.value = layoutName;
+      option.textContent = layoutName; 
+      layoutSelect.appendChild(option);
+    }
+  }
   layoutSelect.value = defaultLayout;
   updateLayoutButtonText();
 });
@@ -188,7 +198,7 @@ function updateBoardVisuals() {
   const elements = pg.getElementDefinition();
   cy.elements().remove(); // Clear the current graph
   cy.add(elements); // Add the new elements
-  layoutManager.runColaLayout();
+  layoutManager.runOnce();
 }
 
 (window as any).changeLayout = function(e: any) {
@@ -205,8 +215,6 @@ function updateBoardVisuals() {
   layoutManager.toggleLayout();
   updateLayoutButtonText();
 };
-
-
 
 document.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;
