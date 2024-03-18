@@ -8,10 +8,10 @@ class LayoutManager {
   private colaLayoutOptions: any;
   private randomLayoutOptions: any;
 
-  constructor(cyInstance: any) {
+  constructor(cyInstance: any, defaultLayout?: string) {
     this.cy = cyInstance;
-    this.isEnabled = true
-    this.currentLayout = "cola"
+    this.isEnabled = false
+    this.currentLayout = defaultLayout || "cola"
     this.colaLayoutOptions = colaLayout
     this.randomLayoutOptions = randomLayout
   }
