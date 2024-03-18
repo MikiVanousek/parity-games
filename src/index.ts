@@ -157,7 +157,7 @@ cy.on("afterDo", function (e, name) {
 let mouseX: number = 0;
 let mouseY: number = 0;
 
-function updateBoardVisuals() {
+function resetBoardVisuals() {
   const elements = pg.getElementDefinition();
   cy.elements().remove(); // Clear the current graph
   cy.add(elements); // Add the new elements
@@ -166,7 +166,7 @@ function updateBoardVisuals() {
 
 // this export the visuals and also the pg object
 (window as any).handleExportGame = function() {
-  const cyState = cy.json();
+  const cyState = cy.json(true);
   const game = pg.exportToOink();
   console.log(game);
 
@@ -183,7 +183,6 @@ function updateBoardVisuals() {
   a.href = URL.createObjectURL(file);
   a.download = pg.name + ".json";
   a.click();
-  document.body.removeChild(a);
 };
 
 
@@ -191,18 +190,31 @@ function updateBoardVisuals() {
   const file = event.target.files[0];
 
   if (file) {
-    const fileNameDisplay = document.getElementById('file-name-display');
-    if (fileNameDisplay) {
-      fileNameDisplay.textContent = "File: " + file.name;
-      fileNameDisplay.title = file.name;
-    }
+    updateGraphFileName(file.name);
     
     const reader = new FileReader();
 
     reader.onload = function(loadEvent) {
-      const fileContent = loadEvent.target.result as string;
-      const game = JSON.parse(fileContent);
-      cy.json(game);
+      try {
+        const fileContent = loadEvent.target.result as string;
+        const importedData = JSON.parse(fileContent);
+
+        // Filter out problematic style rules before applying state
+        if (importedData.cytoscapeState && importedData.cytoscapeState.style) {
+          importedData.cytoscapeState.style = importedData.cytoscapeState.style.filter(styleRule => {
+            // Exclude styles with "fn" values or specific selectors
+            return ![".edgebendediting-hasbendpoints", ".edgecontrolediting-hascontrolpoints", "#nwt_reconnectEdge_dummy"].includes(styleRule.selector);
+          });
+        }
+
+        cy.json(importedData.cytoscapeState);
+
+        // Clear current PGGame state
+
+        pg.loadFromFile(importedData.gameState, file.name);
+      } catch (error) {
+        console.error("Error importing game:", error);
+      }
     };
 
     reader.readAsText(file);
@@ -221,20 +233,16 @@ function updateBoardVisuals() {
   const file = event.target.files[0];
 
   if (file) {
-    const fileNameDisplay = document.getElementById('file-name-display');
-    if (fileNameDisplay) {
-      fileNameDisplay.textContent = "File: " + file.name;
-      fileNameDisplay.title = file.name;
-    }
-    
+    updateGraphFileName(file.name);
+
     const reader = new FileReader();
 
     reader.onload = function(loadEvent) {
       const fileContent = loadEvent.target.result as string;
-      
+
       pg.loadFromFile(fileContent, file.name);
-      
-      updateBoardVisuals();
+
+      resetBoardVisuals();
     };
 
     reader.readAsText(file);
@@ -250,6 +258,14 @@ function updateLayoutButtonText() {
     ? "Layout on drag - On"
     : "Layout on drag - Off";
   document.querySelector("#layout-toggle-button").textContent = buttonText;
+}
+
+function updateGraphFileName(name: string) {
+  const fileNameDisplay = document.getElementById('file-name-display');
+  if (fileNameDisplay) {
+    fileNameDisplay.textContent = "File: " + name;
+    fileNameDisplay.title = name;
+  }
 }
 
 
@@ -387,8 +403,8 @@ function pasteCopiedElements() {
         newElements.push(ele);
       } else if (
         ele.group === "edges" &&
-        oldid_newid.hasOwnProperty(ele.data.source) &&
-        oldid_newid.hasOwnProperty(ele.data.target)
+          oldid_newid.hasOwnProperty(ele.data.source) &&
+          oldid_newid.hasOwnProperty(ele.data.target)
       ) {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = undefined; // Modify the ID to ensure uniqueness
@@ -442,7 +458,7 @@ cy.on("click", "node", (event) => {
     const existingEdge = cy.edges().some((edge) => {
       return (
         edge.data("source") === selectedNode.id() &&
-        edge.data("target") === node.id()
+          edge.data("target") === node.id()
       );
     });
     if (!existingEdge) {
@@ -501,7 +517,7 @@ cy.on("add", "node, edge", function (event) {
 
 cy.on("remove", "node, edge", function (event) {
   // update PG Board shit
-  
+
 });
 
 cy.on("data", "node, edge", function (event) {

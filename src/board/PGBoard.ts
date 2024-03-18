@@ -66,10 +66,10 @@ export module PG {
       // Write nodes in format 0 0 1 2,3 "0"; node player 0 or 1 
       this.nodes.forEach((node) => {
         fileContent += `${node.id} ${node.priority} ${
-node.player === Player.Even ? "0" : "1"
-} ${[...this.adjList.get(node) || []]
-.map((n) => n.id)
-.join(",")} "${node.label}";\n`;
+        node.player === Player.Even ? "0" : "1"
+        } ${[...this.adjList.get(node) || []]
+        .map((n) => n.id)
+        .join(",")} "${node.label}";\n`;
       });
 
       return fileContent;
