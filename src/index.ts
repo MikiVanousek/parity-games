@@ -157,6 +157,14 @@ cy.on("afterDo", function (e, name) {
 let mouseX: number = 0;
 let mouseY: number = 0;
 
+(window as any).exportAsPng = function() {
+  const png = cy.png({ full: true });
+  const a = document.createElement("a");
+  a.href = png;
+  a.download = "parity-game.png";
+  a.click();
+};
+
 
 (window as any).handleFileSelect = function(event) {
   const file = event.target.files[0];
