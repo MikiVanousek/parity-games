@@ -64,7 +64,7 @@ let cy = cytoscape({
       style: {
         width: "25",
         height: "25",
-        content: "data(priority)",
+        content: "data(id)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
@@ -157,31 +157,91 @@ cy.on("afterDo", function (e, name) {
 let mouseX: number = 0;
 let mouseY: number = 0;
 
+function resetBoardVisuals() {
+  const elements = pg.getElementDefinition();
+  cy.elements().remove(); // Clear the current graph
+  cy.add(elements); // Add the new elements
+  layoutManager.runOnce();
+}
 
-(window as any).handleFileSelect = function(event) {
+// this export the visuals and also the pg object
+(window as any).handleExportGame = function() {
+  const cyState = cy.elements().jsons();
+  const game = pg.exportToOink();
+
+  const exportData = {
+    cytoscapeState: cyState,
+    gameState: game
+  };
+
+  const exportString = JSON.stringify(exportData, null, 2);
+
+  const file = new Blob([exportString], { type: "application/json" });
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(file);
+  a.download = pg.name + ".json";
+  a.click();
+};
+
+
+(window as any).handleImportGame = function(event) {
   const file = event.target.files[0];
 
   if (file) {
-    const fileNameDisplay = document.getElementById('file-name-display');
-    if (fileNameDisplay) {
-      fileNameDisplay.textContent = "File: " + file.name;
-      fileNameDisplay.title = file.name;
-    }
+    updateGraphFileName(file.name);
     
     const reader = new FileReader();
 
     reader.onload = function(loadEvent) {
-      const fileContent = loadEvent.target.result as string;
-      
-      pg.loadFromFile(fileContent);
-      
-      updateBoardVisuals();
+      try {
+        const fileContent = loadEvent.target.result as string;
+        const importedData = JSON.parse(fileContent);
+
+        // cy.json(importedData.cytoscapeState);
+        cy.elements().remove(); 
+        cy.add(importedData.cytoscapeState);
+        cy.fit(cy.elements(), 50);
+
+        // remove just the .json part
+        var fileName = file.name.replace(/\.[^/.]+$/, "");
+        pg.loadFromFile(importedData.gameState, fileName);
+      } catch (error) {
+        console.error("Error importing game:", error);
+      }
     };
 
     reader.readAsText(file);
   }
 };
 
+(window as any).exportAsPng = function() {
+  const png = cy.png({ full: true });
+  const a = document.createElement("a");
+  a.href = png;
+  a.download = pg.name + ".png";
+  a.click();
+};
+
+(window as any).handleFileSelect = function(event) {
+  const file = event.target.files[0];
+
+  if (file) {
+    updateGraphFileName(file.name);
+
+    const reader = new FileReader();
+
+    reader.onload = function(loadEvent) {
+      const fileContent = loadEvent.target.result as string;
+
+      pg.loadFromFile(fileContent, file.name);
+
+      resetBoardVisuals();
+    };
+
+    reader.readAsText(file);
+  }
+};
 
 cy.on("drag", "node", function () {
   layoutManager.runLayout()
@@ -194,12 +254,14 @@ function updateLayoutButtonText() {
   document.querySelector("#layout-toggle-button").textContent = buttonText;
 }
 
-function updateBoardVisuals() {
-  const elements = pg.getElementDefinition();
-  cy.elements().remove(); // Clear the current graph
-  cy.add(elements); // Add the new elements
-  layoutManager.runOnce();
+function updateGraphFileName(name: string) {
+  const fileNameDisplay = document.getElementById('file-name-display');
+  if (fileNameDisplay) {
+    fileNameDisplay.textContent = "File: " + name;
+    fileNameDisplay.title = name;
+  }
 }
+
 
 (window as any).changeLayout = function(e: any) {
   layoutManager.changeLayout(e.target.value);
@@ -335,8 +397,8 @@ function pasteCopiedElements() {
         newElements.push(ele);
       } else if (
         ele.group === "edges" &&
-        oldid_newid.hasOwnProperty(ele.data.source) &&
-        oldid_newid.hasOwnProperty(ele.data.target)
+          oldid_newid.hasOwnProperty(ele.data.source) &&
+          oldid_newid.hasOwnProperty(ele.data.target)
       ) {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = undefined; // Modify the ID to ensure uniqueness
@@ -390,7 +452,7 @@ cy.on("click", "node", (event) => {
     const existingEdge = cy.edges().some((edge) => {
       return (
         edge.data("source") === selectedNode.id() &&
-        edge.data("target") === node.id()
+          edge.data("target") === node.id()
       );
     });
     if (!existingEdge) {
@@ -449,7 +511,7 @@ cy.on("add", "node, edge", function (event) {
 
 cy.on("remove", "node, edge", function (event) {
   // update PG Board shit
-  
+
 });
 
 cy.on("data", "node, edge", function (event) {
