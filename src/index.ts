@@ -203,9 +203,9 @@ function resetBoardVisuals() {
         cy.add(importedData.cytoscapeState);
         cy.fit(cy.elements(), 50);
 
-        // Clear current PGGame state
-
-        pg.loadFromFile(importedData.gameState, file.name);
+        // remove just the .json part
+        var fileName = file.name.replace(/\.[^/.]+$/, "");
+        pg.loadFromFile(importedData.gameState, fileName);
       } catch (error) {
         console.error("Error importing game:", error);
       }
