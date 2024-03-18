@@ -13,7 +13,13 @@
         <div class="navbar-group">
           <span id="file-name-display"></span>
           <input type="file" id="file-input" hidden onchange="handleFileSelect(event)" />
-          <label for="file-input"><span class="icon"><i class="fa-solid fa-upload"></span></i>Upload File</label>
+          <label for="file-input"><span class="icon"><i class="fa-solid fa-upload"></span></i>Upload File (without view)</label>
+          <div class="row">
+            <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" />
+            <label for="board-file-input"><span class="icon"><i class="fa-solid fa-file-import"></i></span>Import</label>
+            <button onclick="handleExportGame()"><span class="icon"><i class="fa-solid fa-file-export"></i></span>Export</button>
+          </div>
+          <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i class="fa-solid fa-image"></i></span>Export as PNG</button>
         </div>
         <div class="navbar-group">
           <div class="navbar-group-heading">Layouts Setting</div>
@@ -45,7 +51,9 @@
       .row {
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         gap: 10px;
+        width: 100%;
       }
 
       #cy {
@@ -62,7 +70,7 @@
         right: 0;
         top: 50%; /* Start at the middle of the page */
         transform: translateY(-50%) translateX(-40px); /* Move it up by half its own height */
-        width: 250px; /* Complementing the width of #cy */
+        width: 240px; /* Complementing the width of #cy */
         background-color: #333;
         padding: 1.5rem;
         box-sizing: border-box;
