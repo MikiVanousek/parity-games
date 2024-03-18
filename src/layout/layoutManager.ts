@@ -1,6 +1,7 @@
 import { colaLayout } from "./colaLayout";
 import { randomLayout } from "./randomLayout";
 import { gridLayout } from "./gridLayout";
+import { breadthfirstLayout } from "./breadthfirstLayout";
 
 class LayoutManager {
   private cy: cytoscape.Core;
@@ -9,8 +10,9 @@ class LayoutManager {
   private colaLayoutOptions: any = colaLayout;
   public layouts = {
     "Force directed": colaLayout,
-    "Random layout": randomLayout,
-    "Grid layout": gridLayout
+    "Grid layout": gridLayout,
+    "Breadth first": breadthfirstLayout,
+    "Random for fun": randomLayout,
   }
 
   constructor(cyInstance: any, defaultLayout?: string) {
