@@ -13,10 +13,10 @@
         <div class="navbar-group">
           <span id="file-name-display"></span>
           <input type="file" id="file-input" hidden onchange="handleFileSelect(event)" />
-          <label for="file-input"><span class="icon"><i class="fa-solid fa-upload"></span></i>Upload File (without view)</label>
+          <label class="button" for="file-input"><span class="icon"><i class="fa-solid fa-upload"></span></i>Upload File (without view)</label>
           <div class="row">
             <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" />
-            <label for="board-file-input"><span class="icon"><i class="fa-solid fa-file-import"></i></span>Import</label>
+            <label class="button" for="board-file-input"><span class="icon"><i class="fa-solid fa-file-import"></i></span>Import</label>
             <button onclick="handleExportGame()"><span class="icon"><i class="fa-solid fa-file-export"></i></span>Export</button>
           </div>
           <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i class="fa-solid fa-image"></i></span>Export as PNG</button>
@@ -24,12 +24,21 @@
         <div class="navbar-group">
           <div class="navbar-group-heading">Layouts Setting</div>
           <div class="row">
-            <select id="layout-select" onchange="changeLayout(event)">
+            <select class="button" id="layout-select" onchange="changeLayout(event)">
             </select>
             <button id="layout-run-button" onclick="runLayout()"><i class="fa-solid fa-play"></i></button>
           </div>
-          <button id="layout-toggle-button" onclick="toggleLayout()">Layout on drag - Off</button>
+          <div class="checkbox-wrapper">
+            <input id="layout-on-drag" type="checkbox" class="switch">
+            <label for="layout-on-drag">Layout on Drag</label>
+          </div>
+          <div class="checkbox-wrapper">
+            <input id="display-labels" type="checkbox" class="switch">
+            <label for="display-labels">Display labels</label>
+          </div>
+
         </div>
+      </div>
       </div>
       <script src="main.js"></script>
       <style>
@@ -41,7 +50,7 @@
         font-family: Arial, sans-serif;
         background-color: #1d1d1d;
         color: white;
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .icon {
@@ -103,19 +112,144 @@
         text-align: center;
       }
 
-      .navbar-group button, .navbar-group label {
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;  
+      }
+      
+      @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+        .checkbox-wrapper input[type=checkbox] {
+          --active: #808080;
+          --active-inner: #fff;
+          --focus: 2px rgba(39, 94, 254, .3);
+          --border: white;
+          --border-hover: white;
+          --background: #333;
+          --disabled: #1D1D1D;
+          --disabled-inner: #333;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          height: 15px;
+          outline: none;
+          display: inline-block;
+          vertical-align: top;
+          position: relative;
+          margin: 0;
+          cursor: pointer;
+          border: 1px solid var(--bc, var(--border));
+          background: var(--b, var(--background));
+          transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+        }
+        .checkbox-wrapper input[type=checkbox]:after {
+          content: "";
+          display: block;
+          left: 0;
+          top: 0;
+          position: absolute;
+          transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+        }
+        .checkbox-wrapper input[type=checkbox]:checked {
+          --b: var(--active);
+          --bc: var(--active);
+          --d-o: .3s;
+          --d-t: .6s;
+          --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
+        }
+        .checkbox-wrapper input[type=checkbox]:disabled {
+          --b: var(--disabled);
+          cursor: not-allowed;
+          opacity: 0.9;
+        }
+        .checkbox-wrapper input[type=checkbox]:disabled:checked {
+          --b: var(--disabled-inner);
+          --bc: var(--border);
+        }
+        .checkbox-wrapper input[type=checkbox]:disabled + label {
+          cursor: not-allowed;
+        }
+        .checkbox-wrapper input[type=checkbox]:hover:not(:checked):not(:disabled) {
+          --bc: var(--border-hover);
+        }
+        .checkbox-wrapper input[type=checkbox]:focus {
+          box-shadow: 0 0 0 var(--focus);
+        }
+        .checkbox-wrapper input[type=checkbox]:not(.switch) {
+          width: 21px;
+        }
+        .checkbox-wrapper input[type=checkbox]:not(.switch):after {
+          opacity: var(--o, 0);
+        }
+        .checkbox-wrapper input[type=checkbox]:not(.switch):checked {
+          --o: 1;
+        }
+        .checkbox-wrapper input[type=checkbox] + label {
+          display: inline-block;
+          vertical-align: middle;
+          cursor: pointer;
+          margin-left: 4px;
+        }
+
+        .checkbox-wrapper input[type=checkbox]:not(.switch) {
+          border-radius: 7px;
+        }
+        .checkbox-wrapper input[type=checkbox]:not(.switch):after {
+          width: 5px;
+          height: 9px;
+          border: 2px solid var(--active-inner);
+          border-top: 0;
+          border-left: 0;
+          left: 7px;
+          top: 4px;
+          transform: rotate(var(--r, 20deg));
+        }
+        .checkbox-wrapper input[type=checkbox]:not(.switch):checked {
+          --r: 43deg;
+        }
+        .checkbox-wrapper input[type=checkbox].switch {
+          width: 30px;
+          border-radius: 11px;
+        }
+        .checkbox-wrapper input[type=checkbox].switch:after {
+          left: 2px;
+          top: 2.1px;
+          border-radius: 50%;
+          width: 11px;
+          height: 11px;
+          background: var(--ab, var(--border));
+          transform: translateX(var(--x, 0));
+        }
+        .checkbox-wrapper input[type=checkbox].switch:checked {
+          --ab: var(--active-inner);
+          --x: 14px;
+        }
+        .checkbox-wrapper input[type=checkbox].switch:disabled:not(:checked):after {
+          opacity: 0.6;
+        }
+      }
+
+      .checkbox-wrapper * {
+        box-sizing: inherit;
+      }
+      .checkbox-wrapper *:before,
+      .checkbox-wrapper *:after {
+        box-sizing: inherit;
+      }
+
+      .navbar-group button, .navbar-group .button {
         text-align: center;
         background-color: #1d1d1d;
         border-radius: 10px;
         color: white;
-        padding: 0.7rem 1rem;
+        padding: 0.7rem 1.3rem;
         border: none;
         cursor: pointer;
         box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
         font-size: 12px;
       }
 
-      .navbar-group button:hover, .navbar-group label:hover {
+      .navbar-group button:hover, .navbar-group .button:hover {
         opacity: 0.7;
       }
 

@@ -64,12 +64,12 @@ let cy = cytoscape({
       style: {
         width: "25",
         height: "25",
-        content: "data(id)",
+        content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
         "font-size": "10px",
-      },
+        },
     },
     {
       selector: 'node[isEven = "true"]',
@@ -265,18 +265,27 @@ function updateGraphFileName(name: string) {
 
 (window as any).changeLayout = function(e: any) {
   layoutManager.changeLayout(e.target.value);
-  layoutManager.disableLayout(); 
-  updateLayoutButtonText();
+  // decheck the layout on layout-on-drag 
+  const toggle = document.getElementById('layout-on-drag') as HTMLInputElement;
+  toggle.checked = false;
+  layoutManager.toggleLayout(false);
 };
 
 (window as any).runLayout = function() {
   layoutManager.runOnce();
 };
 
-(window as any).toggleLayout = function() {
-  layoutManager.toggleLayout();
-  updateLayoutButtonText();
-};
+document.getElementById('layout-on-drag').addEventListener('change', function() {
+  layoutManager.toggleLayout((this as HTMLInputElement).checked);
+});
+
+document.getElementById('display-labels').addEventListener('change', function() {
+  const showLabels = (this as HTMLInputElement).checked;
+  cy.nodes().style({
+    'label': showLabels ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}` : '',
+    'text-wrap': 'wrap',
+  });
+});
 
 document.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;
