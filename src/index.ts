@@ -166,9 +166,8 @@ function resetBoardVisuals() {
 
 // this export the visuals and also the pg object
 (window as any).handleExportGame = function() {
-  const cyState = cy.json(true);
+  const cyState = cy.elements().jsons();
   const game = pg.exportToOink();
-  console.log(game);
 
   const exportData = {
     cytoscapeState: cyState,
@@ -199,15 +198,10 @@ function resetBoardVisuals() {
         const fileContent = loadEvent.target.result as string;
         const importedData = JSON.parse(fileContent);
 
-        // Filter out problematic style rules before applying state
-        if (importedData.cytoscapeState && importedData.cytoscapeState.style) {
-          importedData.cytoscapeState.style = importedData.cytoscapeState.style.filter(styleRule => {
-            // Exclude styles with "fn" values or specific selectors
-            return ![".edgebendediting-hasbendpoints", ".edgecontrolediting-hascontrolpoints", "#nwt_reconnectEdge_dummy"].includes(styleRule.selector);
-          });
-        }
-
-        cy.json(importedData.cytoscapeState);
+        // cy.json(importedData.cytoscapeState);
+        cy.elements().remove(); 
+        cy.add(importedData.cytoscapeState);
+        cy.fit(cy.elements(), 50);
 
         // Clear current PGGame state
 
