@@ -21,8 +21,8 @@ class LayoutManager {
     this.currentLayout = this.layouts[defaultLayout] || colaLayout
   }
 
-  public toggleLayout() {
-    this.isEnabled = !this.isEnabled;
+  public toggleLayout(bool: boolean) {
+    this.isEnabled = bool;
     if (this.isEnabled) {
       this.runLayout();
     }
@@ -40,16 +40,6 @@ class LayoutManager {
 
   public runOnce() {
     this.cy.layout(this.currentLayout).run();
-  }
-
-  // Method to enable the layout
-  public enableLayout() {
-    this.isEnabled = true;
-  }
-
-  // Method to disable the layout
-  public disableLayout() {
-    this.isEnabled = false;
   }
 }
 

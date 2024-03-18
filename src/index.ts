@@ -64,12 +64,12 @@ let cy = cytoscape({
       style: {
         width: "25",
         height: "25",
-        content: "data(id)",
+        content: "data(priority)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
         "font-size": "10px",
-      },
+        },
     },
     {
       selector: 'node[isEven = "true"]',
@@ -134,6 +134,15 @@ cy.add(pg.getElementDefinition());
 const layoutManager = new LayoutManager(cy, defaultLayout);
 layoutManager.runOnce();
 
+
+function resetSettings() {
+  const layoutOnDrag = document.getElementById('layout-on-drag') as HTMLInputElement;
+  const displayLabels = document.getElementById('display-labels') as HTMLInputElement;
+
+  layoutOnDrag.checked = false;
+  displayLabels.checked = false;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const layoutSelect = document.getElementById('layout-select') as HTMLSelectElement;
 
@@ -147,7 +156,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   layoutSelect.value = defaultLayout;
-  updateLayoutButtonText();
+  
+  resetSettings();
 });
 
 cy.on("afterDo", function (e, name) {
@@ -198,8 +208,8 @@ function resetBoardVisuals() {
         const fileContent = loadEvent.target.result as string;
         const importedData = JSON.parse(fileContent);
 
-        // cy.json(importedData.cytoscapeState);
         cy.elements().remove(); 
+        resetSettings();
         cy.add(importedData.cytoscapeState);
         cy.fit(cy.elements(), 50);
 
@@ -247,13 +257,6 @@ cy.on("drag", "node", function () {
   layoutManager.runLayout()
 });
 
-function updateLayoutButtonText() {
-  const buttonText = layoutManager.isEnabled
-    ? "Layout on drag - On"
-    : "Layout on drag - Off";
-  document.querySelector("#layout-toggle-button").textContent = buttonText;
-}
-
 function updateGraphFileName(name: string) {
   const fileNameDisplay = document.getElementById('file-name-display');
   if (fileNameDisplay) {
@@ -265,18 +268,27 @@ function updateGraphFileName(name: string) {
 
 (window as any).changeLayout = function(e: any) {
   layoutManager.changeLayout(e.target.value);
-  layoutManager.disableLayout(); 
-  updateLayoutButtonText();
+  // decheck the layout on layout-on-drag 
+  const toggle = document.getElementById('layout-on-drag') as HTMLInputElement;
+  toggle.checked = false;
+  layoutManager.toggleLayout(false);
 };
 
 (window as any).runLayout = function() {
   layoutManager.runOnce();
 };
 
-(window as any).toggleLayout = function() {
-  layoutManager.toggleLayout();
-  updateLayoutButtonText();
-};
+document.getElementById('layout-on-drag').addEventListener('change', function() {
+  layoutManager.toggleLayout((this as HTMLInputElement).checked);
+});
+
+document.getElementById('display-labels').addEventListener('change', function() {
+  const showLabels = (this as HTMLInputElement).checked;
+  cy.nodes().style({
+    'label': showLabels ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}` : '',
+    'text-wrap': 'wrap',
+  });
+});
 
 document.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;
