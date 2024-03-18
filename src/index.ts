@@ -134,6 +134,15 @@ cy.add(pg.getElementDefinition());
 const layoutManager = new LayoutManager(cy, defaultLayout);
 layoutManager.runOnce();
 
+
+function resetSettings() {
+  const layoutOnDrag = document.getElementById('layout-on-drag') as HTMLInputElement;
+  const displayLabels = document.getElementById('display-labels') as HTMLInputElement;
+
+  layoutOnDrag.checked = false;
+  displayLabels.checked = false;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const layoutSelect = document.getElementById('layout-select') as HTMLSelectElement;
 
@@ -147,7 +156,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   layoutSelect.value = defaultLayout;
-  updateLayoutButtonText();
+  
+  resetSettings();
 });
 
 cy.on("afterDo", function (e, name) {
@@ -198,8 +208,8 @@ function resetBoardVisuals() {
         const fileContent = loadEvent.target.result as string;
         const importedData = JSON.parse(fileContent);
 
-        // cy.json(importedData.cytoscapeState);
         cy.elements().remove(); 
+        resetSettings();
         cy.add(importedData.cytoscapeState);
         cy.fit(cy.elements(), 50);
 
@@ -246,13 +256,6 @@ function resetBoardVisuals() {
 cy.on("drag", "node", function () {
   layoutManager.runLayout()
 });
-
-function updateLayoutButtonText() {
-  const buttonText = layoutManager.isEnabled
-    ? "Layout on drag - On"
-    : "Layout on drag - Off";
-  document.querySelector("#layout-toggle-button").textContent = buttonText;
-}
 
 function updateGraphFileName(name: string) {
   const fileNameDisplay = document.getElementById('file-name-display');
