@@ -135,10 +135,6 @@ cy.add(pg.getElementDefinition());
 const layoutManager = new LayoutManager(cy);
 layoutManager.runColaLayout();
 
-cy.on("drag", "node", function () {
-  layoutManager.runLayout()
-});
-
 cy.on("afterDo", function (e, name) {
   console.log("afterDo", name);
 });
@@ -146,12 +142,6 @@ cy.on("afterDo", function (e, name) {
 let mouseX: number = 0;
 let mouseY: number = 0;
 
-function updateLayoutButtonText() {
-  const buttonText = layoutManager.isEnabled
-    ? "Layout - On"
-    : "Layout - Off";
-  document.querySelector("#cola-toggle-button").textContent = buttonText;
-}
 
 (window as any).handleFileSelect = function(event) {
   const file = event.target.files[0];
@@ -178,6 +168,17 @@ function updateLayoutButtonText() {
 };
 
 
+cy.on("drag", "node", function () {
+  layoutManager.runLayout()
+});
+
+function updateLayoutButtonText() {
+  const buttonText = layoutManager.isEnabled
+    ? "Layout on drag - On"
+    : "Layout on drag - Off";
+  document.querySelector("#layout-toggle-button").textContent = buttonText;
+}
+
 function updateBoardVisuals() {
   const elements = pg.getElementDefinition();
   cy.elements().remove(); // Clear the current graph
@@ -185,8 +186,17 @@ function updateBoardVisuals() {
   layoutManager.runColaLayout();
 }
 
+(window as any).changeLayout = function(e: any) {
+  layoutManager.changeLayout(e.target.value);
+  layoutManager.disableLayout(); 
+  updateLayoutButtonText();
+};
 
-(window as any).toggleColaLayout = function() {
+(window as any).runLayout = function() {
+  layoutManager.runOnce();
+};
+
+(window as any).toggleLayout = function() {
   layoutManager.toggleLayout();
   updateLayoutButtonText();
 };
