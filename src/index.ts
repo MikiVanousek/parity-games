@@ -64,7 +64,7 @@ let cy = cytoscape({
       style: {
         width: "25",
         height: "25",
-        content: "data(priority)",
+        content: "data(id)",
         "text-valign": "center",
         "text-halign": "center",
         color: "white",
@@ -157,14 +157,65 @@ cy.on("afterDo", function (e, name) {
 let mouseX: number = 0;
 let mouseY: number = 0;
 
+function updateBoardVisuals() {
+  const elements = pg.getElementDefinition();
+  cy.elements().remove(); // Clear the current graph
+  cy.add(elements); // Add the new elements
+  layoutManager.runOnce();
+}
+
+// this export the visuals and also the pg object
+(window as any).handleExportGame = function() {
+  const cyState = cy.json();
+  const game = pg.exportToOink();
+  console.log(game);
+
+  const exportData = {
+    cytoscapeState: cyState,
+    gameState: game
+  };
+
+  const exportString = JSON.stringify(exportData, null, 2);
+
+  const file = new Blob([exportString], { type: "application/json" });
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(file);
+  a.download = pg.name + ".json";
+  a.click();
+  document.body.removeChild(a);
+};
+
+
+(window as any).handleImportGame = function(event) {
+  const file = event.target.files[0];
+
+  if (file) {
+    const fileNameDisplay = document.getElementById('file-name-display');
+    if (fileNameDisplay) {
+      fileNameDisplay.textContent = "File: " + file.name;
+      fileNameDisplay.title = file.name;
+    }
+    
+    const reader = new FileReader();
+
+    reader.onload = function(loadEvent) {
+      const fileContent = loadEvent.target.result as string;
+      const game = JSON.parse(fileContent);
+      cy.json(game);
+    };
+
+    reader.readAsText(file);
+  }
+};
+
 (window as any).exportAsPng = function() {
   const png = cy.png({ full: true });
   const a = document.createElement("a");
   a.href = png;
-  a.download = "parity-game.png";
+  a.download = pg.name + ".png";
   a.click();
 };
-
 
 (window as any).handleFileSelect = function(event) {
   const file = event.target.files[0];
@@ -181,7 +232,7 @@ let mouseY: number = 0;
     reader.onload = function(loadEvent) {
       const fileContent = loadEvent.target.result as string;
       
-      pg.loadFromFile(fileContent);
+      pg.loadFromFile(fileContent, file.name);
       
       updateBoardVisuals();
     };
@@ -189,7 +240,6 @@ let mouseY: number = 0;
     reader.readAsText(file);
   }
 };
-
 
 cy.on("drag", "node", function () {
   layoutManager.runLayout()
@@ -202,12 +252,6 @@ function updateLayoutButtonText() {
   document.querySelector("#layout-toggle-button").textContent = buttonText;
 }
 
-function updateBoardVisuals() {
-  const elements = pg.getElementDefinition();
-  cy.elements().remove(); // Clear the current graph
-  cy.add(elements); // Add the new elements
-  layoutManager.runOnce();
-}
 
 (window as any).changeLayout = function(e: any) {
   layoutManager.changeLayout(e.target.value);
