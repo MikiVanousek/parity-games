@@ -1,6 +1,6 @@
 import { PG } from "./board/PGBoard";
 import { Player } from "./board/Node";
-import LayoutManager from "./layoutManager";
+import LayoutManager from "./layout/layoutManager";
 
 declare global {
   interface Window {
@@ -135,10 +135,6 @@ cy.add(pg.getElementDefinition());
 const layoutManager = new LayoutManager(cy);
 layoutManager.runColaLayout();
 
-cy.on("drag", "node", function () {
-  layoutManager.runLayout()
-});
-
 cy.on("afterDo", function (e, name) {
   console.log("afterDo", name);
 });
@@ -146,12 +142,6 @@ cy.on("afterDo", function (e, name) {
 let mouseX: number = 0;
 let mouseY: number = 0;
 
-function updateLayoutButtonText() {
-  const buttonText = layoutManager.isEnabled
-    ? "Force Directed - On"
-    : "Force Directed - Off";
-  document.querySelector("#cola-toggle-button").textContent = buttonText;
-}
 
 (window as any).handleFileSelect = function(event) {
   const file = event.target.files[0];
@@ -178,6 +168,17 @@ function updateLayoutButtonText() {
 };
 
 
+cy.on("drag", "node", function () {
+  layoutManager.runLayout()
+});
+
+function updateLayoutButtonText() {
+  const buttonText = layoutManager.isEnabled
+    ? "Layout on drag - On"
+    : "Layout on drag - Off";
+  document.querySelector("#layout-toggle-button").textContent = buttonText;
+}
+
 function updateBoardVisuals() {
   const elements = pg.getElementDefinition();
   cy.elements().remove(); // Clear the current graph
@@ -185,8 +186,17 @@ function updateBoardVisuals() {
   layoutManager.runColaLayout();
 }
 
+(window as any).changeLayout = function(e: any) {
+  layoutManager.changeLayout(e.target.value);
+  layoutManager.disableLayout(); 
+  updateLayoutButtonText();
+};
 
-(window as any).toggleColaLayout = function() {
+(window as any).runLayout = function() {
+  layoutManager.runOnce();
+};
+
+(window as any).toggleLayout = function() {
   layoutManager.toggleLayout();
   updateLayoutButtonText();
 };
@@ -394,6 +404,33 @@ cyContainer.addEventListener(
   },
   true
 );
+
+// Right click context menu
+cy.on("cxttap", "node", (event) => {
+  const node = event.target;
+
+  // Prevent context menu from showing when shift+cmd is pressed
+  const isShiftCmdPressed =
+    event.originalEvent.shiftKey && event.originalEvent.metaKey;
+  if (isShiftCmdPressed) return;
+
+  event.preventDefault();
+
+  const contextMenu = document.getElementById("context-menu");
+  if (contextMenu) {
+    contextMenu.style.display = "block";
+    contextMenu.style.left = event.originalEvent.clientX + "px";
+    contextMenu.style.top = event.originalEvent.clientY + "px";
+  }
+
+  const deleteButton = document.getElementById("delete-button");
+  if (deleteButton) {
+    deleteButton.onclick = () => {
+      ur.do("remove", node);
+      contextMenu.style.display = "none";
+    };
+  }
+});
 
 cy.on("add", "node, edge", function (event) {
   // update PG Board 
