@@ -1,6 +1,7 @@
 import { Player } from '../src/board/Node';
 import { PGParser } from '../src/board/pg_parser'
 import * as fs from 'fs';
+import { Trace, TraceStep, NodeSet, LinkSet } from '../src/board/Trace'
 
 let PG_DIR = 'test/pg_examples/'
 
@@ -19,7 +20,6 @@ test('basic .pg parsing test', () => {
     expect(pg.nodes[5].priority).toBe(3)
 
     let exp_str = PGParser.export_pg_format(pg)
-    console.log(exp_str)
     // The file in question does not end in an empty line.
     expect(exp_str).toBe(filestr)
 })
@@ -31,4 +31,42 @@ test.skip('elaborate .pg parsing test', () => {
         let pg = PGParser.import_pg_format(file_string)
         expect(PGParser.export_pg_format(pg)).toBe(file_string)
     }
+})
+test('trace test', () => {
+    let t = new Trace({
+        parity_game: PGParser.import_pg_format(fs.readFileSync('test/pg_examples/ex1.pg').toString()),
+        algorithm_name: "Zmrd",
+        steps: [
+            new TraceStep({
+                node_sets: [
+                    new NodeSet({
+                        name: "current",
+                        node_ids: [0, 1]
+                    }),
+
+                    new NodeSet({
+                        name: "next",
+                        node_ids: [2, 3]
+                    })
+                ],
+                link_sets: [
+                    new LinkSet({
+                        name: "pretty",
+                        link_source_target_ids: [[1, 2], [3, 4]]
+                    }),
+                    new LinkSet({
+                        name: "ugly",
+                        link_source_target_ids: [[0, 5]]
+                    })
+                ],
+                node_labels: {}
+            })
+        ]
+
+    });
+    const write_string = JSON.stringify(t);
+    fs.writeFileSync('trace.json', write_string, 'utf8')
+    const read_string = fs.readFileSync('trace.json', 'utf8')
+    const o = JSON.parse(read_string)
+    const res = new Trace(o)
 })
