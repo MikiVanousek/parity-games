@@ -32,7 +32,7 @@ test.skip('elaborate .pg parsing test', () => {
         expect(PGParser.export_pg_format(pg)).toBe(file_string)
     }
 })
-test('trace test', () => {
+test('read write trace', () => {
     let t = new Trace({
         parity_game: PGParser.import_pg_format(fs.readFileSync('test/pg_examples/ex1.pg').toString()),
         algorithm_name: "Zmrd",

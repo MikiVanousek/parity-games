@@ -2,18 +2,18 @@ import { Node, Player } from './Node'
 import { Link } from './Link'
 
 export module PG {
-    export class ParityGame {
-      nodes: Node[] = [];
-      adjList: Map<Node, Set<Node>> = new Map();
-      links: Link[] = [];
-      name: string = "Parity Game";
-      maxNodeId: number = 0;
-  
-      emptyBoard() {
-        this.nodes = [];
-        this.links = [];
-        this.adjList = new Map();
-        this.maxNodeId = -1;
+  export class ParityGame {
+    nodes: Node[] = [];
+    adjList: Map<Node, Set<Node>> = new Map();
+    links: Link[] = [];
+    name: string = "Parity Game";
+    maxNodeId: number = 0;
+
+    emptyBoard() {
+      this.nodes = [];
+      this.links = [];
+      this.adjList = new Map();
+      this.maxNodeId = -1;
     }
 
     loadFromFile(fileContent: string, filename?: string): void {
@@ -65,11 +65,10 @@ export module PG {
 
       // Write nodes in format 0 0 1 2,3 "0"; node player 0 or 1 
       this.nodes.forEach((node) => {
-        fileContent += `${node.id} ${node.priority} ${
-        node.player === Player.Even ? "0" : "1"
-        } ${[...this.adjList.get(node) || []]
-        .map((n) => n.id)
-        .join(",")} "${node.label}";\n`;
+        fileContent += `${node.id} ${node.priority} ${node.player === Player.Even ? "0" : "1"
+          } ${[...this.adjList.get(node) || []]
+            .map((n) => n.id)
+            .join(",")} "${node.label}";\n`;
       });
 
       return fileContent;
