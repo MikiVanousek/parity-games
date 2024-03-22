@@ -8,6 +8,11 @@
     </head>
     <body>
       <div id="cy"></div>
+      <div id="custom-context-menu" class="custom-context-menu">
+        <ul>
+          <li id="edit-priority">Edit Priority</li>
+        </ul>
+      </div>
       <div class="navbar">
         <div class="navbar-heading">Parity Game</div>
         <div class="navbar-group">
@@ -272,6 +277,32 @@
         font-size: 12px;
         cursor: pointer;
       }
+
+    .custom-context-menu {
+    position: absolute;
+    z-index: 1000;
+    width: 200px;
+    background: rgb(38, 38, 38);
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    display: none;
+  }
+
+  .custom-context-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .custom-context-menu ul li {
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .custom-context-menu ul li:hover {
+    background-color: #584d4d;
+  }
       </style>
     </body>
   </html>
