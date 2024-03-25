@@ -6,35 +6,33 @@ import { example_pg } from './board/ExamplePG';
 
 import { Trace } from './board/Trace';
 import { showToast } from './toast';
+import { assert } from './assert';
 
 const fileInput = document.getElementById('fileInput');
 
-function triggerFileInput() {
-  fileInput.click();
-}
-
 function handleFileSelect(event) {
   const files = event.target.files;
-  if (files.length > 0) {
-    const file = files[0];
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const fileContent = e.target.result;
+  assert(files.length === 1, "Only one file can be imported at a time.")
+  const file = files[0];
+  const reader = new FileReader();
+  console.log("e")
+  reader.onload = function (e) {
+    const fileContent = e.target.result;
 
-      try {
-        var trace = new Trace(JSON.parse(fileContent.toString()))
-        console.log(trace);
-      } catch (error) {
-        showToast({
-          message: "This file is not a valid trace file.",
-          variant: "danger" // "danger" | "warning" | "info"
-        });
-        console.error("Error importing trace:", error);
-        return
-      };
+    try {
+      var trace = new Trace(JSON.parse(fileContent.toString()))
       console.log(trace);
-    }
+    } catch (error) {
+      showToast({
+        message: "This file is not a valid trace file.",
+        variant: "danger" // "danger" | "warning" | "info"
+      });
+      console.error("Error importing trace:", error);
+      return
+    };
+    console.log(trace);
   }
+  reader.readAsText(file)
 }
 
 
