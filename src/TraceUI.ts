@@ -1,7 +1,7 @@
 import { Trace } from './board/Trace';
+import { showToast } from './toast';
 
 export function setupTraceUI() {
-  console.log("Hello from TraceUI!");
   const fileInput = document.getElementById('fileInput');
 
   function triggerFileInput() {
@@ -15,6 +15,10 @@ export function setupTraceUI() {
       const reader = new FileReader();
       reader.onload = function (e) {
         const fileContent = e.target.result;
+        showToast({
+          message: "Toasting up!",
+          variant: "success" // "danger" | "warning" | "info"
+        });
         var trace = new Trace(JSON.parse(fileContent.toString()))
         console.log(trace);
       };
@@ -25,23 +29,5 @@ export function setupTraceUI() {
 
   fileInput.addEventListener('change', handleFileSelect);
 
-  function toggleSpeedDropdown(event) {
-    document.getElementById("speedDropdown").style.display = 'block';
-    event.stopPropagation(); // Prevent the click from being immediately caught by document
-  }
 
-  // Function to set speed and hide dropdown
-  function setSpeed(speed) {
-    console.log("Speed set to:", speed);
-    // Implement speed change logic here
-    document.getElementById("speedDropdown").style.display = 'none';
-  }
-
-  // Clicking outside the dropdown hides it
-  document.addEventListener('click', function (event) {
-    var speedDropdown = document.getElementById("speedDropdown");
-    if (speedDropdown.style.display === 'block') {
-      speedDropdown.style.display = 'none';
-    }
-  });
 }

@@ -1,11 +1,11 @@
 import { Trace, TraceStep, NodeSet, LinkSet } from "../src/board/Trace";
-import { pg as parity_example } from "../src/board/ExamplePG";
+import { example_pg } from "../src/board/ExamplePG";
 import * as fs from 'fs';
 import { ParityGame } from "../src/board/ParityGame";
 
 const dir = 'test/'
 const trace_example = new Trace({
-    parity_game: parity_example,
+    parity_game: example_pg,
     algorithm_name: "Zmrd",
     steps: [
         new TraceStep({
@@ -39,12 +39,12 @@ const trace_example = new Trace({
 test('read write parity', () => {
     const file_name = dir + 'parity.json'
 
-    const write_string = JSON.stringify(parity_example);
+    const write_string = JSON.stringify(example_pg);
     fs.writeFileSync(file_name, write_string, 'utf8')
     const read_string = fs.readFileSync(file_name, 'utf8')
     const o = JSON.parse(read_string)
     const res = new ParityGame(o)
-    expect(res).toEqual(parity_example)
+    expect(res).toEqual(example_pg)
 });
 
 test('read write trace', () => {
@@ -60,6 +60,9 @@ test('read write trace', () => {
     expect(res).toEqual(trace_example)
 })
 
+test('read write trace step', () => {
+    new Trace({})
+});
 
 
 
