@@ -12,7 +12,7 @@ export module PG {
     @JSONObject.required
     private next_node_id: number;
     @JSONObject.required
-    links: Link[];
+    private links: Link[];
 
     // This is not serialized
     @JSONObject.custom((pg: ParityGame, key: string, value: number) => {
@@ -25,15 +25,15 @@ export module PG {
     })
     adjList: Map<Node, Set<Node>>;
 
-    static emptyBoard(): ParityGame {
 
-      return new ParityGame({ nodes: [], adjList: new Map<Node, Set<Node>>(), links: [], name: "New Parity Game", next_node_id: 0 });
+    static emptyBoard(): ParityGame {
+      return new ParityGame({ nodes: [], links: [], name: "New Parity Game", next_node_id: 0, adjList: new Map<Node, Set<Node>>() });
     }
 
     addLinkFromNodes(source: Node, target: Node): void {
       assert(this.nodes.findIndex((e) => e === source) >= 0);
       assert(this.nodes.findIndex((e) => e === target) >= 0);
-      this.addLink(new Link({ source_id: source.id, target_id: target.id }));
+      this.addLink(Link.new(source.id, target.id));
     }
 
     addLink(link: Link): void {
@@ -43,7 +43,7 @@ export module PG {
       s.add(this.find_node_by_id(link.target_id));
     }
 
-    addNode(
+    addNodeWith(
       priority: number,
       player: Player,
       id?: number,
@@ -61,11 +61,14 @@ export module PG {
       if (degree !== undefined) {
         node.setDegree(degree);
       }
+      return this.addNode(node);
+    }
+    addNode(node: Node): number {
       this.nodes.push(node);
       this.adjList.set(node, new Set());
 
       // Update the maxNodeId to reflect the newly added node's ID
-      this.next_node_id = Math.max(this.next_node_id, id);
+      this.next_node_id = Math.max(this.next_node_id, node.id);
 
       return node.id;
     }
@@ -131,40 +134,5 @@ export module PG {
       assert(res);
       return res;
     }
-  }
-
-  export class DNode extends Node {
-    x: number;
-    y: number;
-  }
-
-  export class DLink extends Link {
-    x: number;
-    y: number;
-  }
-
-  export class PGDBoard {
-    nodes: DNode[] = [];
-    links: DLink[] = [];
-
-    constructor(pg: ParityGame) {
-      throw new Error("Not implemented!");
-    }
-  }
-
-  export class TraceStep {
-    node_sets: NodeSet[] = [];
-    link_sets: LinkSet[] = [];
-    node_labels: { [key: number]: string } = {};
-  }
-
-  export class NodeSet {
-    name: string;
-    node_ids: number[];
-  }
-
-  export class LinkSet {
-    name: string;
-    link_source_target_ids: [number, number][];
   }
 }

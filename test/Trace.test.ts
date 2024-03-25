@@ -5,9 +5,9 @@ import * as fs from 'fs';
 
 const dir = 'test/'
 const parity_example = PG.ParityGame.emptyBoard()
-parity_example.addNode(0, 0)
-parity_example.addNode(3, 1)
-parity_example.addNode(5, 0)
+parity_example.addNodeWith(0, 0)
+parity_example.addNodeWith(3, 1)
+parity_example.addNodeWith(5, 0)
 
 parity_example.addLinkFromNodes(parity_example.nodes[0], parity_example.nodes[1]);
 parity_example.addLinkFromNodes(parity_example.nodes[1], parity_example.nodes[0]);

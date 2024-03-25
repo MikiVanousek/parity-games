@@ -25,16 +25,16 @@ edgeEditing(cytoscape, jquery, konva);
 cytoscape.use(cola);
 
 let pg = new PG.ParityGame();
-pg.addNode(1, Player.Even);
-pg.addNode(8, Player.Odd);
-pg.addNode(9, Player.Even);
-pg.addNode(5, Player.Odd);
-pg.addNode(7, Player.Even);
-pg.addNode(3, Player.Odd);
-pg.addNode(6, Player.Even);
-pg.addNode(4, Player.Odd);
-pg.addNode(0, Player.Even);
-pg.addNode(2, Player.Odd);
+pg.addNodeWith(1, Player.Even);
+pg.addNodeWith(8, Player.Odd);
+pg.addNodeWith(9, Player.Even);
+pg.addNodeWith(5, Player.Odd);
+pg.addNodeWith(7, Player.Even);
+pg.addNodeWith(3, Player.Odd);
+pg.addNodeWith(6, Player.Even);
+pg.addNodeWith(4, Player.Odd);
+pg.addNodeWith(0, Player.Even);
+pg.addNodeWith(2, Player.Odd);
 // pg.addNode(10, Player.Even);
 
 // Adding links between nodes
@@ -69,7 +69,7 @@ let cy = cytoscape({
         "text-halign": "center",
         color: "white",
         "font-size": "10px",
-        },
+      },
     },
     {
       selector: 'node[isEven = "true"]',
@@ -151,12 +151,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (layoutManager.layouts.hasOwnProperty(layoutName)) {
       const option = document.createElement('option');
       option.value = layoutName;
-      option.textContent = layoutName; 
+      option.textContent = layoutName;
       layoutSelect.appendChild(option);
     }
   }
   layoutSelect.value = defaultLayout;
-  
+
   resetSettings();
 });
 
@@ -175,7 +175,7 @@ function resetBoardVisuals() {
 }
 
 // this export the visuals and also the pg object
-(window as any).handleExportGame = function() {
+(window as any).handleExportGame = function () {
   const cyState = cy.elements().jsons();
   const game = pg.exportToOink();
 
@@ -195,20 +195,20 @@ function resetBoardVisuals() {
 };
 
 
-(window as any).handleImportGame = function(event) {
+(window as any).handleImportGame = function (event) {
   const file = event.target.files[0];
 
   if (file) {
     updateGraphFileName(file.name);
-    
+
     const reader = new FileReader();
 
-    reader.onload = function(loadEvent) {
+    reader.onload = function (loadEvent) {
       try {
         const fileContent = loadEvent.target.result as string;
         const importedData = JSON.parse(fileContent);
 
-        cy.elements().remove(); 
+        cy.elements().remove();
         resetSettings();
         cy.add(importedData.cytoscapeState);
         cy.fit(cy.elements(), 50);
@@ -225,7 +225,7 @@ function resetBoardVisuals() {
   }
 };
 
-(window as any).exportAsPng = function() {
+(window as any).exportAsPng = function () {
   const png = cy.png({ full: true });
   const a = document.createElement("a");
   a.href = png;
@@ -233,7 +233,7 @@ function resetBoardVisuals() {
   a.click();
 };
 
-(window as any).handleFileSelect = function(event) {
+(window as any).handleFileSelect = function (event) {
   const file = event.target.files[0];
 
   if (file) {
@@ -241,7 +241,7 @@ function resetBoardVisuals() {
 
     const reader = new FileReader();
 
-    reader.onload = function(loadEvent) {
+    reader.onload = function (loadEvent) {
       const fileContent = loadEvent.target.result as string;
 
       pg.loadFromFile(fileContent, file.name);
@@ -266,7 +266,7 @@ function updateGraphFileName(name: string) {
 }
 
 
-(window as any).changeLayout = function(e: any) {
+(window as any).changeLayout = function (e: any) {
   layoutManager.changeLayout(e.target.value);
   // decheck the layout on layout-on-drag 
   const toggle = document.getElementById('layout-on-drag') as HTMLInputElement;
@@ -274,15 +274,15 @@ function updateGraphFileName(name: string) {
   layoutManager.toggleLayout(false);
 };
 
-(window as any).runLayout = function() {
+(window as any).runLayout = function () {
   layoutManager.runOnce();
 };
 
-document.getElementById('layout-on-drag').addEventListener('change', function() {
+document.getElementById('layout-on-drag').addEventListener('change', function () {
   layoutManager.toggleLayout((this as HTMLInputElement).checked);
 });
 
-document.getElementById('display-labels').addEventListener('change', function() {
+document.getElementById('display-labels').addEventListener('change', function () {
   const showLabels = (this as HTMLInputElement).checked;
   cy.nodes().style({
     'label': showLabels ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}` : '',
@@ -409,8 +409,8 @@ function pasteCopiedElements() {
         newElements.push(ele);
       } else if (
         ele.group === "edges" &&
-          oldid_newid.hasOwnProperty(ele.data.source) &&
-          oldid_newid.hasOwnProperty(ele.data.target)
+        oldid_newid.hasOwnProperty(ele.data.source) &&
+        oldid_newid.hasOwnProperty(ele.data.target)
       ) {
         // Adjust source and target for edges to point to the new copied node IDs
         ele.data.id = undefined; // Modify the ID to ensure uniqueness
@@ -464,7 +464,7 @@ cy.on("click", "node", (event) => {
     const existingEdge = cy.edges().some((edge) => {
       return (
         edge.data("source") === selectedNode.id() &&
-          edge.data("target") === node.id()
+        edge.data("target") === node.id()
       );
     });
     if (!existingEdge) {

@@ -17,6 +17,9 @@ export class Node extends JSONObject {
   @JSONObject.optional(0)
   priority: number;
 
+  static new(id: number, priority: number, player: Player, label: string): Node {
+    return new Node({ id: id, player: player, priority: priority, label: label });
+  }
   setDegree(degree: number) {
     this.degree = degree;
   }

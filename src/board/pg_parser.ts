@@ -5,7 +5,7 @@ import { Node, Player } from "./Node";
 import { Link } from "./Link";
 
 export module PGParser {
-  // Broken if vertex label includes spac
+  // TODO Remove optional PG argument
   export function import_pg_format(
     file: string,
     pg?: PG.ParityGame
@@ -15,6 +15,9 @@ export module PGParser {
     if (pg === undefined) {
       pg = PG.ParityGame.emptyBoard();
     }
+
+    // assert(lines[0] === `parity ${pg.nodes.length};`);
+    assert(lines[0].startsWith('parity '));
 
     let arc_id_pairs: [number, number][] = [];
     for (let l of lines.slice(1)) {
@@ -42,20 +45,17 @@ export module PGParser {
         arc_id_pairs.push([id, t]);
       }
 
-      let n = new Node({ priority, id, player, node_label });
-      pg.nodes.push(n);
+      let n = Node.new(id, priority, player, node_label);
+      pg.addNode(n);
     }
     for (let [s, t] of arc_id_pairs) {
-      let sourceNode = pg.nodes.find((node) => node.id === s);
-      let targetNode = pg.nodes.find((node) => node.id === t);
-      assert(sourceNode !== undefined);
-      assert(targetNode !== undefined);
-      if (sourceNode && targetNode) {
-        pg.addLink(new Link(sourceNode, targetNode));
+      let source_id = pg.find_node_by_id(s);
+      let target_id = pg.find_node_by_id(t)
+      if (source_id && target_id) {
+        pg.addLink(Link.new(source_id.id, target_id.id));
       }
     }
 
-    assert(lines[0] === `parity ${pg.nodes.length};`);
     return pg;
   }
 
