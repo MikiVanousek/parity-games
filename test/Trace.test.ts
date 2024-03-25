@@ -1,10 +1,10 @@
-import { PG } from "../src/board/PGBoard";
+import { ParityGame } from "../src/board/trash";
 import { Trace, TraceStep, NodeSet, LinkSet } from "../src/board/Trace";
-import { PGParser } from "../src/board/pg_parser";
+import { PGParser } from "../src/board/PGParser";
 import * as fs from 'fs';
 
 const dir = 'test/'
-const parity_example = PG.ParityGame.emptyBoard()
+const parity_example = ParityGame.emptyBoard()
 parity_example.addNodeWith(0, 0)
 parity_example.addNodeWith(3, 1)
 parity_example.addNodeWith(5, 0)
@@ -51,7 +51,7 @@ test('read write parity', () => {
     fs.writeFileSync(file_name, write_string, 'utf8')
     const read_string = fs.readFileSync(file_name, 'utf8')
     const o = JSON.parse(read_string)
-    const res = new PG.ParityGame(o)
+    const res = new ParityGame(o)
     expect(res).toEqual(parity_example)
 });
 

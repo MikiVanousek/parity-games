@@ -1,4 +1,4 @@
-import { PG } from "./board/PGBoard";
+import { ParityGame } from './board/ParityGame';
 import { Player } from "./board/Node";
 import LayoutManager from "./layout/layoutManager";
 
@@ -24,7 +24,7 @@ contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
 cytoscape.use(cola);
 
-let pg = new PG.ParityGame();
+let pg = new ParityGame();
 pg.addNodeWith(1, Player.Even);
 pg.addNodeWith(8, Player.Odd);
 pg.addNodeWith(9, Player.Even);

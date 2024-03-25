@@ -1,5 +1,5 @@
 import { Player } from '../src/board/Node';
-import { PGParser } from '../src/board/pg_parser'
+import { PGParser } from '../src/board/PGParser'
 import * as fs from 'fs';
 
 let PG_DIR = 'test/pg_examples/'

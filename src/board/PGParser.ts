@@ -1,6 +1,6 @@
 var assert = require("assert");
 
-import { PG } from "./PGBoard";
+import { ParityGame } from './ParityGame';
 import { Node, Player } from "./Node";
 import { Link } from "./Link";
 
@@ -8,12 +8,12 @@ export module PGParser {
   // TODO Remove optional PG argument
   export function import_pg_format(
     file: string,
-    pg?: PG.ParityGame
-  ): PG.ParityGame {
+    pg?: ParityGame
+  ): ParityGame {
     // create a list of lines
     var lines = file.split("\n");
     if (pg === undefined) {
-      pg = PG.ParityGame.emptyBoard();
+      pg = ParityGame.emptyBoard();
     }
 
     // assert(lines[0] === `parity ${pg.nodes.length};`);
@@ -59,7 +59,7 @@ export module PGParser {
     return pg;
   }
 
-  export function export_pg_format(pg: PG.ParityGame): string {
+  export function export_pg_format(pg: ParityGame): string {
     var res = `parity ${pg.nodes.length};\n`;
     for (let n of pg.nodes) {
       let arc_str = pg

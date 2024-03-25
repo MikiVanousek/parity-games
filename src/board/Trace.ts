@@ -1,9 +1,9 @@
-import { PG } from './PGBoard'
+import { ParityGame } from './ParityGame';
 import { JSONObject } from 'ts-json-object'
 
 export class Trace extends JSONObject {
     @JSONObject.required
-    parity_game: PG.ParityGame;
+    parity_game: ParityGame;
     @JSONObject.required
     algorithm_name: string;
     @JSONObject.required
