@@ -1,7 +1,7 @@
 import { ParityGame } from './ParityGame';
 import { Node, Player } from "./Node";
 import { Link } from "./Link";
-import '../assert'
+import { assert } from '../assert';
 
 export module PGParser {
   // TODO Remove optional PG argument

@@ -1,7 +1,7 @@
 import { Node, Player } from './Node';
 import { Link } from './Link';
 import { JSONObject } from 'ts-json-object';
-import '../assert'
+import { assert } from '../assert';
 
 export class ParityGame extends JSONObject {
   @JSONObject.required
@@ -30,7 +30,8 @@ export class ParityGame extends JSONObject {
   }
 
   addLinkFromNodes(source: Node, target: Node): void {
-    assert(this.nodes.findIndex((e) => e === source) >= 0);
+    assert(this.nodes.findIndex((e) => e.id == source.id) >= 0);
+    assert(this.nodes.findIndex((e) => e.id == target.id) >= 0);
     assert(this.nodes.findIndex((e) => e === target) >= 0);
     this.addLink(Link.new(source.id, target.id));
   }
@@ -51,12 +52,13 @@ export class ParityGame extends JSONObject {
   ): number {
     if (id === undefined || id <= this.next_node_id) {
       // If no ID is provided or the provided ID is not higher than the current max
-      id = this.next_node_id + 1; // Assign the next available ID
+      id = this.next_node_id; // Assign the next available ID
+      this.next_node_id += 1
     } else {
       this.next_node_id = id; // Update maxNodeId if the provided ID is higher
     }
 
-    const node = new Node({ priority: priority, id: id, player: player, label: label });
+    const node = Node.new(id, priority, player, label);
     if (degree !== undefined) {
       node.setDegree(degree);
     }

@@ -25,7 +25,7 @@ contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
 cytoscape.use(cola);
 
-let pg = new ParityGame();
+let pg = ParityGame.emptyBoard();
 pg.addNodeWith(1, Player.Even);
 pg.addNodeWith(8, Player.Odd);
 pg.addNodeWith(9, Player.Even);
