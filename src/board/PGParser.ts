@@ -1,17 +1,16 @@
-var assert = require("assert");
-
 import { ParityGame } from './ParityGame';
 import { Node, Player } from "./Node";
 import { Link } from "./Link";
+import '../assert'
 
 export module PGParser {
   // TODO Remove optional PG argument
   export function import_pg_format(
-    file: string,
+    file_content: string,
     pg?: ParityGame
   ): ParityGame {
     // create a list of lines
-    var lines = file.split("\n");
+    var lines = file_content.split("\n");
     if (pg === undefined) {
       pg = ParityGame.emptyBoard();
     }

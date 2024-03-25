@@ -1,6 +1,7 @@
 import { ParityGame } from './board/ParityGame';
 import { Player } from "./board/Node";
 import LayoutManager from "./layout/layoutManager";
+import { PGParser } from './board/PGParser';
 
 declare global {
   interface Window {
@@ -177,7 +178,7 @@ function resetBoardVisuals() {
 // this export the visuals and also the pg object
 (window as any).handleExportGame = function () {
   const cyState = cy.elements().jsons();
-  const game = pg.exportToOink();
+  const game = PGParser.export_pg_format(pg);
 
   const exportData = {
     cytoscapeState: cyState,
@@ -215,7 +216,8 @@ function resetBoardVisuals() {
 
         // remove just the .json part
         var fileName = file.name.replace(/\.[^/.]+$/, "");
-        pg.loadFromFile(importedData.gameState, fileName);
+        // pg.loadFromFile(importedData.gameState, fileName);
+        cy.pg = PGParser.import_pg_format(importedData.gameState);
       } catch (error) {
         console.error("Error importing game:", error);
       }
@@ -244,8 +246,7 @@ function resetBoardVisuals() {
     reader.onload = function (loadEvent) {
       const fileContent = loadEvent.target.result as string;
 
-      pg.loadFromFile(fileContent, file.name);
-
+      pg = PGParser.import_pg_format(fileContent);
       resetBoardVisuals();
     };
 

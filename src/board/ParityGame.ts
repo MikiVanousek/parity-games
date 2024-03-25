@@ -1,7 +1,7 @@
-var assert = require("assert");
 import { Node, Player } from './Node';
 import { Link } from './Link';
 import { JSONObject } from 'ts-json-object';
+import '../assert'
 
 export class ParityGame extends JSONObject {
   @JSONObject.required
@@ -134,7 +134,13 @@ export class ParityGame extends JSONObject {
 
   find_node_by_id(id: number): Node {
     let res = this.nodes.find((n) => n.id === id);
-    assert(res);
+    assert(res !== undefined);
     return res;
+  }
+
+  getElementDefinition() {
+    const nodes = this.nodes.map((node) => node.getElementDefinition());
+    const links = this.links.map((link) => link.getElementDefinition());
+    return [...nodes, ...links];
   }
 }
