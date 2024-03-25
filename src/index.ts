@@ -131,26 +131,59 @@ let ur = cy.undoRedo({
   isDebug: true,
 });
 
+ur.action(
+  "editPriority",
+  (args) => {
+    let nodes = args.nodes;
+    let priority = args.priority;
+    // The do action: updating the priority
+    console.log(nodes);
+    console.log(priority);
+    let oldPriorities = nodes.map((node) => {
+      return { node: node, priority: node.data("priority") };
+    });
+    nodes.forEach(function (n) {
+      n.data("priority", priority);
+    });
+    return { nodes: nodes, oldPriorities: oldPriorities };
+  },
+  (args) => {
+    // The undo action: reverting to the old priorities
+    let oldPriorities = args.oldPriorities;
+    let newArgs = {
+      nodes: args.nodes,
+      priority: oldPriorities[0].node.data("priority"),
+    };
+    oldPriorities.forEach((item) => item.node.data("priority", item.priority));
+    return newArgs;
+  }
+);
+
 cy.add(pg.getElementDefinition());
 const layoutManager = new LayoutManager(cy, defaultLayout);
 layoutManager.runOnce();
 
-
 function resetSettings() {
-  const layoutOnDrag = document.getElementById('layout-on-drag') as HTMLInputElement;
-  const displayLabels = document.getElementById('display-labels') as HTMLInputElement;
+  const layoutOnDrag = document.getElementById(
+    "layout-on-drag"
+  ) as HTMLInputElement;
+  const displayLabels = document.getElementById(
+    "display-labels"
+  ) as HTMLInputElement;
 
   layoutOnDrag.checked = false;
   displayLabels.checked = false;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const layoutSelect = document.getElementById('layout-select') as HTMLSelectElement;
+  const layoutSelect = document.getElementById(
+    "layout-select"
+  ) as HTMLSelectElement;
 
   // Dynamically populate the layout select dropdown
   for (const layoutName in layoutManager.layouts) {
     if (layoutManager.layouts.hasOwnProperty(layoutName)) {
-      const option = document.createElement('option');
+      const option = document.createElement("option");
       option.value = layoutName;
       option.textContent = layoutName;
       layoutSelect.appendChild(option);
@@ -182,7 +215,7 @@ function resetBoardVisuals() {
 
   const exportData = {
     cytoscapeState: cyState,
-    gameState: game
+    gameState: game,
   };
 
   const exportString = JSON.stringify(exportData, null, 2);
@@ -255,11 +288,11 @@ function resetBoardVisuals() {
 };
 
 cy.on("drag", "node", function () {
-  layoutManager.runLayout()
+  layoutManager.runLayout();
 });
 
 function updateGraphFileName(name: string) {
-  const fileNameDisplay = document.getElementById('file-name-display');
+  const fileNameDisplay = document.getElementById("file-name-display");
   if (fileNameDisplay) {
     fileNameDisplay.textContent = "File: " + name;
     fileNameDisplay.title = name;
@@ -269,8 +302,8 @@ function updateGraphFileName(name: string) {
 
 (window as any).changeLayout = function (e: any) {
   layoutManager.changeLayout(e.target.value);
-  // decheck the layout on layout-on-drag 
-  const toggle = document.getElementById('layout-on-drag') as HTMLInputElement;
+  // decheck the layout on layout-on-drag
+  const toggle = document.getElementById("layout-on-drag") as HTMLInputElement;
   toggle.checked = false;
   layoutManager.toggleLayout(false);
 };
@@ -518,15 +551,46 @@ cy.on("cxttap", "node", (event) => {
 });
 
 cy.on("add", "node, edge", function (event) {
-  // update PG Board 
+  // update PG Board
   // pg.addNode(event.target.data("id"), event.target.data("isEven") === "true" ? Player.Even : Player.Odd);
 });
 
 cy.on("remove", "node, edge", function (event) {
   // update PG Board shit
-
 });
 
 cy.on("data", "node, edge", function (event) {
   // update PG Board shit
+});
+
+cy.on("cxttap", "node", function (event) {
+  const node = event.target;
+  let menu = document.getElementById("custom-context-menu");
+
+  menu.style.left = event.renderedPosition.x + "px";
+  menu.style.top = event.renderedPosition.y + "px";
+  menu.style.display = "block";
+
+  // Function to hide the menu
+  function hideMenu() {
+    menu.style.display = "none";
+  }
+
+  // Hide the menu on any click
+  window.addEventListener("click", hideMenu);
+
+  // Edit priority action
+  document.getElementById("edit-priority").onclick = function () {
+    let priority = prompt("Enter new priority", node.data("priority") || "");
+    if (priority !== null) {
+      let selectedNodes = cy.$("node:selected");
+      if (selectedNodes.length > 0) {
+        ur.do("editPriority", {
+          nodes: selectedNodes,
+          priority: priority,
+        });
+      }
+    }
+    hideMenu();
+  };
 });
