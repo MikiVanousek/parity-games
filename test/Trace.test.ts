@@ -1,17 +1,9 @@
-import { ParityGame } from "../src/board/trash";
 import { Trace, TraceStep, NodeSet, LinkSet } from "../src/board/Trace";
-import { PGParser } from "../src/board/PGParser";
+import { pg as parity_example } from "../src/board/ExamplePG";
 import * as fs from 'fs';
+import { ParityGame } from "../src/board/ParityGame";
 
 const dir = 'test/'
-const parity_example = ParityGame.emptyBoard()
-parity_example.addNodeWith(0, 0)
-parity_example.addNodeWith(3, 1)
-parity_example.addNodeWith(5, 0)
-
-parity_example.addLinkFromNodes(parity_example.nodes[0], parity_example.nodes[1]);
-parity_example.addLinkFromNodes(parity_example.nodes[1], parity_example.nodes[0]);
-
 const trace_example = new Trace({
     parity_game: parity_example,
     algorithm_name: "Zmrd",

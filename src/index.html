@@ -47,18 +47,19 @@
         <input id="display-labels" type="checkbox" class="switch">
         <label for="display-labels">Display labels</label>
       </div>
+    </div>
 
+    <div class="navbar-group">
       <div class="navbar-group-heading">Trace settings</div>
-      <div class="navbar-group-heading" id="trace_settings">
-        Trace settings
-        <input type="file" id="fileInput" style="display: none;" class="button">
+      <label for="fileInput" class="button">
         <span class="icon">
           <i class="fa-solid fa-file-import"></i>
-        </span>
-        Import
-      </div>
-
+        </span>Import
+      </label>
+      <input type="file" id="fileInput" style="display: none;" />
     </div>
+
+  </div>
   </div>
   </div>
 
@@ -82,28 +83,6 @@
   </div>
 
   <script src="main.js"></script>
-  <script>
-    function toggleSpeedDropdown(event) {
-      document.getElementById("speedDropdown").style.display = 'block';
-      event.stopPropagation(); // Prevent the click from being immediately caught by document
-    }
-
-    // Function to set speed and hide dropdown
-    function setSpeed(speed) {
-      console.log("Speed set to:", speed);
-      // Implement speed change logic here
-      document.getElementById("speedDropdown").style.display = 'none';
-    }
-
-    // Clicking outside the dropdown hides it
-    document.addEventListener('click', function (event) {
-      var speedDropdown = document.getElementById("speedDropdown");
-      if (speedDropdown.style.display === 'block') {
-        speedDropdown.style.display = 'none';
-      }
-    });
-
-  </script>
 
   <style>
     body,
@@ -175,7 +154,7 @@
     }
 
     .navbar-group-heading {
-      font-size: 0.8rem;
+      font-size: 1.4rem;
       color: white;
       text-align: center;
     }
@@ -444,7 +423,6 @@
       padding: 8px 12px;
       cursor: pointer;
       text-align: left;
-      /* Adjust alignment as needed */
     }
 
     .speed-dropdown ul li:hover {
@@ -456,25 +434,20 @@
       flex-direction: column;
       align-items: center;
       position: relative;
-      /* Ensure relative positioning for proper alignment */
     }
 
     .play-speed-container select {
       margin-top: 5px;
-      /* Space between play button and select dropdown */
       background-color: #1d1d1d;
       color: white;
       border: 1px solid #555;
       border-radius: 5px;
       outline: none;
-      /* Remove focus outline for aesthetics */
       cursor: pointer;
-      /* Indicate this is an interactive element */
     }
 
     .play-speed-container select option {
       background: #333;
-      /* Ensure options are styled similarly */
       color: white;
     }
   </style>
