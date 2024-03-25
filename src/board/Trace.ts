@@ -2,6 +2,7 @@ import { PG } from './PGBoard'
 import { JSONObject } from 'ts-json-object'
 
 export class Trace extends JSONObject {
+    @JSONObject.required
     parity_game: PG.ParityGame;
     @JSONObject.required
     algorithm_name: string;

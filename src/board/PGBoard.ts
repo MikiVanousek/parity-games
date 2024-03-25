@@ -1,88 +1,42 @@
 import { Node, Player } from './Node'
 import { Link } from './Link'
+import { JSONObject } from 'ts-json-object'
 
 export module PG {
-  export class ParityGame {
-    nodes: Node[] = [];
-    adjList: Map<Node, Set<Node>> = new Map();
-    links: Link[] = [];
-    name: string = "Parity Game";
-    maxNodeId: number = 0;
+  export class ParityGame extends JSONObject {
+    @JSONObject.required
+    nodes: Node[];
+    @JSONObject.required
+    links: Link[];
+    @JSONObject.required
+    name: string;
+    @JSONObject.required
+    private next_node_id: number;
 
-    emptyBoard() {
-      this.nodes = [];
-      this.links = [];
-      this.adjList = new Map();
-      this.maxNodeId = -1;
+    // This is not serialized
+    @JSONObject.custom((pg: ParityGame, key: string, value: number) => {
+      let res = new Map<Node, Set<Node>>();
+      pg.nodes.forEach((n) => res.set(n, new Set<Node>()));
+      pg.links.forEach((l) => {
+        res.get(l.source).add(l.target);
+      });
+      return res;
+    })
+    adjList: Map<Node, Set<Node>>;
+
+    constructor(json?: any) {
+      super(json)
+
+      // It is impossible (and unnecessary) to serialize the adjList. Instead we build it afterwards.
     }
 
-    loadFromFile(fileContent: string, filename?: string): void {
-      this.emptyBoard();
-      const lines = fileContent.split("\n");
-      let edgeData = []; // Temporary storage for edge data
+    static emptyBoard(): ParityGame {
 
-      // First Pass: Create nodes
-      lines.forEach((line) => {
-        if (line.trim() && line.startsWith("parity")) {
-          this.name = filename || line.split(' ')[1].replace(/;$/, '');
-        } else if (line.trim()) {
-          const parts = line.split(" ");
-          const nodeId = parseInt(parts[0]);
-          const priority = parseInt(parts[1]);
-          const player = parseInt(parts[2]) === 1 ? Player.Odd : Player.Even;
-
-          const labelPart = parts.slice(4).join(" ");
-          const label = labelPart.substring(0, labelPart.length - 2).replace(/"/g, "");
-
-          // Add node (assuming addNode handles duplicates gracefully or that node IDs are unique)
-          this.addNode(priority, player, nodeId, label);
-
-          // Store edge data for the second pass
-          if (parts[3] !== "") {
-            // Check if there are edges
-            edgeData.push({
-              sourceId: nodeId,
-              targets: parts[3].split(",").map((id) => parseInt(id)),
-            });
-          }
-        }
-      });
-
-      // Second Pass: Create edges
-      edgeData.forEach(({ sourceId, targets }) => {
-        const sourceNode = this.nodes.find((node) => node.id === sourceId);
-        targets.forEach((targetId) => {
-          const targetNode = this.nodes.find((node) => node.id === targetId);
-          if (sourceNode && targetNode) {
-            this.addLinkFromNodes(sourceNode, targetNode);
-          }
-        });
-      });
-    }
-
-    exportToOink(): string {
-      let fileContent = `parity ${this.name};\n`;
-
-      // Write nodes in format 0 0 1 2,3 "0"; node player 0 or 1 
-      this.nodes.forEach((node) => {
-        fileContent += `${node.id} ${node.priority} ${node.player === Player.Even ? "0" : "1"
-          } ${[...this.adjList.get(node) || []]
-            .map((n) => n.id)
-            .join(",")} "${node.label}";\n`;
-      });
-
-      return fileContent;
-    }
-
-    getElementDefinition() {
-      const nodes = this.nodes.map((node) => node.getElementDefinition());
-      const links = this.links.map((link) => link.getElementDefinition());
-
-      return [...nodes, ...links];
+      return new ParityGame({ nodes: [], adjList: new Map<Node, Set<Node>>(), links: [], name: "New Parity Game", next_node_id: 0 });
     }
 
     addLinkFromNodes(source: Node, target: Node): void {
-      this.addLink(new Link(source, target));
+      this.addLink(new Link({ source, target }));
     }
 
     addLink(link: Link): void {
@@ -103,14 +57,14 @@ export module PG {
       label?: string,
       degree?: number,
     ): number {
-      if (id === undefined || id <= this.maxNodeId) {
+      if (id === undefined || id <= this.next_node_id) {
         // If no ID is provided or the provided ID is not higher than the current max
-        id = this.maxNodeId + 1; // Assign the next available ID
+        id = this.next_node_id + 1; // Assign the next available ID
       } else {
-        this.maxNodeId = id; // Update maxNodeId if the provided ID is higher
+        this.next_node_id = id; // Update maxNodeId if the provided ID is higher
       }
 
-      const node = new Node(priority, id, player, label);
+      const node = new Node({ priority: priority, id: id, player: player, label: label });
       if (degree !== undefined) {
         node.setDegree(degree);
       }
@@ -118,7 +72,7 @@ export module PG {
       this.adjList.set(node, new Set());
 
       // Update the maxNodeId to reflect the newly added node's ID
-      this.maxNodeId = Math.max(this.maxNodeId, id);
+      this.next_node_id = Math.max(this.next_node_id, id);
 
       return node.id;
     }
@@ -172,7 +126,7 @@ export module PG {
     }
 
     get_id() {
-      return this.maxNodeId++;
+      return this.next_node_id++;
     }
 
     target_neighbors(n: Node): Node[] {
@@ -219,4 +173,3 @@ export module PG {
     link_source_target_ids: [number, number][];
   }
 }
-

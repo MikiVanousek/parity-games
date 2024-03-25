@@ -13,7 +13,7 @@ export module PGParser {
     // create a list of lines
     var lines = file.split("\n");
     if (pg === undefined) {
-      pg = new PG.ParityGame();
+      pg = PG.ParityGame.emptyBoard();
     }
 
     let arc_id_pairs: [number, number][] = [];
@@ -48,6 +48,8 @@ export module PGParser {
     for (let [s, t] of arc_id_pairs) {
       let sourceNode = pg.nodes.find((node) => node.id === s);
       let targetNode = pg.nodes.find((node) => node.id === t);
+      assert(sourceNode !== undefined);
+      assert(targetNode !== undefined);
       if (sourceNode && targetNode) {
         pg.addLink(new Link(sourceNode, targetNode));
       }

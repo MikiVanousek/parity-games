@@ -1,13 +1,11 @@
+import { JSONObject } from 'ts-json-object'
 import { Node } from './Node'
 
-export class Link {
+export class Link extends JSONObject {
+  @JSONObject.required
   source: Node;
+  @JSONObject.required
   target: Node;
-
-  constructor(source: Node, target: Node) {
-    this.source = source;
-    this.target = target;
-  }
 
   getElementDefinition() {
     return {
