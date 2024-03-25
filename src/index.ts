@@ -20,14 +20,20 @@ function handleFileSelect(event) {
     const reader = new FileReader();
     reader.onload = function (e) {
       const fileContent = e.target.result;
-      showToast({
-        message: "Toasting up!",
-        variant: "success" // "danger" | "warning" | "info"
-      });
-      var trace = new Trace(JSON.parse(fileContent.toString()))
+
+      try {
+        var trace = new Trace(JSON.parse(fileContent.toString()))
+        console.log(trace);
+      } catch (error) {
+        showToast({
+          message: "This file is not a valid trace file.",
+          variant: "danger" // "danger" | "warning" | "info"
+        });
+        console.error("Error importing trace:", error);
+        return
+      };
       console.log(trace);
-    };
-    reader.readAsText(file);
+    }
   }
 }
 

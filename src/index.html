@@ -19,9 +19,9 @@
     <div class="navbar-heading">Parity Game</div>
     <div class="navbar-group">
       <span id="file-name-display"></span>
-      <input type="file" id="file-input" hidden onchange="handleFileSelect(event)" />
-      <label class="button" for="file-input"><span class="icon"><i class="fa-solid fa-upload"></span></i>Upload File
-        (without view)</label>
+      <input type="file" accept=".pg" id="file-input" hidden onchange="handleFileSelect(event)" />
+      <label class="button" for="file-input"><span class="icon"><i class="fa-solid fa-upload"></span></i>Import
+        Oink</label>
       <div class="row">
         <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" />
         <label class="button" for="board-file-input"><span class="icon"><i
@@ -54,9 +54,9 @@
       <label for="fileInput" class="button">
         <span class="icon">
           <i class="fa-solid fa-file-import"></i>
-        </span>Import
+        </span>Import trace
       </label>
-      <input type="file" id="fileInput" style="display: none;" />
+      <input type="file" id="fileInput" style="display: none;" accept=".trace.json" />
     </div>
 
   </div>
