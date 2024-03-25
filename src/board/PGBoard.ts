@@ -1,3 +1,4 @@
+var assert = require("assert");
 import { Node, Player } from './Node'
 import { Link } from './Link'
 import { JSONObject } from 'ts-json-object'
@@ -7,28 +8,22 @@ export module PG {
     @JSONObject.required
     nodes: Node[];
     @JSONObject.required
-    links: Link[];
-    @JSONObject.required
     name: string;
     @JSONObject.required
     private next_node_id: number;
+    @JSONObject.required
+    links: Link[];
 
     // This is not serialized
     @JSONObject.custom((pg: ParityGame, key: string, value: number) => {
       let res = new Map<Node, Set<Node>>();
       pg.nodes.forEach((n) => res.set(n, new Set<Node>()));
       pg.links.forEach((l) => {
-        res.get(l.source).add(l.target);
+        res.get(pg.find_node_by_id(l.source_id)).add(pg.find_node_by_id(l.target_id));
       });
       return res;
     })
     adjList: Map<Node, Set<Node>>;
-
-    constructor(json?: any) {
-      super(json)
-
-      // It is impossible (and unnecessary) to serialize the adjList. Instead we build it afterwards.
-    }
 
     static emptyBoard(): ParityGame {
 
@@ -36,18 +31,16 @@ export module PG {
     }
 
     addLinkFromNodes(source: Node, target: Node): void {
-      this.addLink(new Link({ source, target }));
+      assert(this.nodes.findIndex((e) => e === source) >= 0);
+      assert(this.nodes.findIndex((e) => e === target) >= 0);
+      this.addLink(new Link({ source_id: source.id, target_id: target.id }));
     }
 
     addLink(link: Link): void {
       this.links.push(link);
-
-      let adjSet = this.adjList.get(link.source);
-      if (!adjSet) {
-        adjSet = new Set<Node>();
-        this.adjList.set(link.source, adjSet);
-      }
-      adjSet.add(link.target);
+      const source_node = this.find_node_by_id(link.source_id);
+      let s = this.adjList.get(source_node);
+      s.add(this.find_node_by_id(link.target_id));
     }
 
     addNode(
@@ -99,7 +92,7 @@ export module PG {
 
       // Optionally, if you maintain a links array, remove links from there as well
       this.links = this.links.filter(
-        (link) => link.source.id !== nodeId && link.target.id !== nodeId,
+        (link) => link.source_id !== nodeId && link.target_id !== nodeId,
       );
     }
 
@@ -121,7 +114,7 @@ export module PG {
 
       // Optionally, if you maintain a links array, remove the link from there as well
       this.links = this.links.filter(
-        (link) => !(link.source.id === sourceId && link.target.id === targetId),
+        (link) => !(link.source_id === sourceId && link.target_id === targetId),
       );
     }
 
@@ -130,11 +123,13 @@ export module PG {
     }
 
     target_neighbors(n: Node): Node[] {
-      return this.links.filter((l) => l.source === n).map((l) => l.target);
+      return this.links.filter((l) => l.source_id === n.id).map((l) => l.target_id).map((id) => this.find_node_by_id(id));
     }
 
-    source_neighbors(n: Node): Node[] {
-      return this.links.filter((l) => l.target === n).map((l) => l.source);
+    find_node_by_id(id: number): Node {
+      let res = this.nodes.find((n) => n.id === id);
+      assert(res);
+      return res;
     }
   }
 

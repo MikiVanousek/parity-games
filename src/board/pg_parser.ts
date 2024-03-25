@@ -42,7 +42,7 @@ export module PGParser {
         arc_id_pairs.push([id, t]);
       }
 
-      let n = new Node(priority, id, player, node_label);
+      let n = new Node({ priority, id, player, node_label });
       pg.nodes.push(n);
     }
     for (let [s, t] of arc_id_pairs) {

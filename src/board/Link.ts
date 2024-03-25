@@ -3,14 +3,7 @@ import { Node } from './Node'
 
 export class Link extends JSONObject {
   @JSONObject.required
-  source: Node;
+  source_id: number;
   @JSONObject.required
-  target: Node;
-
-  getElementDefinition() {
-    return {
-      group: "edges",
-      data: { source: `${this.source.id}`, target: `${this.target.id}` },
-    };
-  }
+  target_id: number;
 }

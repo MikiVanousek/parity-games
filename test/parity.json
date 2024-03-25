@@ -1,1 +1,1 @@
-{"nodes":[{"id":1,"player":0,"label":"","degree":0,"priority":0}],"links":[],"name":"New Parity Game","next_node_id":1,"adjList":{}}
+{"nodes":[{"id":1,"player":0,"label":"","degree":0,"priority":0},{"id":2,"player":1,"label":"","degree":0,"priority":3},{"id":3,"player":0,"label":"","degree":0,"priority":5}],"name":"New Parity Game","next_node_id":3,"links":[{"source_id":1,"target_id":2},{"source_id":2,"target_id":1}],"adjList":{}}

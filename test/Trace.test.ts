@@ -6,11 +6,11 @@ import * as fs from 'fs';
 const dir = 'test/'
 const parity_example = PG.ParityGame.emptyBoard()
 parity_example.addNode(0, 0)
-// parity_example.addNode(3, 1)
-// parity_example.addNode(5, 0)
+parity_example.addNode(3, 1)
+parity_example.addNode(5, 0)
 
-// parity_example.addLinkFromNodes(parity_example.nodes[0], parity_example.nodes[1]);
-// parity_example.addLinkFromNodes(parity_example.nodes[1], parity_example.nodes[0]);
+parity_example.addLinkFromNodes(parity_example.nodes[0], parity_example.nodes[1]);
+parity_example.addLinkFromNodes(parity_example.nodes[1], parity_example.nodes[0]);
 
 const trace_example = new Trace({
     parity_game: parity_example,
