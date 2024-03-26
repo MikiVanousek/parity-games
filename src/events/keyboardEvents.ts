@@ -9,6 +9,18 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
   let mouseX: number = 0;
   let mouseY: number = 0;
 
+  const cyContainer = cy.container();
+  cyContainer.addEventListener(
+    "mousedown",
+    (event) => {
+      if (event.ctrlKey) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    },
+    true
+  );
+
   document.addEventListener("mousemove", (mouseEvent: MouseEvent) => {
     mouseX = mouseEvent.clientX;
     mouseY = mouseEvent.clientY;
