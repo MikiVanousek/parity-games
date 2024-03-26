@@ -12,7 +12,7 @@ const fileInput = document.getElementById('fileInput');
 
 function handleFileSelect(event) {
   const files = event.target.files;
-  assert(files.length === 1, "Only one file can be imported at a time.")
+  assert(files.length === 1)
   const file = files[0];
   const reader = new FileReader();
   console.log("e")

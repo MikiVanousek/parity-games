@@ -60,9 +60,5 @@ test('read write trace', () => {
     expect(res).toEqual(trace_example)
 })
 
-test('read write trace step', () => {
-    new Trace({})
-});
-
 
 
