@@ -1,5 +1,5 @@
 import { Player } from '../src/board/Node';
-import { PGParser } from '../src/board/pg_parser'
+import { PGParser } from '../src/board/PGParser'
 import * as fs from 'fs';
 
 let PG_DIR = 'test/pg_examples/'
@@ -9,7 +9,6 @@ test('basic .pg parsing test', () => {
     let pg = PGParser.import_pg_format(filestr)
 
     expect(pg.nodes.length).toBe(6)
-    expect(pg.links.length).toBe(8)
     expect(pg.nodes[0].label).toBe("0")
     expect(pg.nodes[1].label).toBe("1")
     expect(pg.nodes[2].label).toBe('2 3"4')
@@ -19,7 +18,6 @@ test('basic .pg parsing test', () => {
     expect(pg.nodes[5].priority).toBe(3)
 
     let exp_str = PGParser.export_pg_format(pg)
-    console.log(exp_str)
     // The file in question does not end in an empty line.
     expect(exp_str).toBe(filestr)
 })

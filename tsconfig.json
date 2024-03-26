@@ -1,12 +1,16 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": false,
     "module": "commonjs",
     "target": "es6",
-    "jsx": "react"
+    "jsx": "react",
   },
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true,
   "include": [
     "./src/**/*",
     "jest.preset.ts",

@@ -1,12 +1,52 @@
-import { PG } from "./board/PGBoard";
+import { ParityGame } from './board/ParityGame';
 import { Player } from "./board/Node";
 import LayoutManager from "./layout/layoutManager";
+import { PGParser } from './board/PGParser';
+import { example_pg } from './board/ExamplePG';
+
+import { Trace } from './board/Trace';
+import { showToast } from './toast';
+import { assert } from './assert';
+
+const fileInput = document.getElementById('fileInput');
+
+function handleFileSelect(event) {
+  const files = event.target.files;
+  assert(files.length === 1)
+  const file = files[0];
+  const reader = new FileReader();
+  console.log("e")
+  reader.onload = function (e) {
+    const fileContent = e.target.result;
+
+    try {
+      var trace = new Trace(JSON.parse(fileContent.toString()))
+      console.log(trace);
+    } catch (error) {
+      showToast({
+        message: "This file is not a valid trace file.",
+        variant: "danger" // "danger" | "warning" | "info"
+      });
+      console.error("Error importing trace:", error);
+      return
+    };
+    console.log(trace);
+  }
+  reader.readAsText(file)
+}
+
+
+fileInput.addEventListener('change', handleFileSelect);
+
 
 declare global {
   interface Window {
     $: typeof import("jquery");
   }
 }
+
+var pg = example_pg
+
 const EVEN_COLOR = "#7A7A7A";
 const ODD_COLOR = "#ADADAD";
 const SELECTION_COLOR = "#0169D9";
@@ -24,37 +64,6 @@ contextMenus(cytoscape); // This line is crucial
 edgeEditing(cytoscape, jquery, konva);
 cytoscape.use(cola);
 
-let pg = new PG.ParityGame();
-pg.addNode(1, Player.Even);
-pg.addNode(8, Player.Odd);
-pg.addNode(9, Player.Even);
-pg.addNode(5, Player.Odd);
-pg.addNode(7, Player.Even);
-pg.addNode(3, Player.Odd);
-pg.addNode(6, Player.Even);
-pg.addNode(4, Player.Odd);
-pg.addNode(0, Player.Even);
-pg.addNode(2, Player.Odd);
-// pg.addNode(10, Player.Even);
-
-// Adding links between nodes
-pg.addLinkFromNodes(pg.nodes[0], pg.nodes[8]);
-pg.addLinkFromNodes(pg.nodes[1], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[2], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[3], pg.nodes[2]);
-pg.addLinkFromNodes(pg.nodes[4], pg.nodes[7]);
-pg.addLinkFromNodes(pg.nodes[5], pg.nodes[8]);
-pg.addLinkFromNodes(pg.nodes[6], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[7], pg.nodes[6]);
-pg.addLinkFromNodes(pg.nodes[8], pg.nodes[2]);
-pg.addLinkFromNodes(pg.nodes[9], pg.nodes[0]);
-pg.addLinkFromNodes(pg.nodes[3], pg.nodes[9]);
-pg.addLinkFromNodes(pg.nodes[2], pg.nodes[1]);
-pg.addLinkFromNodes(pg.nodes[4], pg.nodes[0]);
-pg.addLinkFromNodes(pg.nodes[8], pg.nodes[4]);
-pg.addLinkFromNodes(pg.nodes[8], pg.nodes[3]);
-
-// const pgUI = new PG.PGDBoard(pg);
 let cy = cytoscape({
   container: document.getElementById("cy"),
   elements: [],
@@ -210,7 +219,7 @@ function resetBoardVisuals() {
 // this export the visuals and also the pg object
 (window as any).handleExportGame = function () {
   const cyState = cy.elements().jsons();
-  const game = pg.exportToOink();
+  const game = PGParser.export_pg_format(pg);
 
   const exportData = {
     cytoscapeState: cyState,
@@ -226,6 +235,7 @@ function resetBoardVisuals() {
   a.download = pg.name + ".json";
   a.click();
 };
+
 
 (window as any).handleImportGame = function (event) {
   const file = event.target.files[0];
@@ -247,7 +257,8 @@ function resetBoardVisuals() {
 
         // remove just the .json part
         var fileName = file.name.replace(/\.[^/.]+$/, "");
-        pg.loadFromFile(importedData.gameState, fileName);
+        // pg.loadFromFile(importedData.gameState, fileName);
+        cy.pg = PGParser.import_pg_format(importedData.gameState);
       } catch (error) {
         console.error("Error importing game:", error);
       }
@@ -276,8 +287,7 @@ function resetBoardVisuals() {
     reader.onload = function (loadEvent) {
       const fileContent = loadEvent.target.result as string;
 
-      pg.loadFromFile(fileContent, file.name);
-
+      pg = PGParser.import_pg_format(fileContent);
       resetBoardVisuals();
     };
 
@@ -297,6 +307,7 @@ function updateGraphFileName(name: string) {
   }
 }
 
+
 (window as any).changeLayout = function (e: any) {
   layoutManager.changeLayout(e.target.value);
   // decheck the layout on layout-on-drag
@@ -309,23 +320,17 @@ function updateGraphFileName(name: string) {
   layoutManager.runOnce();
 };
 
-document
-  .getElementById("layout-on-drag")
-  .addEventListener("change", function () {
-    layoutManager.toggleLayout((this as HTMLInputElement).checked);
-  });
+document.getElementById('layout-on-drag').addEventListener('change', function () {
+  layoutManager.toggleLayout((this as HTMLInputElement).checked);
+});
 
-document
-  .getElementById("display-labels")
-  .addEventListener("change", function () {
-    const showLabels = (this as HTMLInputElement).checked;
-    cy.nodes().style({
-      label: showLabels
-        ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-        : "",
-      "text-wrap": "wrap",
-    });
+document.getElementById('display-labels').addEventListener('change', function () {
+  const showLabels = (this as HTMLInputElement).checked;
+  cy.nodes().style({
+    'label': showLabels ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}` : '',
+    'text-wrap': 'wrap',
   });
+});
 
 document.addEventListener("mousemove", (event: MouseEvent) => {
   mouseX = event.clientX;
@@ -597,3 +602,4 @@ cy.on("cxttap", "node", function (event) {
     hideMenu();
   };
 });
+
