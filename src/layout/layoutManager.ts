@@ -13,12 +13,36 @@ class LayoutManager {
     "Grid layout": gridLayout,
     "Breadth first": breadthfirstLayout,
     "Random for fun": randomLayout,
-  }
+  };
 
   constructor(cyInstance: any, defaultLayout?: string) {
     this.cy = cyInstance;
-    this.isEnabled = false
-    this.currentLayout = this.layouts[defaultLayout] || colaLayout
+    this.isEnabled = false;
+    this.currentLayout = this.layouts[defaultLayout] || colaLayout;
+
+    let this1 = this;
+    document.addEventListener("DOMContentLoaded", function () {
+      const layoutSelect = document.getElementById(
+        "layout-select"
+      ) as HTMLSelectElement;
+
+      // Dynamically populate the layout select dropdown
+      for (const layoutName in this1.layouts) {
+        if (this1.layouts.hasOwnProperty(layoutName)) {
+          const option = document.createElement("option");
+          option.value = layoutName;
+          option.textContent = layoutName;
+          layoutSelect.appendChild(option);
+        }
+      }
+      layoutSelect.value = defaultLayout;
+    });
+
+    document
+      .getElementById("layout-on-drag")
+      .addEventListener("change", function () {
+        this1.toggleLayout((this as HTMLInputElement).checked);
+      });
   }
 
   public toggleLayout(bool: boolean) {
