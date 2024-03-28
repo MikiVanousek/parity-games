@@ -4,6 +4,12 @@ import { Trace } from "../board/Trace";
 import { ParityGame } from "../board/ParityGame";
 import { example_pg, trace_example } from "../board/ExamplePG";
 
+// TODO Add vertex lables
+// TODO Play animation
+// TODO Bind keyboard keys
+// TODO Change PG when CY changes
+// TODO Disable modifications when trace is loaded
+// TODO Assert we are displaying a trace for the current PG.
 export class PGManager {
   cy: any;
   trace?: Trace;
@@ -46,7 +52,7 @@ export class PGManager {
       this.setTrace(new Trace(JSON.parse(fileContent.toString())));
     } catch (error) {
       showToast({
-        message: "This file is not a valid trace file.",
+        message: "This file does not contain a valid trace.",
         variant: "danger", // "danger" | "warning" | "info"
       });
       console.error("Error importing trace:", error);
@@ -55,6 +61,14 @@ export class PGManager {
   }
 
   setTrace(t: Trace) {
+    if (!t.validate()) {
+      showToast({
+        message: "This trace has internal discrepencies: Its steps do not fit its parity game. More detail in the console.",
+        variant: "danger",
+        duration: 4000,
+      })
+    }
+
     this.trace = t;
     this.setsEnabled = new Map<string, boolean>()
     for (const setName of this.trace.uniqueSetNames()) {

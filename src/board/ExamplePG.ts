@@ -1,12 +1,12 @@
 import { Player } from "./Node";
 import { ParityGame } from "./ParityGame";
 import { LinkSet, NodeSet, Trace, TraceStep } from "./Trace";
-
+// Tests depend on the values of these two examples!
 export let example_pg = ParityGame.emptyBoard();
 example_pg.addNodeWith(1, Player.Even);
 example_pg.addNodeWith(8, Player.Odd);
 example_pg.addNodeWith(9, Player.Even);
-example_pg.addNodeWith(5, Player.Odd);
+example_pg.addNodeWith(10, Player.Odd);
 example_pg.addNodeWith(7, Player.Even);
 example_pg.addNodeWith(3, Player.Odd);
 example_pg.addNodeWith(6, Player.Even);
