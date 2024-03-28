@@ -22,7 +22,6 @@ export class PGManager {
 
     let n = this.cy.getElementById("3")
     console.log(n)
-    n.addClass("red")
     cy.style().update();
 
     this.listElement = document.getElementById('color-legend');
@@ -69,33 +68,35 @@ export class PGManager {
   setStep(i) {
     assert(this.trace != undefined);
 
-    this.listElement.innerHTML = '';
     this.step = i;
+    this.listElement.innerHTML = '';
     const traceStep = this.trace.steps[i];
 
     traceStep.node_sets.forEach((node_set, index) => {
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name)
+      let color = this.colors[setId % this.colors.length]
+      this.addListItem(this.listElement, node_set.name, color);
     });
 
     // traceStep.link_sets.forEach((link, index) => {
     //   (this.listElement, link, `#4CAF50`);
     // });
 
-    this.resetColor()
-    for (let [i, node_set] of traceStep.node_sets.entries()) {
-      if (this.setsEnabled.get(node_set.name)) {
-        const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name)
-        let color = this.colors[setId % this.colors.length]
-        this.addListItem(this.listElement, node_set.name, color);
+    this.refreshColor();
+  }
 
+  refreshColor() {
+    assert(this.trace !== undefined)
+    this.resetColor()
+    for (let [i, node_set] of this.trace.steps[this.step].node_sets.entries()) {
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name)
+      let color = this.colors[setId % this.colors.length]
+      if (this.setsEnabled.get(node_set.name)) {
         for (const nid of node_set.node_ids) {
           this.colorNode(nid, color)
         }
       }
     }
-  }
-
-  refresh() {
-    this.setStep(this.step)
   }
 
   nextStep() {
@@ -142,19 +143,21 @@ export class PGManager {
     // Update color toggle functionality
     colorLine.addEventListener('click', function () {
       const isTransparent = colorLine.style.backgroundColor === 'transparent' || colorLine.style.backgroundColor === '';
+
       // Retrieve the initial color from the custom attribute
       const storedColor = colorLine.getAttribute('data-initial-color');
       colorLine.style.backgroundColor = isTransparent ? storedColor : 'transparent';
 
-      if (isTransparent) {
+      console.log(isTransparent)
+
+      if (!isTransparent) {
         this.setsEnabled.set(text, false)
       } else {
         this.setsEnabled.set(text, true)
       }
+      this.refreshColor()
 
-      this.refresh()
-
-    }.bind(this));
+    }.bind(this))
 
     listItem.appendChild(colorLine);
 
