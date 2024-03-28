@@ -29,8 +29,6 @@ export class PGManager {
     this.controlElement = document.getElementById('trace_controls');
     this.controlElement.hidden = true;
     this.controlElement.style.display = 'none'
-
-    this.setTrace(trace_example);
   }
 
   handleTraceFileSelect(event) {
