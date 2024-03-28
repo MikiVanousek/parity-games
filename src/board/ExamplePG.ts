@@ -67,7 +67,7 @@ export const trace_example = new Trace({
         }),
 
         new NodeSet({
-          name: "next",
+          name: "other",
           node_ids: [6]
         })
       ],
@@ -77,7 +77,7 @@ export const trace_example = new Trace({
           link_source_target_ids: [[1, 2], [3, 4]]
         }),
         new LinkSet({
-          name: "ugly",
+          name: "wierd",
           link_source_target_ids: [[0, 5]]
         })
       ],
