@@ -127,13 +127,25 @@ export class PGManager {
 
   nextStep() {
     assert(this.trace !== undefined)
-    assert(this.step < this.trace.steps.length - 1)
-    this.setStep(this.step + 1);
+    if (this.step < this.trace.steps.length - 1) {
+      this.setStep(this.step + 1);
+    } else {
+      showToast({
+        message: "This is the last step!",
+        variant: "warning"
+      })
+    }
   }
   prevStep() {
     assert(this.trace !== undefined)
-    assert(this.step > 0)
-    this.setStep(this.step - 1);
+    if (this.step > 0) {
+      this.setStep(this.step - 1);
+    } else {
+      showToast({
+        message: "This is the first step!",
+        variant: "warning"
+      })
+    }
   }
 
   colorNode(nodeId: number, color: string) {
