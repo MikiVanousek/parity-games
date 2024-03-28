@@ -1,7 +1,8 @@
 import { Player } from "./Node";
 import { ParityGame } from "./ParityGame";
+import { LinkSet, NodeSet, Trace, TraceStep } from "./Trace";
 
-let example_pg = ParityGame.emptyBoard();
+export let example_pg = ParityGame.emptyBoard();
 example_pg.addNodeWith(1, Player.Even);
 example_pg.addNodeWith(8, Player.Odd);
 example_pg.addNodeWith(9, Player.Even);
@@ -30,4 +31,59 @@ example_pg.addLinkFromNodes(example_pg.nodes[4], example_pg.nodes[0]);
 example_pg.addLinkFromNodes(example_pg.nodes[8], example_pg.nodes[4]);
 example_pg.addLinkFromNodes(example_pg.nodes[8], example_pg.nodes[3]);
 
-export { example_pg };
+export const trace_example = new Trace({
+  parity_game: example_pg,
+  algorithm_name: "Zmrd",
+  steps: [
+    new TraceStep({
+      node_sets: [
+        new NodeSet({
+          name: "current",
+          node_ids: [0, 1]
+        }),
+
+        new NodeSet({
+          name: "next",
+          node_ids: [2, 3]
+        })
+      ],
+      link_sets: [
+        new LinkSet({
+          name: "pretty",
+          link_source_target_ids: [[1, 2], [3, 4]]
+        }),
+        new LinkSet({
+          name: "ugly",
+          link_source_target_ids: [[0, 5]]
+        })
+      ],
+      node_labels: {}
+    }),
+    new TraceStep({
+      node_sets: [
+        new NodeSet({
+          name: "current",
+          node_ids: [4, 5]
+        }),
+
+        new NodeSet({
+          name: "next",
+          node_ids: [6]
+        })
+      ],
+      link_sets: [
+        new LinkSet({
+          name: "pretty",
+          link_source_target_ids: [[1, 2], [3, 4]]
+        }),
+        new LinkSet({
+          name: "ugly",
+          link_source_target_ids: [[0, 5]]
+        })
+      ],
+      node_labels: {}
+    })
+  ]
+
+});
+

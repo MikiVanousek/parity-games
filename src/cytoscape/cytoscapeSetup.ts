@@ -1,8 +1,3 @@
-declare global {
-  interface Window {
-    $: typeof import("jquery");
-  }
-}
 var jquery = require("jquery");
 window.$ = jquery;
 var cytoscape = require("cytoscape");
@@ -52,6 +47,13 @@ export function setupCytoscape(containerId: string) {
         style: {
           "background-color": SELECTION_COLOR,
         },
+      },
+      {
+        selector: 'node[background_color]',
+        style: {
+          'background-color': 'data(background_color)',
+          'text-outline-color': 'data(background_color)',
+        }
       },
       {
         selector: "edge",

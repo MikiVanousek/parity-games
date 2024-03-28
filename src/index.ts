@@ -1,6 +1,5 @@
 import LayoutManager from "./layout/layoutManager";
-import { example_pg } from "./board/ExamplePG";
-import { handleTraceFileSelect } from "./io/importTrace";
+import { PGManager } from "./io/PGManager";
 import { setupCytoscape } from "./cytoscape/cytoscapeSetup";
 import { setupKeyboardEvents } from "./events/keyboardEvents";
 import {
@@ -11,21 +10,38 @@ import {
 } from "./io/exportImport";
 import { setupNodeEvents } from "./events/nodeEvents";
 
-const fileInput = document.getElementById("fileInput");
-fileInput.addEventListener("change", handleTraceFileSelect);
+
+declare global {
+  interface Window {
+    $: typeof import("jquery");
+    cy: any
+    pgManager: PGManager
+    layoutManager: LayoutManager,
+  }
+}
 
 // Set up the cytoscape instance
-var pg = example_pg;
 var [cy, ur] = setupCytoscape("cy");
-cy.add(pg.getElementDefinition());
+window.cy = cy
+
+const fileInput = document.getElementById("fileInput");
+var pgManager = new PGManager(cy);
+fileInput.addEventListener("change", (e) => {
+  console.log("fileInput changed");
+  pgManager.handleTraceFileSelect(e);
+});
+window.pgManager = pgManager
+
 const layoutManager = new LayoutManager(cy);
+window.layoutManager = layoutManager;
 layoutManager.runOnce();
 setupKeyboardEvents(cy, ur);
 setupNodeEvents(cy, ur, layoutManager);
 
+
 // Window shits
 (window as any).handleExportGame = function () {
-  handleExportGame(pg, cy);
+  handleExportGame(pgManager.pg, cy);
 };
 
 (window as any).handleImportGame = function (event) {
@@ -33,11 +49,7 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 (window as any).exportAsPng = function () {
-  exportAsPng(cy, pg);
-};
-
-(window as any).handleFileSelect = function (event) {
-  handleOinkFileSelect(event, cy, layoutManager, pg);
+  exportAsPng(cy, pgManager.pg);
 };
 
 (window as any).changeLayout = function (e: any) {
