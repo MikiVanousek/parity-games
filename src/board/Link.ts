@@ -13,7 +13,7 @@ export class Link extends JSONObject {
   getElementDefinition() {
     return {
       group: "edges",
-      data: { source: `${this.source_id}`, target: `${this.target_id}` },
+      data: { id: `${this.source_id + "," + this.target_id}`, source: `${this.source_id}`, target: `${this.target_id}` },
     };
   }
 }

@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('lastStepAction').addEventListener('click', pgManager.prevStep.bind(pgManager));
   document.getElementById('skipToBeginningAction').addEventListener('click', pgManager.goToFirstStep.bind(pgManager));
   document.getElementById('skipToEndAction').addEventListener('click', pgManager.goToLastStep.bind(pgManager));
+  document.getElementById('stopAction').addEventListener('click', pgManager.removeTrace.bind(pgManager))
 
   // document.getElementById('playAction').addEventListener('click', play);
   // document.getElementById('stopAction').addEventListener('click', stopPlay);

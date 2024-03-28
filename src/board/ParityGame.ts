@@ -11,7 +11,7 @@ export class ParityGame extends JSONObject {
   @JSONObject.required
   private next_node_id: number;
   @JSONObject.required
-  private links: Link[];
+  links: Link[];
 
   // This is not serialized
   @JSONObject.custom((pg: ParityGame, key: string, value: number) => {

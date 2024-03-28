@@ -74,6 +74,13 @@ export function setupCytoscape(containerId: string) {
           //'width': 4, // Optionally increase the width for visibility
         },
       },
+      {
+        selector: 'edge[line_color]',
+        style: {
+          'line-color': 'data(line_color)',
+          "target-arrow-color": "data(line_color)",
+        }
+      },
     ],
   });
   undoRedo(cytoscape);

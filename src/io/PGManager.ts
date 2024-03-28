@@ -11,7 +11,7 @@ export class PGManager {
   pg: ParityGame;
   colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
   listElement: HTMLElement;
-  controllElement: HTMLElement;
+  controlElement: HTMLElement;
   setsEnabled?: Map<string, boolean>;
 
 
@@ -26,7 +26,9 @@ export class PGManager {
 
     this.listElement = document.getElementById('color-legend');
     this.listElement.hidden = true;
-    this.controllElement = document.getElementById('trace_controll');
+    this.controlElement = document.getElementById('trace_controls');
+    this.controlElement.hidden = true;
+    this.controlElement.style.display = 'none'
 
     this.setTrace(trace_example);
   }
@@ -62,7 +64,20 @@ export class PGManager {
     }
 
     this.listElement.hidden = false;
+    this.controlElement.hidden = false;
+    this.controlElement.style.display = 'flex'
     this.setStep(0);
+  }
+
+  removeTrace() {
+    this.listElement.hidden = true;
+    this.controlElement.hidden = true;
+    this.controlElement.style.display = 'none';
+
+    delete this.trace;
+    delete this.step;
+    delete this.setsEnabled;
+    this.resetColor();
   }
 
   setStep(i) {
@@ -78,9 +93,11 @@ export class PGManager {
       this.addListItem(this.listElement, node_set.name, color);
     });
 
-    // traceStep.link_sets.forEach((link, index) => {
-    //   (this.listElement, link, `#4CAF50`);
-    // });
+    traceStep.link_sets.forEach((link_set, index) => {
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name)
+      let color = this.colors[setId % this.colors.length]
+      this.addListItem(this.listElement, link_set.name, color);
+    });
 
     this.refreshColor();
   }
@@ -94,6 +111,15 @@ export class PGManager {
       if (this.setsEnabled.get(node_set.name)) {
         for (const nid of node_set.node_ids) {
           this.colorNode(nid, color)
+        }
+      }
+    }
+    for (let [i, link_set] of this.trace.steps[this.step].link_sets.entries()) {
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name)
+      let color = this.colors[setId % this.colors.length]
+      if (this.setsEnabled.get(link_set.name)) {
+        for (const [source, target] of link_set.link_source_target_ids) {
+          this.colorLink(source, target, color)
         }
       }
     }
@@ -114,13 +140,19 @@ export class PGManager {
     this.cy.getElementById(nodeId).data('background_color', color)
   }
 
+  colorLink(source: number, target: number, color: string) {
+    this.cy.getElementById(source + "," + target).data('line_color', color)
+  }
+
   resetColor() {
     for (let pgn of this.pg.nodes) {
       delete this.cy.getElementById(pgn.id.toString()).data().background_color
     }
+    for (let l of this.pg.links) {
+      delete this.cy.getElementById(l.source_id + "," + l.target_id).data().line_color
+    }
     this.cy.style().update();
   }
-
 
   goToFirstStep() {
     this.setStep(0)

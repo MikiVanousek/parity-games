@@ -50,7 +50,7 @@ export const trace_example = new Trace({
       link_sets: [
         new LinkSet({
           name: "pretty",
-          link_source_target_ids: [[1, 2], [3, 4]]
+          link_source_target_ids: [[0, 8], [1, 9]]
         }),
         new LinkSet({
           name: "ugly",

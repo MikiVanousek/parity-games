@@ -63,26 +63,7 @@
   </div>
   </div>
 
-  <div class="bottom-bar" id="trace_controlls">
-    <button onclick="skipToBeginningAction()"><span class="icon"><i
-          class="fa-solid fa-backward-fast"></i></span></button>
-    <button onclick="lastStepAction()"><span class="icon"><i class="fa-solid fa-backward-step"></i></span></button>
-
-    <div class="play-speed-container">
-      <button onclick="playAction()"><span class="icon"><i class="fa-solid fa-play"></i></span>Play</button>
-      <select id="speedSelect/" onchange="setSpeed(this.value)">
-        <option value="1.0">1.0x</option>
-        <option value="1.2">1.2x</option>
-        <option value="1.5">1.5x</option>
-        <option value="2.0">2.0x</option>
-      </select>
-    </div>
-    <button onclick="pauseAction()"><span class="icon"><i class="fa-solid fa-pause"></i></span></button>
-    <button onclick="nextStepAction()"><span class="icon"><i class="fa-solid fa-forward-step"></i></span></button>
-    <button onclick="skipToEndAction()"><span class="icon"><i class="fa-solid fa-forward-fast"></i></span></button>
-  </div>
-
-  <div class="bottom-bar">
+  <div class="bottom-bar" id="trace_controls">
     <button id="skipToBeginningAction"><span class="icon"><i class="fa-solid fa-backward-fast"></i></span></button>
     <button id="lastStepAction"><span class="icon"><i class="fa-solid fa-backward-step"></i></span></button>
 
