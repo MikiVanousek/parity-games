@@ -7,11 +7,7 @@ export class ParityGame extends JSONObject {
   @JSONObject.required
   nodes: Node[];
   @JSONObject.required
-  name: string;
-  @JSONObject.required
-  private next_node_id: number;
-  @JSONObject.required
-  private links: Link[];
+  links: Link[];
 
   // This is not serialized
   @JSONObject.custom((pg: ParityGame, key: string, value: number) => {
@@ -26,7 +22,7 @@ export class ParityGame extends JSONObject {
 
 
   static emptyBoard(): ParityGame {
-    return new ParityGame({ nodes: [], links: [], name: "New Parity Game", next_node_id: 0, adjList: new Map<Node, Set<Node>>() });
+    return new ParityGame({ nodes: [], links: [], name: "New Parity Game", adjList: new Map<Node, Set<Node>>() });
   }
 
   addLinkFromNodes(source: Node, target: Node): void {
@@ -50,14 +46,9 @@ export class ParityGame extends JSONObject {
     label?: string,
     degree?: number
   ): number {
-    if (id === undefined || id <= this.next_node_id) {
-      // If no ID is provided or the provided ID is not higher than the current max
-      id = this.next_node_id; // Assign the next available ID
-      this.next_node_id += 1
-    } else {
-      this.next_node_id = id; // Update maxNodeId if the provided ID is higher
+    if (id === undefined) {
+      id = this.next_node_id();
     }
-
     const node = Node.new(id, priority, player, label);
     if (degree !== undefined) {
       node.setDegree(degree);
@@ -65,11 +56,9 @@ export class ParityGame extends JSONObject {
     return this.addNode(node);
   }
   addNode(node: Node): number {
+    assert(this.nodes.findIndex((e) => e.id == node.id) < 0, "Node already exists!");
     this.nodes.push(node);
     this.adjList.set(node, new Set());
-
-    // Update the maxNodeId to reflect the newly added node's ID
-    this.next_node_id = Math.max(this.next_node_id, node.id);
 
     return node.id;
   }
@@ -126,10 +115,6 @@ export class ParityGame extends JSONObject {
     );
   }
 
-  get_id() {
-    return this.next_node_id++;
-  }
-
   target_neighbors(n: Node): Node[] {
     return this.links.filter((l) => l.source_id === n.id).map((l) => l.target_id).map((id) => this.find_node_by_id(id));
   }
@@ -139,10 +124,10 @@ export class ParityGame extends JSONObject {
     assert(res !== undefined);
     return res;
   }
-
-  getElementDefinition() {
-    const nodes = this.nodes.map((node) => node.getElementDefinition());
-    const links = this.links.map((link) => link.getElementDefinition());
-    return [...nodes, ...links];
+  next_node_id() {
+    if (this.nodes.length === 0) {
+      return 0;
+    }
+    return Math.max(...this.nodes.map((n) => n.id)) + 1;
   }
 }

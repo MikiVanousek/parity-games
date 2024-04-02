@@ -1,40 +1,9 @@
 import { Trace, TraceStep, NodeSet, LinkSet } from "../src/board/Trace";
-import { example_pg } from "../src/board/ExamplePG";
+import { example_pg, trace_example as example_trace, trace_example } from "../src/board/ExamplePG";
 import * as fs from 'fs';
 import { ParityGame } from "../src/board/ParityGame";
 
 const dir = 'test/'
-const trace_example = new Trace({
-    parity_game: example_pg,
-    algorithm_name: "Zmrd",
-    steps: [
-        new TraceStep({
-            node_sets: [
-                new NodeSet({
-                    name: "current",
-                    node_ids: [0, 1]
-                }),
-
-                new NodeSet({
-                    name: "next",
-                    node_ids: [2, 3]
-                })
-            ],
-            link_sets: [
-                new LinkSet({
-                    name: "pretty",
-                    link_source_target_ids: [[1, 2], [3, 4]]
-                }),
-                new LinkSet({
-                    name: "ugly",
-                    link_source_target_ids: [[0, 5]]
-                })
-            ],
-            node_labels: {}
-        })
-    ]
-
-});
 
 test('read write parity', () => {
     const file_name = dir + 'parity.json'
@@ -47,18 +16,106 @@ test('read write parity', () => {
     expect(res).toEqual(example_pg)
 });
 
-test('read write trace', () => {
-    const file_name = dir + 'trace.json'
+test('trace read write', () => {
+    const file_name = dir + 'example.trace.json'
 
-    const write_string = JSON.stringify(trace_example);
+    const write_string = JSON.stringify(example_trace);
     fs.writeFileSync(file_name, write_string, 'utf8')
     const read_string = fs.readFileSync(file_name, 'utf8')
     expect(read_string).toEqual(write_string)
 
     const o = JSON.parse(read_string)
     const res = new Trace(o)
-    expect(res).toEqual(trace_example)
+    expect(res).toEqual(example_trace)
 })
+
+test('trace validaton test', () => {
+    expect(example_trace.validate()).toBe(true)
+    example_trace.steps.push(
+        new TraceStep({
+            node_sets: [
+                new NodeSet({
+                    name: "current",
+                    // Node 10 is not in the parity game
+                    node_ids: [10, 5]
+                }),
+
+                new NodeSet({
+                    name: "other",
+                    node_ids: [6]
+                })
+            ],
+            link_sets: [
+                new LinkSet({
+                    name: "pretty",
+                    link_source_target_ids: [[3, 2], [4, 7]]
+                }),
+                new LinkSet({
+                    name: "wierd",
+                    link_source_target_ids: [[8, 4]]
+                })
+            ],
+            node_labels: {}
+        })
+    );
+    expect(example_trace.validate()).toBe(false)
+    example_trace.steps.pop()
+    expect(example_trace.validate()).toBe(true)
+    example_trace.steps.push(
+        new TraceStep({
+            node_sets: [
+                new NodeSet({
+                    name: "current",
+                    node_ids: [10, 5]
+                }),
+
+                new NodeSet({
+                    name: "other",
+                    node_ids: [6]
+                })
+            ],
+            link_sets: [
+                new LinkSet({
+                    name: "pretty",
+                    link_source_target_ids: [[9, 0], [4, 7]]
+                }),
+                new LinkSet({
+                    name: "wierd",
+                    link_source_target_ids: [[6, 4]]
+                })
+            ],
+            node_labels: {}
+        })
+    )
+    example_trace.steps.push(
+        new TraceStep({
+            node_sets: [
+                new NodeSet({
+                    name: "current",
+                    node_ids: [10, 5]
+                }),
+
+                new NodeSet({
+                    name: "other",
+                    node_ids: [6]
+                })
+            ],
+            link_sets: [
+                new LinkSet({
+                    name: "pretty",
+                    link_source_target_ids: [[3, 2], [4, 7]]
+                }),
+                new LinkSet({
+                    name: "wierd",
+                    link_source_target_ids: [[8, 4]]
+                })
+            ],
+            node_labels: {}
+        })
+    )
+    expect(example_trace.validate()).toBe(false)
+});
+
 
 
 

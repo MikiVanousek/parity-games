@@ -18,16 +18,20 @@
   <div class="navbar">
     <div class="navbar-heading">Parity Game</div>
     <div class="navbar-group">
-      <span id="file-name-display"></span>
-      <input type="file" accept=".pg" id="file-input" hidden onchange="handleFileSelect(event)" />
-      <label class="button" for="file-input"><span class="icon"><i class="fa-solid fa-upload"></span></i>Import
-        Oink</label>
       <div class="row">
-        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" />
+        <input type="file" accept=".pg" id="oink-file-input" hidden onchange="handleOinkFileSelect(event)" />
+        <label class="button" for="oink-file-input"><span class="icon"><i
+              class="fa-solid fa-upload"></span></i>Import</label>
+        <button class="button" id="export-oink-btn" onclick="saveOinkFile(event)"> <span class="icon"><i
+              class="fa-solid fa-download"></span></i>Export
+        </button>
+      </div>
+      <div class="row">
+        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".cypg_json" />
         <label class="button" for="board-file-input"><span class="icon"><i
-              class="fa-solid fa-file-import"></i></span>Import</label>
-        <button onclick="handleExportGame()"><span class="icon"><i
-              class="fa-solid fa-file-export"></i></span>Export</button>
+              class="fa-solid fa-file-import"></i></span>Load</label>
+        <button onclick="handleExportGame(event)"><span class="icon"><i
+              class="fa-solid fa-file-export"></i></span>Save</button>
       </div>
       <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i
             class="fa-solid fa-image"></i></span>Export as PNG</button>
@@ -63,41 +67,20 @@
   </div>
   </div>
 
-  <div class="bottom-bar">
-    <button onclick="skipToBeginningAction()"><span class="icon"><i
-          class="fa-solid fa-backward-fast"></i></span></button>
-    <button onclick="lastStepAction()"><span class="icon"><i class="fa-solid fa-backward-step"></i></span></button>
-
-    <div class="play-speed-container">
-      <button onclick="playAction()"><span class="icon"><i class="fa-solid fa-play"></i></span>Play</button>
-      <select id="speedSelect/" onchange="setSpeed(this.value)">
-        <option value="1.0">1.0x</option>
-        <option value="1.2">1.2x</option>
-        <option value="1.5">1.5x</option>
-        <option value="2.0">2.0x</option>
-      </select>
-    </div>
-    <button onclick="pauseAction()"><span class="icon"><i class="fa-solid fa-pause"></i></span></button>
-    <button onclick="nextStepAction()"><span class="icon"><i class="fa-solid fa-forward-step"></i></span></button>
-    <button onclick="skipToEndAction()"><span class="icon"><i class="fa-solid fa-forward-fast"></i></span></button>
-  </div>
-
-  <div class="bottom-bar">
+  <div class="bottom-bar" id="trace_controls">
+    <button id="closeButton" class="cross-button"><i class="fa fa-times"></i></button>
     <button id="skipToBeginningAction"><span class="icon"><i class="fa-solid fa-backward-fast"></i></span></button>
     <button id="lastStepAction"><span class="icon"><i class="fa-solid fa-backward-step"></i></span></button>
 
     <div class="play-speed-container">
-      <button id="playAction"><span class="icon"><i class="fa-solid fa-play"></i></span>Play</button>
-      <select id="speedSelect">
-        <option value="1.0">1.0x</option>
-        <option value="1.2">1.2x</option>
-        <option value="1.5">1.5x</option>
-        <option value="2.0">2.0x</option>
-      </select>
+      <button id="playAction"><span class="icon"><i class="fa fa-play" id="playStopIcon"></i></span>Play</button>
+      <input type="number" id="speedInput" value="1.0" min="0.1" step="0.1">
     </div>
-    <button id="stopAction"><span class="icon"><i class="fa-solid fa-stop"></i></span></button>
+
     <button id="nextStepAction"><span class="icon"><i class="fa-solid fa-forward-step"></i></span></button>
     <button id="skipToEndAction"><span class="icon"><i class="fa-solid fa-forward-fast"></i></span></button>
+
+    <div id="traceStepDisplay" class="trace-step-display">Step: 0</div>
   </div>
 
   <div class="top-left-panel" id="color-legend">

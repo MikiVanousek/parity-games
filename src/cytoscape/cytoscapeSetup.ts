@@ -1,8 +1,3 @@
-declare global {
-  interface Window {
-    $: typeof import("jquery");
-  }
-}
 var jquery = require("jquery");
 window.$ = jquery;
 var cytoscape = require("cytoscape");
@@ -54,6 +49,13 @@ export function setupCytoscape(containerId: string) {
         },
       },
       {
+        selector: 'node[background_color]',
+        style: {
+          'background-color': 'data(background_color)',
+          'text-outline-color': 'data(background_color)',
+        }
+      },
+      {
         selector: "edge",
         style: {
           "curve-style": "bezier", // This makes the edge curved, which helps visually with arrow positioning
@@ -71,6 +73,13 @@ export function setupCytoscape(containerId: string) {
           "target-arrow-color": SELECTION_COLOR, // Make sure the arrow matches the line
           //'width': 4, // Optionally increase the width for visibility
         },
+      },
+      {
+        selector: 'edge[line_color]',
+        style: {
+          'line-color': 'data(line_color)',
+          "target-arrow-color": "data(line_color)",
+        }
       },
     ],
   });
