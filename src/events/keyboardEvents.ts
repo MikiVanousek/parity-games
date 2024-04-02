@@ -35,8 +35,12 @@ mappings.push(new KeyMapping(
   ["?", "/"],
   "Toggle manual",
   (args) => {
-    const manual = document.getElementById("manual");
-    manual.hidden = !manual.hidden;
+    const manual_overlay = document.getElementById("manual-overlay");
+    if (manual_overlay.style.display === "none") {
+      manual_overlay.style.display = "";
+    } else {
+      manual_overlay.style.display = "none";
+    }
   }
 ))
 

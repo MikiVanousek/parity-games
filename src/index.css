@@ -447,7 +447,7 @@
       position: fixed;
       display: flex;
       justify-content: center;
-      /* align-items: center; */
+      backdrop-filter: blur(5px);
       height: 100vh;
       width: 100vw;
       padding: 20px;
