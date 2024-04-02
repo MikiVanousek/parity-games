@@ -7,6 +7,7 @@ import {
   handleImportGame,
   exportAsPng,
   handleOinkFileSelect,
+  saveOinkFile,
 } from "./io/exportImport";
 import { setupNodeEvents } from "./events/nodeEvents";
 import { PGParser } from "./board/PGParser";
@@ -53,9 +54,17 @@ setupNodeEvents(cy, ur, layoutManager);
   handleImportGame(event, cy);
 };
 
+(window as any).handleOinkFileSelect = function (event) {
+  handleOinkFileSelect(event, cy, layoutManager)
+};
+(window as any).saveOinkFile = function (event) {
+  saveOinkFile(cy);
+};
+
 (window as any).exportAsPng = function () {
   exportAsPng(cy);
 };
+
 
 (window as any).changeLayout = function (e: any) {
   layoutManager.changeLayout(e.target.value);
@@ -120,4 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('skipToBeginningAction').addEventListener('click', pgManager.goToFirstStep.bind(pgManager));
   document.getElementById('skipToEndAction').addEventListener('click', pgManager.goToLastStep.bind(pgManager));
   document.getElementById('closeButton').addEventListener('click', pgManager.close.bind(pgManager));
+
+  document.getElementById('export-oink-btn').addEventListener('click', (e) => {
+    PGParser.exportOinkFormat(PGParser.cyToPg(cy))
+  });
 });

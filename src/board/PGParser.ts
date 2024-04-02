@@ -66,7 +66,7 @@ export module PGParser {
     return res;
   }
 
-  function nodeToCy(node: Node) {
+  function nodeToCy(node: Node): Object {
     return {
       data: {
         id: `${node.id}`,
@@ -77,7 +77,7 @@ export module PGParser {
     };
   }
 
-  function linkToCy(link: Link) {
+  function linkToCy(link: Link): Object {
     return {
       group: "edges",
       data: { id: `${link.source_id + "," + link.target_id}`, source: `${link.source_id}`, target: `${link.target_id}` },
@@ -89,6 +89,7 @@ export module PGParser {
     const links = pg.links.map((link) => linkToCy(link));
     return [...nodes, ...links];
   }
+
   export function cyToPg(cy) {
     const pg = ParityGame.emptyBoard();
     for (const n of cy.$("node")) {

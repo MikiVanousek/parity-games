@@ -3,13 +3,9 @@ import { PGParser } from "../board/PGParser";
 
 export function handleExportGame(cy, name = "game") {
   const cyState = cy.elements().jsons();
-  // TODO Do we need to save pg? If so, json better than Oink
-  const pg = PGParser.cyToPg(cy);
-  const game = PGParser.exportOinkFormat(pg);
 
   const exportData = {
     cytoscapeState: cyState,
-    gameState: game,
   };
 
   const exportString = JSON.stringify(exportData, null, 2);
@@ -18,7 +14,7 @@ export function handleExportGame(cy, name = "game") {
 
   const a = document.createElement("a");
   a.href = URL.createObjectURL(file);
-  a.download = name + ".json";
+  a.download = name + ".cypg_json";
   a.click();
 }
 
@@ -40,7 +36,6 @@ export function handleImportGame(event, cy) {
         cy.fit(cy.elements(), 50);
 
         var fileName = file.name.replace(/\.[^/.]+$/, "");
-        cy.pg = PGParser.importOinkFormat(importedData.gameState);
       } catch (error) {
         console.error("Error importing game:", error);
       }
@@ -58,7 +53,7 @@ export function exportAsPng(cy, name = "picture") {
   a.click();
 }
 
-export function handleOinkFileSelect(event, cy, layoutManager, pg) {
+export function handleOinkFileSelect(event, cy, layoutManager) {
   const file = event.target.files[0];
 
   if (file) {
@@ -69,7 +64,7 @@ export function handleOinkFileSelect(event, cy, layoutManager, pg) {
     reader.onload = function (loadEvent) {
       const fileContent = loadEvent.target.result as string;
 
-      pg = PGParser.importOinkFormat(fileContent);
+      const pg = PGParser.importOinkFormat(fileContent);
       resetBoardVisuals(cy, pg, layoutManager);
     };
 
@@ -77,8 +72,20 @@ export function handleOinkFileSelect(event, cy, layoutManager, pg) {
   }
 }
 
+export function saveOinkFile(cy, name = "game") {
+  const pg = PGParser.cyToPg(cy);
+  const exportString = PGParser.exportOinkFormat(pg);
+
+  const file = new Blob([exportString], { type: "text/plain" });
+
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(file);
+  a.download = name + ".pg";
+  a.click();
+}
+
 function resetBoardVisuals(cy, pg, layoutManager) {
-  const elements = pg.getElementDefinition();
+  const elements = PGParser.pgToCy(pg);
   cy.elements().remove(); // Clear the current graph
   cy.add(elements); // Add the new elements
   layoutManager.runOnce();
