@@ -444,8 +444,6 @@
     }
 
     .manual-overlay {
-      position: fixed;
-      display: block;
       backdrop-filter: blur(5px);
       height: 100vh;
       width: 100vw;
@@ -455,15 +453,15 @@
     }
 
     .manual {
-      text-align: start;
-      background-color: #333;
-      display: block;
+      margin-inline: auto;
       width: fit-content;
       padding: 20px;
       border-radius: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
       margin-top: 20px;
       margin-bottom: 20px;
+      text-align: start;
+      background-color: #333;
     }
 
     .manual-entry {
@@ -481,17 +479,17 @@
 
     .manual-key {
       display: grid;
-
-      background-color: #555;
-      min-height: 3rem;
-      min-width: 1rem;
-      font-weight: bold;
-      border-radius: 8px;
       font-size: medium;
       text-align: center;
       align-items: center;
+      box-sizing: border-box;
+      min-height: 3rem;
+      min-width: 3rem;
       padding-left: 1rem;
       padding-right: 1rem;
+      font-weight: bold;
+      background-color: #555;
+      border-radius: 8px;
 
     }
 

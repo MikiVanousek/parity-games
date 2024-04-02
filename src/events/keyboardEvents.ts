@@ -84,7 +84,7 @@ mappings.push(new KeyMapping(
 ));
 
 mappings.push(new KeyMapping(
-  ["+"],
+  ["+", "="],
   "Increment priority",
   ({ cy }) => {
     var selectedNodes = cy.$("node:selected");
