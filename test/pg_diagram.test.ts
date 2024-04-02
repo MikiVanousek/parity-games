@@ -6,7 +6,7 @@ let PG_DIR = 'test/pg_examples/'
 
 test('basic .pg parsing test', () => {
     var filestr = fs.readFileSync(`${PG_DIR}ex1.pg`).toString()
-    let pg = PGParser.import_pg_format(filestr)
+    let pg = PGParser.importOinkFormat(filestr)
 
     expect(pg.nodes.length).toBe(6)
     expect(pg.nodes[0].label).toBe("0")
@@ -17,7 +17,7 @@ test('basic .pg parsing test', () => {
     expect(pg.nodes[0].priority).toBe(0)
     expect(pg.nodes[5].priority).toBe(3)
 
-    let exp_str = PGParser.export_pg_format(pg)
+    let exp_str = PGParser.exportOinkFormat(pg)
     // The file in question does not end in an empty line.
     expect(exp_str).toBe(filestr)
 })
@@ -26,7 +26,7 @@ test.skip('elaborate .pg parsing test', () => {
     let file_list = fs.readdirSync(PG_DIR)
     for (let file_name of file_list) {
         let file_string = fs.readFileSync(PG_DIR + file_name).toString()
-        let pg = PGParser.import_pg_format(file_string)
-        expect(PGParser.export_pg_format(pg)).toBe(file_string)
+        let pg = PGParser.importOinkFormat(file_string)
+        expect(PGParser.exportOinkFormat(pg)).toBe(file_string)
     }
 })
