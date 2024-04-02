@@ -294,6 +294,22 @@
       border-top-right-radius: 20px;
     }
 
+    .cross-button {
+      position: absolute; /* Positions the button absolutely within .bottom-bar */
+      top: 0; /* Aligns it to the top edge */
+      right: 0; /* Aligns it to the right edge */
+      background: transparent; /* Optional: makes the button background transparent */
+      border: none; /* Removes the border */
+      color: white; /* Sets the icon color, change as needed */
+      cursor: pointer; /* Changes cursor to a pointer on hover */
+      padding: 0.5rem; /* Adds some space around the icon */
+    }
+    
+    /* Style adjustments for the icon within the cross-button */
+    .cross-button .fa {
+      font-size: 1.5rem; /* Adjusts the size of the cross icon */
+    }
+
     .bottom-bar button {
       background-color: #1d1d1d;
       border-radius: 10px;
@@ -307,35 +323,6 @@
 
     .bottom-bar button:hover {
       opacity: 0.7;
-    }
-
-    .play-speed-container {
-      position: relative;
-      display: inline-block;
-    }
-
-    .speed-dropdown {
-      display: none;
-      /* Initially hidden */
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 100px;
-      /* Adjust as necessary */
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      z-index: 1;
-    }
-
-    .speed-dropdown ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .speed-dropdown ul li {
-      color: black;
-      padding: 8px 12px;
-      cursor: pointer;
-      text-align: left;
     }
 
     .speed-dropdown ul li:hover {
@@ -395,4 +382,38 @@
       transition: background-color 0.3s ease;
       /* add hand mouse */
       cursor: pointer;
+    }
+
+    .trace-step-display {
+      color: #fff; /* Example: setting text color */
+      padding: 0.5rem;
+      margin-left: 20px; /* Space it out from other elements, adjust as needed */
+      /* place the trace-step to the left */
+      position: relative;
+    }
+    
+    /* Styling for the speed input field */
+    #speedInput {
+      width: 60px; /* Adjust the width as needed */
+      margin: 10px; /* Space around the input field */
+      font-size: 1rem; /* Size of the text within the input */
+      line-height: 1.5; /* Adjust the line height for better readability */
+      color: #333; /* Color of the text */
+      background-color: #fff; /* Background color of the input field */
+      border: 1px solid #ccc; /* Border color */
+      border-radius: 5px; /* Rounded corners for the input field */
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow for depth */
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Smooth transition for focus/hover */
+      /* Center the text within the input field */
+      text-align: center;
+    }
+
+    #speedInput:focus {
+      border-color: #66afe9; /* Border color when the input is focused */
+      outline: 0; /* Remove default focus outline */
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(102, 175, 233, 0.6); /* Enhanced shadow on focus */
+    }
+
+    #speedInput:hover {
+      border-color: #adb5bd; /* Border color on hover */
     }

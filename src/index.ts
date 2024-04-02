@@ -76,54 +76,43 @@ document
     });
   });
 
-
-
-
-
-
-let autoPlayIntervalId = null;
-
-// function play() {
-//   // get the current factor
-//   const factor = document.getElementById('speedSelect') as HTMLSelectElement;
-//   const speedFactor = parseFloat(factor.value);
-
-//   const interval = 2000 / speedFactor;
-
-//   // Stop any existing playback
-//   if (autoPlayIntervalId !== null) {
-//     clearInterval(autoPlayIntervalId);
-//     autoPlayIntervalId = null;
-//   }
-
-//   // Start a new interval
-//   autoPlayIntervalId = setInterval(() => {
-//     if (currentStepIndex < traceData.length - 1) {
-//       currentStepIndex++;
-//       updateDisplay();
-//     } else {
-//       // Reached the end, stop the interval
-//       stopPlay();
-//     }
-//   }, interval);
-// }
-
-// function stopPlay() {
-//   if (autoPlayIntervalId !== null) {
-//     clearInterval(autoPlayIntervalId);
-//     autoPlayIntervalId = null;
-//   }
-// }
-
 document.addEventListener('DOMContentLoaded', function () {
+  const playStopButton = document.getElementById('playAction');
+
+  if (playStopButton) {
+    const playStopIcon = document.querySelector('#playAction .fa');
+
+    if (playStopIcon) {
+      // Initial button state setup
+      playStopButton.dataset.playing = "false";
+      playStopIcon.classList.add('fa-play');
+      playStopButton.textContent = 'Play';
+
+      playStopButton.addEventListener('click', function () {
+        const isPlaying = playStopButton.dataset.playing === "true";
+
+        if (!isPlaying) {
+          // If not playing, start play
+          playStopButton.dataset.playing = "true";
+          playStopIcon.classList.remove('fa-play');
+          playStopIcon.classList.add('fa-stop');
+          playStopButton.textContent = 'Stop';
+          pgManager.play(); // Call the play method
+        } else {
+          // If playing, stop
+          playStopButton.dataset.playing = "false";
+          playStopIcon.classList.remove('fa-stop');
+          playStopIcon.classList.add('fa-play');
+          playStopButton.textContent = 'Play';
+          pgManager.stop(); // Call the stop method
+        }
+      });
+    }
+  }
 
   document.getElementById('nextStepAction').addEventListener('click', pgManager.nextStep.bind(pgManager));
   document.getElementById('lastStepAction').addEventListener('click', pgManager.prevStep.bind(pgManager));
   document.getElementById('skipToBeginningAction').addEventListener('click', pgManager.goToFirstStep.bind(pgManager));
   document.getElementById('skipToEndAction').addEventListener('click', pgManager.goToLastStep.bind(pgManager));
-  document.getElementById('stopAction').addEventListener('click', pgManager.removeTrace.bind(pgManager))
-
-  // document.getElementById('playAction').addEventListener('click', play);
-  // document.getElementById('stopAction').addEventListener('click', stopPlay);
-
+  document.getElementById('closeButton').addEventListener('click', pgManager.close.bind(pgManager));
 });
