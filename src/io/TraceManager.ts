@@ -4,6 +4,7 @@ import { Trace } from "../board/Trace";
 import { ParityGame } from "../board/ParityGame";
 import { example_pg, trace_example } from "../board/ExamplePG";
 import { PGListener } from "./PGListener";
+import { deepEquals } from "./deepEquals";
 
 // TODO Change PG when CY changes
 // TODO Assert we are displaying a trace for the current PG.
@@ -71,6 +72,15 @@ export class TraceManager {
         variant: "danger",
         duration: 4000,
       })
+      return;
+    }
+    if (!deepEquals(t.parity_game, this.pg)) {
+      showToast({
+        message: "This trace does not fit the current parity game.",
+        variant: "danger",
+        duration: 4000,
+      })
+      return;
     }
 
     this.trace = t;
