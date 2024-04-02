@@ -1,5 +1,5 @@
 import LayoutManager from "./layout/layoutManager";
-import { PGManager } from "./io/PGManager";
+import { TraceManager } from "./io/TraceManager";
 import { setupCytoscape } from "./cytoscape/cytoscapeSetup";
 import { setupKeyboardEvents } from "./events/keyboardEvents";
 import {
@@ -15,7 +15,7 @@ declare global {
   interface Window {
     $: typeof import("jquery");
     cy: any
-    pgManager: PGManager
+    traceManager: TraceManager
     layoutManager: LayoutManager,
   }
 }
@@ -25,12 +25,12 @@ var [cy, ur] = setupCytoscape("cy");
 window.cy = cy
 
 const fileInput = document.getElementById("fileInput");
-var pgManager = new PGManager(cy);
+var pgManager = new TraceManager(cy);
 fileInput.addEventListener("change", (e) => {
   console.log("fileInput changed");
   pgManager.handleTraceFileSelect(e);
 });
-window.pgManager = pgManager
+window.traceManager = pgManager
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;

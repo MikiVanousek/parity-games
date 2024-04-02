@@ -3,18 +3,20 @@ import { assert } from "../assert";
 import { Trace } from "../board/Trace";
 import { ParityGame } from "../board/ParityGame";
 import { example_pg, trace_example } from "../board/ExamplePG";
+import { PGListener } from "./PGListener";
 
-// TODO Add vertex lables
+// TODO Change PG when CY changes
+// TODO Assert we are displaying a trace for the current PG.
+// TODO Disable modifications when trace is loaded
 // TODO Play animation
 // TODO Bind keyboard keys
-// TODO Change PG when CY changes
-// TODO Disable modifications when trace is loaded
-// TODO Assert we are displaying a trace for the current PG.
-export class PGManager {
+// TODO Add vertex lables
+export class TraceManager {
   cy: any;
   trace?: Trace;
   private step?: number;
   pg: ParityGame;
+  pgListener: PGListener;
   colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
   listElement: HTMLElement;
   controlElement: HTMLElement;
@@ -24,7 +26,9 @@ export class PGManager {
   constructor(cy: any, pg: ParityGame = example_pg) {
     this.cy = cy;
     this.pg = pg;
+    // Only registering the PGListener AFTER adding the elements. Otherwise the listener will be triggered by the initial add.
     cy.add(this.pg.getElementDefinition());
+    this.pgListener = new PGListener(pg, cy);
 
     let n = this.cy.getElementById("3")
     console.log(n)

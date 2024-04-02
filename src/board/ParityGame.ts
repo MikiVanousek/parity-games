@@ -65,6 +65,7 @@ export class ParityGame extends JSONObject {
     return this.addNode(node);
   }
   addNode(node: Node): number {
+    assert(this.nodes.findIndex((e) => e.id == node.id) < 0, "Node already exists!");
     this.nodes.push(node);
     this.adjList.set(node, new Set());
 
