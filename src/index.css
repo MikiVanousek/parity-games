@@ -445,26 +445,25 @@
 
     .manual-overlay {
       position: fixed;
-      display: flex;
-      justify-content: center;
+      display: block;
       backdrop-filter: blur(5px);
       height: 100vh;
       width: 100vw;
       padding: 20px;
       overflow-y: auto;
-      /* Enables vertical scrolling if the child div is too tall */
       box-sizing: border-box;
     }
 
     .manual {
-      overflow: auto;
+      text-align: start;
       background-color: #333;
-      width: auto;
+      display: block;
+      width: fit-content;
       padding: 20px;
       border-radius: 20px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
       margin-top: 20px;
+      margin-bottom: 20px;
     }
 
     .manual-entry {
@@ -481,13 +480,23 @@
 
 
     .manual-key {
+      display: grid;
+
       background-color: #555;
-      padding: 10px;
+      min-height: 3rem;
+      min-width: 1rem;
+      font-weight: bold;
       border-radius: 8px;
+      font-size: medium;
+      text-align: center;
+      align-items: center;
+      padding-left: 1rem;
+      padding-right: 1rem;
+
     }
 
     .manual-keys {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 10px;
     }

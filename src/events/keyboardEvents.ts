@@ -176,7 +176,10 @@ function fillManual(mappings: KeyMapping[]): void {
     entryDiv.className = "manual-entry";
     const keysDiv = document.createElement("div");
     keysDiv.className = "manual-keys";
-    for (const key of kb.keys) {
+    for (let key of kb.keys) {
+      if (kb.requires_modifier) {
+        key = "⌘ + " + key
+      }
       const keyDiv = document.createElement("div");
       keyDiv.className = "manual-key";
       keyDiv.textContent = key;
