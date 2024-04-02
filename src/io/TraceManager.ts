@@ -14,7 +14,7 @@ export class TraceManager {
   listElement: HTMLElement;
   controlElement: HTMLElement;
   setsEnabled?: Map<string, boolean>;
-
+  intervalID = null;
 
   constructor(cy: any, pg: ParityGame = example_pg) {
     this.cy = cy;
@@ -118,6 +118,7 @@ export class TraceManager {
     });
 
     this.refreshColor();
+    this.updateTraceStepDisplay();
   }
 
   refreshColor() {
@@ -147,6 +148,7 @@ export class TraceManager {
     assert(this.trace !== undefined)
     if (this.step < this.trace.steps.length - 1) {
       this.setStep(this.step + 1);
+      this.updateTraceStepDisplay();
     } else {
       showToast({
         message: "This is the last step!",
@@ -154,10 +156,12 @@ export class TraceManager {
       })
     }
   }
+
   prevStep() {
     assert(this.trace !== undefined)
     if (this.step > 0) {
       this.setStep(this.step - 1);
+      this.updateTraceStepDisplay();
     } else {
       showToast({
         message: "This is the first step!",
@@ -190,6 +194,55 @@ export class TraceManager {
 
   goToLastStep() {
     this.setStep(this.trace.steps.length - 1)
+  }
+
+  isLastStep() {
+    return this.step === this.trace.steps.length - 1;
+  }
+
+  play() {
+    this.stop()
+
+    // get the current factor
+    const factor = document.getElementById('speedInput') as HTMLSelectElement;
+    const speedFactor = parseFloat(factor.value);
+
+    // if speedFactor is 0, stop the play
+    if (speedFactor === 0) {
+      this.stop();
+      return;
+    }
+
+    // check the validity of the speedFactor
+    if (isNaN(speedFactor) || speedFactor < 0) {
+      showToast({
+        message: "Invalid speed factor",
+        variant: "danger"
+      });
+      return;
+    }
+
+    const interval = 2000 / speedFactor;
+
+    this.intervalID = setInterval(() => {
+      if (this.isLastStep()) {
+        this.stop();
+        return;
+      }
+      this.nextStep();
+    }, interval);
+
+  }
+
+  stop() {
+    if (this.intervalID !== null) {
+      clearInterval(this.intervalID);
+      this.intervalID = null; // Reset the intervalId
+    }
+  }
+
+  close() {
+    this.removeTrace();
   }
 
   addListItem(listElement, text, initialColor) {
@@ -231,5 +284,11 @@ export class TraceManager {
 
   hasTrace() {
     return this.trace !== undefined;
+  }
+  updateTraceStepDisplay() {
+    const stepDisplay = document.getElementById('traceStepDisplay');
+    if (stepDisplay) {
+      stepDisplay.textContent = `Step: ${this.step + 1} / ${this.trace.steps.length}`;
+    }
   }
 }
