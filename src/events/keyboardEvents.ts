@@ -4,6 +4,7 @@ import {
   copySelectedElements,
   pasteCopiedElements,
 } from "./graphEvents";
+import { showToast } from "../ui/toast";
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
   let mouseX: number = 0;
@@ -34,11 +35,26 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
     const modelX = (mouseX - pan.x) / zoom;
     const modelY = (mouseY - pan.y) / zoom;
 
+    const pgEditingKeys = ["e", "o", "q", "Backspace", "Delete", "+", "-", "p", "c", "v", "z", "y"]
+    if (window.traceManager.hasTrace() && pgEditingKeys.includes(event.key)) {
+      showToast({
+        message: "Can not change parity game while a trace is loaded.",
+        variant: "danger",
+      });
+      return;
+    }
     switch (event.key) {
       case "e":
         addNodeAtPosition(cy, ur, modelX, modelY, true);
         break;
       case "o":
+        if (window.traceManager.hasTrace()) {
+          showToast({
+            message: "Can not change parity game while a trace is loaded.",
+            variant: "danger",
+          });
+          break;
+        }
         addNodeAtPosition(cy, ur, modelX, modelY, false);
         break;
       case "q":

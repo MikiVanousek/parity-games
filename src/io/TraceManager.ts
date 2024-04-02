@@ -6,8 +6,6 @@ import { example_pg, trace_example } from "../board/ExamplePG";
 import { PGListener } from "./PGListener";
 import { deepEquals } from "./deepEquals";
 
-// TODO Change PG when CY changes
-// TODO Assert we are displaying a trace for the current PG.
 // TODO Disable modifications when trace is loaded
 // TODO Play animation
 // TODO Bind keyboard keys
@@ -74,7 +72,8 @@ export class TraceManager {
       })
       return;
     }
-    if (!deepEquals(t.parity_game, this.pg)) {
+    // Compare just the nodes and links, nextNodeId is irrelevant
+    if (!deepEquals(t.parity_game.nodes, this.pg.nodes) || !deepEquals(t.parity_game.links, this.pg.links)) {
       showToast({
         message: "This trace does not fit the current parity game.",
         variant: "danger",
@@ -237,5 +236,9 @@ export class TraceManager {
     listItem.appendChild(textSpan);
 
     listElement.appendChild(listItem);
+  }
+
+  hasTrace() {
+    return this.trace !== undefined;
   }
 }

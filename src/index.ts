@@ -15,6 +15,7 @@ declare global {
   interface Window {
     $: typeof import("jquery");
     cy: any
+    ur: any
     traceManager: TraceManager
     layoutManager: LayoutManager,
   }
@@ -23,6 +24,7 @@ declare global {
 // Set up the cytoscape instance
 var [cy, ur] = setupCytoscape("cy");
 window.cy = cy
+window.ur = ur
 
 const fileInput = document.getElementById("fileInput");
 var pgManager = new TraceManager(cy);

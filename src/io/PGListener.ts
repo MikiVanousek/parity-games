@@ -25,6 +25,13 @@ export class PGListener {
     cy.on("add", "link", (event) => {
       pg.addLinkFromNodes(pg.find_node_by_id(parseInt(event.target.source().id())), pg.find_node_by_id(parseInt(event.target.target().id())));
     });
+    cy.on("afterDo", (event, names) => {
+      if (names == "editPriority") {
+        for (const n of event.target.selectedNodes) {
+          pg.find_node_by_id(parseInt(n.id())).priority = event.target.priority;
+        }
+      }
+    });
   }
 
 }
