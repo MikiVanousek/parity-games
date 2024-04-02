@@ -4,16 +4,12 @@ import { Link } from "./Link";
 import { assert } from '../assert';
 
 export module PGParser {
-  // TODO Remove optional PG argument
-  export function import_pg_format(
+  export function importOinkFormat(
     file_content: string,
-    pg?: ParityGame
   ): ParityGame {
     // create a list of lines
     var lines = file_content.split("\n");
-    if (pg === undefined) {
-      pg = ParityGame.emptyBoard();
-    }
+    let pg = ParityGame.emptyBoard();
 
     // assert(lines[0] === `parity ${pg.nodes.length};`);
     assert(lines[0].startsWith('parity '));
@@ -58,7 +54,7 @@ export module PGParser {
     return pg;
   }
 
-  export function export_pg_format(pg: ParityGame): string {
+  export function exportOinkFormat(pg: ParityGame): string {
     var res = `parity ${pg.nodes.length};\n`;
     for (let n of pg.nodes) {
       let arc_str = pg
@@ -68,5 +64,42 @@ export module PGParser {
       res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`;
     }
     return res;
+  }
+
+  function nodeToCy(node: Node) {
+    return {
+      data: {
+        id: `${node.id}`,
+        priority: node.priority,
+        isEven: node.player === Player.Even ? "true" : "false",
+        label: node.label,
+      },
+    };
+  }
+
+  function linkToCy(link: Link) {
+    return {
+      group: "edges",
+      data: { id: `${link.source_id + "," + link.target_id}`, source: `${link.source_id}`, target: `${link.target_id}` },
+    };
+  }
+
+  export function pgToCy(pg: ParityGame) {
+    const nodes = pg.nodes.map((node) => nodeToCy(node));
+    const links = pg.links.map((link) => linkToCy(link));
+    return [...nodes, ...links];
+  }
+  export function cyToPg(cy) {
+    const pg = ParityGame.emptyBoard();
+    for (const n of cy.$("node")) {
+      console.log(n)
+      pg.addNode(Node.new(parseInt(n.id()), parseInt(n.data("priority")), n.data("isEven") === "true" ? Player.Even : Player.Odd, n.data("label")));
+    }
+    for (const l of cy.$("edge")) {
+      console.log(l)
+      pg.addLink(Link.new(parseInt(l.data("source")), parseInt(l.data("target"))));
+    }
+    console.log("Reconstructed pg: ", pg);
+    return pg;
   }
 }

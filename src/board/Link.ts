@@ -10,10 +10,4 @@ export class Link extends JSONObject {
   static new(source_id: number, target_id: number): Link {
     return new Link({ source_id: source_id, target_id: target_id })
   }
-  getElementDefinition() {
-    return {
-      group: "edges",
-      data: { id: `${this.source_id + "," + this.target_id}`, source: `${this.source_id}`, target: `${this.target_id}` },
-    };
-  }
 }

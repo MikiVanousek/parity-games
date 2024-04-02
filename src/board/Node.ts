@@ -27,14 +27,4 @@ export class Node extends JSONObject {
   getDegree() {
     return this.degree;
   }
-  getElementDefinition() {
-    return {
-      data: {
-        id: `${this.id}`,
-        priority: this.priority,
-        isEven: this.player === Player.Even ? "true" : "false",
-        label: this.label,
-      },
-    };
-  }
 }

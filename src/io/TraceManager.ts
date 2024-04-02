@@ -3,19 +3,13 @@ import { assert } from "../assert";
 import { Trace } from "../board/Trace";
 import { ParityGame } from "../board/ParityGame";
 import { example_pg, trace_example } from "../board/ExamplePG";
-import { PGListener } from "./PGListener";
 import { deepEquals } from "./deepEquals";
+import { PGParser } from "../board/PGParser";
 
-// TODO Disable modifications when trace is loaded
-// TODO Play animation
-// TODO Bind keyboard keys
-// TODO Add vertex lables
 export class TraceManager {
   cy: any;
   trace?: Trace;
   private step?: number;
-  pg: ParityGame;
-  pgListener: PGListener;
   colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
   listElement: HTMLElement;
   controlElement: HTMLElement;
@@ -24,13 +18,9 @@ export class TraceManager {
 
   constructor(cy: any, pg: ParityGame = example_pg) {
     this.cy = cy;
-    this.pg = pg;
     // Only registering the PGListener AFTER adding the elements. Otherwise the listener will be triggered by the initial add.
-    cy.add(this.pg.getElementDefinition());
-    this.pgListener = new PGListener(pg, cy);
 
     let n = this.cy.getElementById("3")
-    console.log(n)
     cy.style().update();
 
     this.listElement = document.getElementById('color-legend');
@@ -51,8 +41,9 @@ export class TraceManager {
 
   importTrace(e) {
     const fileContent = e.target.result;
+    let t = undefined;
     try {
-      this.setTrace(new Trace(JSON.parse(fileContent.toString())));
+      t = new Trace(JSON.parse(fileContent.toString()))
     } catch (error) {
       showToast({
         message: "This file does not contain a valid trace.",
@@ -61,6 +52,7 @@ export class TraceManager {
       console.error("Error importing trace:", error);
       return;
     }
+    this.setTrace(t);
   }
 
   setTrace(t: Trace) {
@@ -73,7 +65,8 @@ export class TraceManager {
       return;
     }
     // Compare just the nodes and links, nextNodeId is irrelevant
-    if (!deepEquals(t.parity_game.nodes, this.pg.nodes) || !deepEquals(t.parity_game.links, this.pg.links)) {
+    const pg = PGParser.cyToPg(this.cy);
+    if (!deepEquals(t.parity_game.nodes, pg.nodes) || !deepEquals(t.parity_game.links, pg.links)) {
       showToast({
         message: "This trace does not fit the current parity game.",
         variant: "danger",
@@ -182,11 +175,11 @@ export class TraceManager {
   }
 
   resetColor() {
-    for (let pgn of this.pg.nodes) {
-      delete this.cy.getElementById(pgn.id.toString()).data().background_color
+    for (let n of this.cy.$("node")) {
+      delete n.data().background_color
     }
-    for (let l of this.pg.links) {
-      delete this.cy.getElementById(l.source_id + "," + l.target_id).data().line_color
+    for (let l of this.cy.$("edge")) {
+      delete l.data().line_color
     }
     this.cy.style().update();
   }
@@ -216,8 +209,6 @@ export class TraceManager {
       // Retrieve the initial color from the custom attribute
       const storedColor = colorLine.getAttribute('data-initial-color');
       colorLine.style.backgroundColor = isTransparent ? storedColor : 'transparent';
-
-      console.log(isTransparent)
 
       if (!isTransparent) {
         this.setsEnabled.set(text, false)

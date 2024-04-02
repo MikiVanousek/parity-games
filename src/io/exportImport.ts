@@ -1,9 +1,11 @@
 import { updateGraphFileName } from "../ui/utils";
 import { PGParser } from "../board/PGParser";
 
-export function handleExportGame(cy, pg) {
+export function handleExportGame(cy, name = "game") {
   const cyState = cy.elements().jsons();
-  const game = PGParser.export_pg_format(pg);
+  // TODO Do we need to save pg? If so, json better than Oink
+  const pg = PGParser.cyToPg(cy);
+  const game = PGParser.exportOinkFormat(pg);
 
   const exportData = {
     cytoscapeState: cyState,
@@ -16,7 +18,7 @@ export function handleExportGame(cy, pg) {
 
   const a = document.createElement("a");
   a.href = URL.createObjectURL(file);
-  a.download = pg.name + ".json";
+  a.download = name + ".json";
   a.click();
 }
 
@@ -38,7 +40,7 @@ export function handleImportGame(event, cy) {
         cy.fit(cy.elements(), 50);
 
         var fileName = file.name.replace(/\.[^/.]+$/, "");
-        cy.pg = PGParser.import_pg_format(importedData.gameState);
+        cy.pg = PGParser.importOinkFormat(importedData.gameState);
       } catch (error) {
         console.error("Error importing game:", error);
       }
@@ -48,11 +50,11 @@ export function handleImportGame(event, cy) {
   }
 }
 
-export function exportAsPng(cy, pg) {
+export function exportAsPng(cy, name = "picture") {
   const png = cy.png({ full: true });
   const a = document.createElement("a");
   a.href = png;
-  a.download = pg.name + ".png";
+  a.download = name + ".png";
   a.click();
 }
 
@@ -67,7 +69,7 @@ export function handleOinkFileSelect(event, cy, layoutManager, pg) {
     reader.onload = function (loadEvent) {
       const fileContent = loadEvent.target.result as string;
 
-      pg = PGParser.import_pg_format(fileContent);
+      pg = PGParser.importOinkFormat(fileContent);
       resetBoardVisuals(cy, pg, layoutManager);
     };
 

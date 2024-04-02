@@ -9,6 +9,8 @@ import {
   handleOinkFileSelect,
 } from "./io/exportImport";
 import { setupNodeEvents } from "./events/nodeEvents";
+import { PGParser } from "./board/PGParser";
+import { example_pg } from "./board/ExamplePG";
 
 
 declare global {
@@ -25,6 +27,7 @@ declare global {
 var [cy, ur] = setupCytoscape("cy");
 window.cy = cy
 window.ur = ur
+cy.add(PGParser.pgToCy(example_pg));
 
 const fileInput = document.getElementById("fileInput");
 var pgManager = new TraceManager(cy);
@@ -43,7 +46,7 @@ setupNodeEvents(cy, ur, layoutManager);
 
 // Window shits
 (window as any).handleExportGame = function () {
-  handleExportGame(pgManager.pg, cy);
+  handleExportGame(cy);
 };
 
 (window as any).handleImportGame = function (event) {
@@ -51,7 +54,7 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 (window as any).exportAsPng = function () {
-  exportAsPng(cy, pgManager.pg);
+  exportAsPng(cy);
 };
 
 (window as any).changeLayout = function (e: any) {
