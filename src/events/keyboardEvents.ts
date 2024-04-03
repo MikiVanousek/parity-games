@@ -35,7 +35,20 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
     const modelX = (mouseX - pan.x) / zoom;
     const modelY = (mouseY - pan.y) / zoom;
 
-    const pgEditingKeys = ["e", "o", "q", "Backspace", "Delete", "+", "-", "p", "c", "v", "z", "y"]
+    const pgEditingKeys = [
+      "e",
+      "o",
+      "q",
+      "Backspace",
+      "Delete",
+      "+",
+      "-",
+      "p",
+      "c",
+      "v",
+      "z",
+      "y",
+    ];
     if (window.traceManager.hasTrace() && pgEditingKeys.includes(event.key)) {
       showToast({
         message: "Can not change parity game while a trace is loaded.",
