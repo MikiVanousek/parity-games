@@ -7,6 +7,33 @@ import {
 import { showToast } from "../ui/toast";
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
+  ur.action(
+    "changePriority",
+    (args) => {
+      let nodes = args.nodes;
+      let value = args.value;
+      // The do action: updating the priority
+      let oldPriorities = nodes.map((node) => {
+        return { node: node, priority: node.data("priority") };
+      });
+      nodes.forEach(function (n) {
+        var priority = n.data("priority") || 0;
+        n.data("priority", Math.max(0, priority + value));
+      });
+      return { nodes: nodes, value: value, oldPriorities: oldPriorities };
+    },
+    (args) => {
+      // The undo action: reverting to the old priorities
+      let nodes = args.nodes;
+      let value = args.value;
+      let oldPriorities = args.oldPriorities;
+      oldPriorities.forEach((item) =>
+        item.node.data("priority", item.priority)
+      );
+      return { nodes: nodes, value: value };
+    }
+  );
+
   let mouseX: number = 0;
   let mouseY: number = 0;
 
@@ -78,10 +105,10 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
         removeSelectedElements(cy, ur);
         break;
       case "+":
-        incrementPriority(cy);
+        incrementPriority(cy, ur);
         break;
       case "-":
-        decrementPriority(cy);
+        decrementPriority(cy, ur);
         break;
       case "p":
         printElementsData(cy);
@@ -125,20 +152,14 @@ function removeSelectedElements(cy: cytoscape.Core, ur) {
   }
 }
 
-function incrementPriority(cy: cytoscape.Core) {
+function incrementPriority(cy: cytoscape.Core, ur) {
   var selectedNodes = cy.$("node:selected");
-  selectedNodes.forEach((node) => {
-    var priority = node.data("priority") || 0;
-    node.data("priority", priority + 1);
-  });
+  ur.do("changePriority", { nodes: selectedNodes, value: 1 });
 }
 
-function decrementPriority(cy: cytoscape.Core) {
+function decrementPriority(cy: cytoscape.Core, ur) {
   var selectedNodes = cy.$("node:selected");
-  selectedNodes.forEach((node) => {
-    var priority = node.data("priority") || 0;
-    node.data("priority", Math.max(0, priority - 1));
-  });
+  ur.do("changePriority", { nodes: selectedNodes, value: -1 });
 }
 
 function printElementsData(cy: cytoscape.Core) {
