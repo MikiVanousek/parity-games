@@ -81,24 +81,18 @@ mappings.push(new KeyMapping(
 mappings.push(new KeyMapping(
   ["+", "="],
   "Increment priority",
-  ({ cy }) => {
+  ({ cy, ur }) => {
     var selectedNodes = cy.$("node:selected");
-    selectedNodes.forEach((node) => {
-      var priority = node.data("priority") || 0;
-      node.data("priority", priority + 1);
-    });
+    ur.do("changePriority", { nodes: selectedNodes, value: 1 });
   }
 ));
 
 mappings.push(new KeyMapping(
   ["-"],
   "Decrement priority",
-  ({ cy }) => {
+  ({ cy, ur }) => {
     var selectedNodes = cy.$("node:selected");
-    selectedNodes.forEach((node) => {
-      var priority = node.data("priority") || 0;
-      node.data("priority", Math.max(0, priority - 1));
-    });
+    ur.do("changePriority", { nodes: selectedNodes, value: -1 });
   }
 ));
 

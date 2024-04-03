@@ -65,6 +65,10 @@ class LayoutManager {
   public runOnce() {
     this.cy.layout(this.currentLayout).run();
   }
+
+  public getCurrentLayoutOptions() {
+    return this.currentLayout;
+  }
 }
 
 export default LayoutManager;

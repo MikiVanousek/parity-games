@@ -1,5 +1,5 @@
 export const randomLayout = {
-  name: 'random',
+  name: "random",
 
   fit: true, // whether to fit to viewport
   padding: 30, // fit padding
@@ -7,8 +7,12 @@ export const randomLayout = {
   animate: false, // whether to transition the node positions
   animationDuration: 500, // duration of animation in ms if enabled
   animationEasing: undefined, // easing of animation if enabled
-  animateFilter: function ( node, i ){ return true; }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
+  animateFilter: function (node, i) {
+    return true;
+  }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
   ready: undefined, // callback on layoutready
   stop: undefined, // callback on layoutstop
-  transform: function (node, position ){ return position; } // transform a given node position. Useful for changing flow direction in discrete layouts 
+  transform: function (node, position) {
+    return position;
+  }, // transform a given node position. Useful for changing flow direction in discrete layouts
 };

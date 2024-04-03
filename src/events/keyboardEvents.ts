@@ -49,6 +49,33 @@ function fillManual(mappings: KeyMapping[]): void {
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
   fillManual(mappings)
+  ur.action(
+    "changePriority",
+    (args) => {
+      let nodes = args.nodes;
+      let value = args.value;
+      // The do action: updating the priority
+      let oldPriorities = nodes.map((node) => {
+        return { node: node, priority: node.data("priority") };
+      });
+      nodes.forEach(function (n) {
+        var priority = n.data("priority") || 0;
+        n.data("priority", Math.max(0, priority + value));
+      });
+      return { nodes: nodes, value: value, oldPriorities: oldPriorities };
+    },
+    (args) => {
+      // The undo action: reverting to the old priorities
+      let nodes = args.nodes;
+      let value = args.value;
+      let oldPriorities = args.oldPriorities;
+      oldPriorities.forEach((item) =>
+        item.node.data("priority", item.priority)
+      );
+      return { nodes: nodes, value: value };
+    }
+  );
+
   let mouseX: number = 0;
   let mouseY: number = 0;
 
