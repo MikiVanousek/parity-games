@@ -1,32 +1,9 @@
-import { addNodeAtPosition, copySelectedElements, pasteCopiedElements } from "./events/graphEvents";
+import { addNodeAtPosition, copySelectedElements, pasteCopiedElements } from "../events/graphEvents";
+import { KeyMapping, buildKeyMap } from "./keymapTypes";
 
-export type KeyActionArgs = {
-  cy: cytoscape.Core;
-  ur: any;
-  modelX: number;
-  modelY: number;
-  event: KeyboardEvent;
-};
 
-export class KeyMapping {
-  keys: string[]
-  description: string
-  action: (KeyActionArgs) => void
-  editing_pg: boolean
-  requires_modifier: boolean
-  category: string
-  constructor(keys: string[], description: string, action: (KeyActionArgs) => void, requires_modifier: boolean = false, category: string = "Other", editing_pg: boolean = true,) {
-    this.keys = keys
-    this.description = description
-    this.action = action;
-    this.editing_pg = editing_pg;
-    this.requires_modifier = requires_modifier
-    this.category = category
-  }
-}
-
-export const mappings: KeyMapping[] = []
-mappings.push(new KeyMapping(
+export const keyMappings: KeyMapping[] = [];
+keyMappings.push(new KeyMapping(
   ["?", "/"],
   "Toggle manual",
   (args) => {
@@ -37,25 +14,22 @@ mappings.push(new KeyMapping(
       manual_overlay.style.display = "none";
     }
   }
-))
-
-mappings.push(new KeyMapping(
+));
+keyMappings.push(new KeyMapping(
   ["e"],
   "Add even node at the cursor position",
   (args) => {
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, true);
   }
-))
-
-mappings.push(new KeyMapping(
+));
+keyMappings.push(new KeyMapping(
   ["o"],
   "Add odd node at the cursor position",
   (args) => {
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, false);
   }
-))
-
-mappings.push(new KeyMapping(
+));
+keyMappings.push(new KeyMapping(
   ["q"],
   "Toggle the parity of selected nodes",
   (args) => {
@@ -65,9 +39,8 @@ mappings.push(new KeyMapping(
       node.data("isEven", currentIsEven === "true" ? "false" : "true");
     });
   }
-))
-
-mappings.push(new KeyMapping(
+));
+keyMappings.push(new KeyMapping(
   ["Backspace", "Delete"],
   "Remove selected elements",
   ({ cy, ur }) => {
@@ -77,8 +50,7 @@ mappings.push(new KeyMapping(
     }
   }
 ));
-
-mappings.push(new KeyMapping(
+keyMappings.push(new KeyMapping(
   ["+", "="],
   "Increment priority",
   ({ cy, ur }) => {
@@ -86,8 +58,7 @@ mappings.push(new KeyMapping(
     ur.do("changePriority", { nodes: selectedNodes, value: 1 });
   }
 ));
-
-mappings.push(new KeyMapping(
+keyMappings.push(new KeyMapping(
   ["-"],
   "Decrement priority",
   ({ cy, ur }) => {
@@ -95,8 +66,7 @@ mappings.push(new KeyMapping(
     ur.do("changePriority", { nodes: selectedNodes, value: -1 });
   }
 ));
-
-mappings.push(new KeyMapping(
+keyMappings.push(new KeyMapping(
   ["p"],
   "Paste selected elements",
   ({ cy }) => {
@@ -105,17 +75,15 @@ mappings.push(new KeyMapping(
     });
   }
 ));
-
-mappings.push(new KeyMapping(
+keyMappings.push(new KeyMapping(
   ["c"],
   "Copy selected elements",
   ({ cy }) => {
     copySelectedElements(cy);
   },
-  true,
+  true
 ));
-
-mappings.push(new KeyMapping(
+keyMappings.push(new KeyMapping(
   ["v"],
   "Paste copied elements",
   ({ cy, ur }) => {
@@ -123,8 +91,7 @@ mappings.push(new KeyMapping(
   },
   true
 ));
-
-mappings.push(new KeyMapping(
+keyMappings.push(new KeyMapping(
   ["z"],
   "Undo last action",
   ({ ur, event }) => {
@@ -134,8 +101,7 @@ mappings.push(new KeyMapping(
   },
   true
 ));
-
-mappings.push(new KeyMapping(
+keyMappings.push(new KeyMapping(
   ["y"],
   "Redo last action",
   ({ ur, event }) => {
@@ -145,3 +111,6 @@ mappings.push(new KeyMapping(
   },
   true
 ));
+
+
+export const keyMap = buildKeyMap(keyMappings)
