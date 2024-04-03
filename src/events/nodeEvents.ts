@@ -117,8 +117,10 @@ export function setupNodeEvents(cy, ur, layoutManager) {
 
     // Edit priority action
     document.getElementById("edit-priority").onclick = function () {
-      let priority = prompt("Enter new priority", node.data("priority") || "");
-      if (priority !== null) {
+      let priority = Number(
+        prompt("Enter new priority", node.data("priority") || "")
+      );
+      if (priority !== null && !isNaN(priority)) {
         let selectedNodes = cy.$("node:selected");
         if (selectedNodes.length > 0) {
           ur.do("editPriority", {
