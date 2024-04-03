@@ -56,14 +56,17 @@ export class TraceManager {
   }
 
   setTrace(t: Trace) {
+    console.log("Setting trace", t);
+
     if (!t.validate()) {
       showToast({
-        message: "This trace has internal discrepencies: Its steps do not fit its parity game. More detail in the console.",
+        message: "This trace has internal discrepancies: Its steps do not fit its parity game. More detail in the console.",
         variant: "danger",
         duration: 4000,
       })
       return;
     }
+
     // Compare just the nodes and links, nextNodeId is irrelevant
     const pg = PGParser.cyToPg(this.cy);
     if (!deepEquals(t.parity_game.nodes, pg.nodes) || !deepEquals(t.parity_game.links, pg.links)) {
@@ -119,6 +122,10 @@ export class TraceManager {
 
     this.refreshColor();
     this.updateTraceStepDisplay();
+  }
+
+  getStep() {
+    return this.step;
   }
 
   refreshColor() {
@@ -289,6 +296,13 @@ export class TraceManager {
     const stepDisplay = document.getElementById('traceStepDisplay');
     if (stepDisplay) {
       stepDisplay.textContent = `Step: ${this.step + 1} / ${this.trace.steps.length}`;
+    }
+  }
+
+  getTrace() {
+    //set trace to a new trace object
+    if (this.trace) {
+      return this.trace;
     }
   }
 }
