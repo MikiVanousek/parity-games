@@ -14,21 +14,20 @@ import { PGParser } from "./board/PGParser";
 import { example_pg } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
 
-
 declare global {
   interface Window {
     $: typeof import("jquery");
-    cy: any
-    ur: any
-    traceManager: TraceManager
-    layoutManager: LayoutManager,
+    cy: any;
+    ur: any;
+    traceManager: TraceManager;
+    layoutManager: LayoutManager;
   }
 }
 
 // Set up the cytoscape instance
 var [cy, ur] = setupCytoscape("cy");
-window.cy = cy
-window.ur = ur
+window.cy = cy;
+window.ur = ur;
 cy.add(PGParser.pgToCy(example_pg));
 
 const fileInput = document.getElementById("fileInput");
@@ -37,7 +36,7 @@ fileInput.addEventListener("change", (e) => {
   console.log("fileInput changed");
   pgManager.handleTraceFileSelect(e);
 });
-window.traceManager = pgManager
+window.traceManager = pgManager;
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;
@@ -55,7 +54,7 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 (window as any).handleOinkFileSelect = function (event) {
-  handleOinkFileSelect(event, cy, layoutManager)
+  handleOinkFileSelect(event, cy, layoutManager);
 };
 (window as any).saveOinkFile = function (event) {
   saveOinkFile(cy);
@@ -64,7 +63,6 @@ setupNodeEvents(cy, ur, layoutManager);
 (window as any).exportAsPng = function () {
   exportAsPng(cy);
 };
-
 
 (window as any).changeLayout = function (e: any) {
   layoutManager.changeLayout(e.target.value);
@@ -129,50 +127,59 @@ function deserializeGraphState() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   deserializeGraphState(); // Load saved state
-
-  const playStopButton = document.getElementById('playAction');
+  const playStopButton = document.getElementById("playAction");
 
   if (playStopButton) {
-    const playStopIcon = document.querySelector('#playAction .fa');
+    const playStopIcon = document.querySelector("#playAction .fa");
 
     if (playStopIcon) {
       // Initial button state setup
       playStopButton.dataset.playing = "false";
-      playStopIcon.classList.add('fa-play');
-      playStopButton.textContent = 'Play';
+      playStopIcon.classList.add("fa-play");
+      playStopButton.textContent = "Play";
 
-      playStopButton.addEventListener('click', function () {
+      playStopButton.addEventListener("click", function () {
         const isPlaying = playStopButton.dataset.playing === "true";
 
         if (!isPlaying) {
           // If not playing, start play
           playStopButton.dataset.playing = "true";
-          playStopIcon.classList.remove('fa-play');
-          playStopIcon.classList.add('fa-stop');
-          playStopButton.textContent = 'Stop';
+          playStopIcon.classList.remove("fa-play");
+          playStopIcon.classList.add("fa-stop");
+          playStopButton.textContent = "Stop";
           pgManager.play(); // Call the play method
         } else {
           // If playing, stop
           playStopButton.dataset.playing = "false";
-          playStopIcon.classList.remove('fa-stop');
-          playStopIcon.classList.add('fa-play');
-          playStopButton.textContent = 'Play';
+          playStopIcon.classList.remove("fa-stop");
+          playStopIcon.classList.add("fa-play");
+          playStopButton.textContent = "Play";
           pgManager.stop(); // Call the stop method
         }
       });
     }
   }
 
-  document.getElementById('nextStepAction').addEventListener('click', pgManager.nextStep.bind(pgManager));
-  document.getElementById('lastStepAction').addEventListener('click', pgManager.prevStep.bind(pgManager));
-  document.getElementById('skipToBeginningAction').addEventListener('click', pgManager.goToFirstStep.bind(pgManager));
-  document.getElementById('skipToEndAction').addEventListener('click', pgManager.goToLastStep.bind(pgManager));
-  document.getElementById('closeButton').addEventListener('click', pgManager.close.bind(pgManager));
+  document
+    .getElementById("nextStepAction")
+    .addEventListener("click", pgManager.nextStep.bind(pgManager));
+  document
+    .getElementById("lastStepAction")
+    .addEventListener("click", pgManager.prevStep.bind(pgManager));
+  document
+    .getElementById("skipToBeginningAction")
+    .addEventListener("click", pgManager.goToFirstStep.bind(pgManager));
+  document
+    .getElementById("skipToEndAction")
+    .addEventListener("click", pgManager.goToLastStep.bind(pgManager));
+  document
+    .getElementById("closeButton")
+    .addEventListener("click", pgManager.close.bind(pgManager));
 
-  document.getElementById('export-oink-btn').addEventListener('click', (e) => {
-    PGParser.exportOinkFormat(PGParser.cyToPg(cy))
+  document.getElementById("export-oink-btn").addEventListener("click", (e) => {
+    PGParser.exportOinkFormat(PGParser.cyToPg(cy));
   });
 
   setInterval(serializeGraphState, 500);

@@ -46,6 +46,7 @@ export function setupNodeEvents(cy, ur, layoutManager) {
     const selectedNodes = cy.$("node:selected");
 
     // Create an edge from each selected node to the shift-clicked node
+    const actionList = [];
     selectedNodes.forEach((selectedNode) => {
       const existingEdge = cy.edges().some((edge) => {
         return (
@@ -54,12 +55,19 @@ export function setupNodeEvents(cy, ur, layoutManager) {
         );
       });
       if (!existingEdge) {
-        ur.do("add", {
-          group: "edges",
-          data: { source: selectedNode.id(), target: node.id() },
+        actionList.push({
+          name: "add",
+          param: {
+            group: "edges",
+            data: { source: selectedNode.id(), target: node.id() },
+          },
         });
       }
     });
+
+    if (actionList.length > 0) {
+      ur.do("batch", actionList);
+    }
 
     selectedNodes.unselect();
   });
@@ -109,8 +117,10 @@ export function setupNodeEvents(cy, ur, layoutManager) {
 
     // Edit priority action
     document.getElementById("edit-priority").onclick = function () {
-      let priority = prompt("Enter new priority", node.data("priority") || "");
-      if (priority !== null) {
+      let priority = Number(
+        prompt("Enter new priority", node.data("priority") || "")
+      );
+      if (priority !== null && !isNaN(priority)) {
         let selectedNodes = cy.$("node:selected");
         if (selectedNodes.length > 0) {
           ur.do("editPriority", {
