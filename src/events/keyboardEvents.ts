@@ -1,80 +1,8 @@
 import * as cytoscape from "cytoscape";
 import { showToast } from "../ui/toast";
-import { assert } from "../assert";
-import { KeyMapping, mappings } from "../keymap";
-
-function buildKeyMap(keyMappings: KeyMapping[]): Map<string, KeyMapping> {
-  const keyMap = new Map<string, KeyMapping>()
-  for (const mapping of keyMappings) {
-    for (const key of mapping.keys) {
-      assert(!keyMap.has(key), `Duplicate key mapping for key ${key}`)
-      keyMap.set(key, mapping)
-    }
-  }
-  return keyMap
-}
-function fillManual(mappings: KeyMapping[]): void {
-  const categoryMap = new Map<string, KeyMapping[]>()
-  for (const mapping of mappings) {
-    if (!categoryMap.has(mapping.category)) {
-      categoryMap.set(mapping.category, [])
-    }
-    categoryMap.get(mapping.category).push(mapping)
-  }
-
-  const manual = document.getElementById("manual-keybinds");
-  manual.innerHTML = ''
-  for (const [category, categoryMappings] of categoryMap) {
-    manual.appendChild(document.createElement("h3")).textContent = category
-    for (const kb of categoryMappings) {
-      const entryDiv = document.createElement("div");
-      entryDiv.className = "manual-entry";
-      const keysDiv = document.createElement("div");
-      keysDiv.className = "manual-keys";
-      for (let key of kb.keys) {
-        if (kb.requires_modifier) {
-          key = "⌘ + " + key
-        }
-        const keyDiv = document.createElement("div");
-        keyDiv.className = "manual-key";
-        keyDiv.textContent = key;
-        keysDiv.appendChild(keyDiv);
-      }
-      entryDiv.appendChild(keysDiv);
-      entryDiv.appendChild(document.createTextNode(kb.description));
-      manual.appendChild(entryDiv)
-    }
-  }
-}
+import { keyMap } from "../keymap/keymap";
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
-  fillManual(mappings)
-  ur.action(
-    "changePriority",
-    (args) => {
-      let nodes = args.nodes;
-      let value = args.value;
-      // The do action: updating the priority
-      let oldPriorities = nodes.map((node) => {
-        return { node: node, priority: node.data("priority") };
-      });
-      nodes.forEach(function (n) {
-        var priority = n.data("priority") || 0;
-        n.data("priority", Math.max(0, priority + value));
-      });
-      return { nodes: nodes, value: value, oldPriorities: oldPriorities };
-    },
-    (args) => {
-      // The undo action: reverting to the old priorities
-      let nodes = args.nodes;
-      let value = args.value;
-      let oldPriorities = args.oldPriorities;
-      oldPriorities.forEach((item) =>
-        item.node.data("priority", item.priority)
-      );
-      return { nodes: nodes, value: value };
-    }
-  );
 
   let mouseX: number = 0;
   let mouseY: number = 0;
@@ -95,7 +23,6 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
     mouseX = mouseEvent.clientX;
     mouseY = mouseEvent.clientY;
   });
-  const keyMap = buildKeyMap(mappings)
   document.addEventListener("keydown", (event: KeyboardEvent) => {
     const zoom = cy.zoom();
     const pan = cy.pan();
