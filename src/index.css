@@ -478,19 +478,19 @@
 
 
     .manual-key {
-      display: grid;
+      display: inline grid;
       font-size: medium;
       text-align: center;
       align-items: center;
       box-sizing: border-box;
       min-height: 3rem;
       min-width: 3rem;
+      max-width: 240px;
       padding-left: 1rem;
       padding-right: 1rem;
       font-weight: bold;
       background-color: #555;
       border-radius: 8px;
-
     }
 
     .manual-keys {
