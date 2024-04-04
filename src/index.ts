@@ -136,9 +136,7 @@ function deserializeGraphState() {
 
 function validatepgName(pgName) {
 
-  if (pgName.length > 0) {
-    return true;
-  } else if (pgName.length === 0) {
+if (pgName.length === 0) {
     showToast({
       message: "The name of the parity game cannot be empty.",
       variant: "danger",
@@ -152,6 +150,8 @@ function validatepgName(pgName) {
       duration: 4000,
     });
     return false;
+  }  if (pgName.length > 0) {
+    return true;
   }
 }
 
