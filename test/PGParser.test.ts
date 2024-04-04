@@ -1,8 +1,8 @@
 import { Player } from '../src/board/Node';
 import { PGParser } from '../src/board/PGParser'
 import { examplePg } from '../src/board/ExamplePG'
-import { deepEquals } from '../src/io/deepEquals'
 import * as fs from 'fs';
+import { example } from 'yargs';
 
 let PG_DIR = 'test/pg_examples/'
 
@@ -29,11 +29,9 @@ test('examplePg test', () => {
     fs.writeFileSync(`${PG_DIR}example.pg`, pgstr);
 
     let pg = PGParser.importOinkFormat(pgstr)
-    expect(pg.nodes).toEqual(examplePg.nodes)
-    expect(pg.links.length).toBe(examplePg.links.length)
-    for (const l of pg.links) {
-        expect(examplePg.links.find((exl) => deepEquals(l, exl))).toBeDefined()
-    }
+    expect(pg.equals(examplePg)).toBe(true)
+    pg.nodes[0].label = "0"
+    expect(pg.equals(examplePg)).toBe(false)
 });
 
 test.skip('elaborate .pg parsing test', () => {

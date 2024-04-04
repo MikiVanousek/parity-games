@@ -64,7 +64,7 @@ export class TraceManager {
 
     // Compare just the nodes and links, nextNodeId is irrelevant
     const pg = PGParser.cyToPg(this.cy);
-    if (!deepEquals(t.parity_game.nodes, pg.nodes) || !deepEquals(t.parity_game.links, pg.links)) {
+    if (!t.parity_game.equals(pg)) {
       showToast({
         message: "This trace does not fit the current parity game.",
         variant: "danger",
