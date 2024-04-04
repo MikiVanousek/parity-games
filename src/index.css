@@ -498,3 +498,9 @@
       flex-direction: row;
       gap: 10px;
     }
+
+    .navbar-heading i.fa-pencil {
+      cursor: pointer;
+      /* make it smaller */
+      font-size: 0.8rem;
+    }

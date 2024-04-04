@@ -16,7 +16,12 @@
     </ul>
   </div>
   <div class="navbar">
-    <div class="navbar-heading">Parity Game</div>
+<div class="navbar-heading">
+  <span id="editableContainer">
+    <span id="parityGameTitle"></span>
+  </span>
+  <i class="fa fa-pencil" id="editTitleIcon" aria-hidden="true"></i>
+</div>
     <div class="navbar-group">
       <div class="row">
         <input type="file" accept=".pg" id="oink-file-input" hidden onchange="handleOinkFileSelect(event)" />

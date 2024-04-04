@@ -13,6 +13,7 @@ import { setupNodeEvents } from "./events/nodeEvents";
 import { PGParser } from "./board/PGParser";
 import { examplePg } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
+import { showToast } from "./ui/toast";
 import { fillManual } from "./keymap/fillManual";
 import { keyMappings } from "./keymap/keymap";
 import { loadState, saveState } from "./io/autosave";
@@ -24,6 +25,7 @@ declare global {
     ur: any;
     traceManager: TraceManager;
     layoutManager: LayoutManager;
+    pgName: string;
   }
 }
 
@@ -44,7 +46,6 @@ window.traceManager = pgManager;
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;
-layoutManager.runOnce();
 setupKeyboardEvents(cy, ur);
 setupNodeEvents(cy, ur, layoutManager);
 
@@ -90,10 +91,42 @@ document.getElementById("display-labels").addEventListener("change", function ()
   });
 });
 
+function validatepgName(pgName) {
+
+  if (pgName.length === 0) {
+    showToast({
+      message: "The name of the parity game cannot be empty.",
+      variant: "danger",
+      duration: 4000,
+    });
+    return false;
+  } else if (pgName.includes('/')) {
+    showToast({
+      message: "The name of the parity game cannot contain slashes.",
+      variant: "danger",
+      duration: 4000,
+    });
+    return false;
+  } if (pgName.length > 0) {
+    return true;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   loadState(); // Load saved state
   window.cy.fit(cy.elements(), 50);
+
   const playStopButton = document.getElementById("playAction");
+
+  // if the name is in the window, then update the title
+  if (window.pgName) {
+    if (validatepgName(window.pgName)) {
+      document.getElementById('parityGameTitle').textContent = window.pgName;
+    } else {
+      document.getElementById('parityGameTitle').textContent = 'New Parity Game';
+      window.pgName = 'New Parity Game';
+    }
+  }
 
   if (playStopButton) {
     const playStopIcon = document.querySelector("#playAction .fa");
@@ -146,5 +179,50 @@ document.addEventListener("DOMContentLoaded", function () {
     PGParser.exportOinkFormat(PGParser.cyToPg(cy));
   });
 
+  document.getElementById('editTitleIcon').addEventListener('click', function () {
+    const currentTitleElement = document.getElementById('parityGameTitle');
+    const currentText = currentTitleElement.textContent;
+
+    // Create an input field only if it doesn't already exist
+    if (currentTitleElement && currentTitleElement.querySelector('.title-edit-input') === null) {
+      const inputField = document.createElement('input');
+      inputField.type = 'text';
+      inputField.value = currentText;
+      inputField.className = 'title-edit-input';
+
+      currentTitleElement.textContent = '';
+      currentTitleElement.appendChild(inputField);
+      inputField.focus();
+      inputField.select();
+
+      const revertToText = () => {
+        if (validatepgName(inputField.value)) {
+          currentTitleElement.textContent = inputField.value; // Update the text if valid
+          window.pgName = inputField.value; // Update the global parityName
+          inputField.removeEventListener('blur', handleBlur);
+          inputField.remove(); // Remove input field if the name is valid
+        } else {
+          inputField.focus();
+        }
+      };
+
+      // Define a function to handle blur event
+      const handleBlur = () => revertToText();
+
+      // Define a function to handle keypress event
+      const handleKeypress = (e) => {
+        if (e.key === 'Enter') {
+          if (validatepgName(inputField.value)) {
+            inputField.blur(); // Trigger blur to revert and save if the name is valid
+          } else {
+            e.preventDefault(); // Prevent the default action if the name is invalid
+          }
+        }
+      };
+
+      inputField.addEventListener('blur', handleBlur);
+      inputField.addEventListener('keypress', handleKeypress);
+    }
+  });
   setInterval(saveState, 500);
 });
