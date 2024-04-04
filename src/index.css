@@ -37,10 +37,14 @@ html {
   left: 0;
   top: 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
   width: 100%;
 =======
   width: 80%;
 >>>>>>> Bar: fix buttons
+=======
+  width: 100%;
+>>>>>>> CY: Fix width
   height: 100%;
   background: #1d1d1d;
 }
