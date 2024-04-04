@@ -22,6 +22,9 @@ export module PGParser {
       var components = l.split(" "); // i-1 to also remove the spacebefore
       var node_label;
       if (components.length > 4) { // There is a label. If the label contains space, there will be more than 5 components.
+        const end = l.slice(l.length - 2, l.length)
+        console.log(end)
+        assert(end == '";', `End of line is not '";' but '${end}'`);
         assert(l.slice(l.length - 2, l.length) == '";');
         let j = l.length - 2; // It is the same as l.indexOf('"')
         let i = l.indexOf('"');
