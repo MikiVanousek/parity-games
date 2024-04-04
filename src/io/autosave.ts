@@ -1,4 +1,4 @@
-import { example_pg } from "../board/ExamplePG";
+import { examplePg } from "../board/ExamplePG";
 import { PGParser } from "../board/PGParser";
 import { Trace } from "../board/Trace";
 import { resetBoardVisuals } from "./exportImport";
@@ -29,7 +29,7 @@ export function saveState() {
 export function loadState() {
   const savedState = localStorage.getItem('graphState');
   if (!savedState) {
-    resetBoardVisuals(window.cy, example_pg, window.layoutManager)
+    resetBoardVisuals(window.cy, examplePg, window.layoutManager)
     return;
   }
 

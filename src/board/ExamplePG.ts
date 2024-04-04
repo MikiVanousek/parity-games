@@ -2,37 +2,37 @@ import { Player } from "./Node";
 import { ParityGame } from "./ParityGame";
 import { LinkSet, NodeSet, Trace, TraceStep } from "./Trace";
 // Tests depend on the values of these two examples!
-export let example_pg = ParityGame.emptyBoard();
-example_pg.addNodeWith(1, Player.Even);
-example_pg.addNodeWith(8, Player.Odd);
-example_pg.addNodeWith(9, Player.Even);
-example_pg.addNodeWith(10, Player.Odd);
-example_pg.addNodeWith(7, Player.Even);
-example_pg.addNodeWith(3, Player.Odd);
-example_pg.addNodeWith(6, Player.Even);
-example_pg.addNodeWith(4, Player.Odd);
-example_pg.addNodeWith(0, Player.Even);
-example_pg.addNodeWith(2, Player.Odd);
+export let examplePg = ParityGame.emptyBoard();
+examplePg.addNodeWith(1, Player.Even);
+examplePg.addNodeWith(8, Player.Odd);
+examplePg.addNodeWith(9, Player.Even);
+examplePg.addNodeWith(10, Player.Odd);
+examplePg.addNodeWith(7, Player.Even);
+examplePg.addNodeWith(3, Player.Odd);
+examplePg.addNodeWith(6, Player.Even);
+examplePg.addNodeWith(4, Player.Odd);
+examplePg.addNodeWith(0, Player.Even);
+examplePg.addNodeWith(2, Player.Odd);
 
 // Adding links between nodes
-example_pg.addLinkFromNodes(example_pg.nodes[0], example_pg.nodes[8]);
-example_pg.addLinkFromNodes(example_pg.nodes[1], example_pg.nodes[9]);
-example_pg.addLinkFromNodes(example_pg.nodes[2], example_pg.nodes[9]);
-example_pg.addLinkFromNodes(example_pg.nodes[3], example_pg.nodes[2]);
-example_pg.addLinkFromNodes(example_pg.nodes[4], example_pg.nodes[7]);
-example_pg.addLinkFromNodes(example_pg.nodes[5], example_pg.nodes[8]);
-example_pg.addLinkFromNodes(example_pg.nodes[6], example_pg.nodes[9]);
-example_pg.addLinkFromNodes(example_pg.nodes[7], example_pg.nodes[6]);
-example_pg.addLinkFromNodes(example_pg.nodes[8], example_pg.nodes[2]);
-example_pg.addLinkFromNodes(example_pg.nodes[9], example_pg.nodes[0]);
-example_pg.addLinkFromNodes(example_pg.nodes[3], example_pg.nodes[9]);
-example_pg.addLinkFromNodes(example_pg.nodes[2], example_pg.nodes[1]);
-example_pg.addLinkFromNodes(example_pg.nodes[4], example_pg.nodes[0]);
-example_pg.addLinkFromNodes(example_pg.nodes[8], example_pg.nodes[4]);
-example_pg.addLinkFromNodes(example_pg.nodes[8], example_pg.nodes[3]);
+examplePg.addLinkFromNodes(examplePg.nodes[0], examplePg.nodes[8]);
+examplePg.addLinkFromNodes(examplePg.nodes[1], examplePg.nodes[9]);
+examplePg.addLinkFromNodes(examplePg.nodes[2], examplePg.nodes[9]);
+examplePg.addLinkFromNodes(examplePg.nodes[3], examplePg.nodes[2]);
+examplePg.addLinkFromNodes(examplePg.nodes[4], examplePg.nodes[7]);
+examplePg.addLinkFromNodes(examplePg.nodes[5], examplePg.nodes[8]);
+examplePg.addLinkFromNodes(examplePg.nodes[6], examplePg.nodes[9]);
+examplePg.addLinkFromNodes(examplePg.nodes[7], examplePg.nodes[6]);
+examplePg.addLinkFromNodes(examplePg.nodes[8], examplePg.nodes[2]);
+examplePg.addLinkFromNodes(examplePg.nodes[9], examplePg.nodes[0]);
+examplePg.addLinkFromNodes(examplePg.nodes[3], examplePg.nodes[9]);
+examplePg.addLinkFromNodes(examplePg.nodes[2], examplePg.nodes[1]);
+examplePg.addLinkFromNodes(examplePg.nodes[4], examplePg.nodes[0]);
+examplePg.addLinkFromNodes(examplePg.nodes[8], examplePg.nodes[4]);
+examplePg.addLinkFromNodes(examplePg.nodes[8], examplePg.nodes[3]);
 
-export const trace_example = new Trace({
-  parity_game: example_pg,
+export const exampleTrace = new Trace({
+  parity_game: examplePg,
   algorithm_name: "Zmrd",
   steps: [
     new TraceStep({

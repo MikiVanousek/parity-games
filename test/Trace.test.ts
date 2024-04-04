@@ -1,5 +1,5 @@
 import { Trace, TraceStep, NodeSet, LinkSet } from "../src/board/Trace";
-import { example_pg, trace_example as example_trace, trace_example } from "../src/board/ExamplePG";
+import { examplePg, exampleTrace } from "../src/board/ExamplePG";
 import * as fs from 'fs';
 import { ParityGame } from "../src/board/ParityGame";
 
@@ -8,30 +8,30 @@ const dir = 'test/'
 test('read write parity', () => {
     const file_name = dir + 'parity.json'
 
-    const write_string = JSON.stringify(example_pg);
+    const write_string = JSON.stringify(examplePg);
     fs.writeFileSync(file_name, write_string, 'utf8')
     const read_string = fs.readFileSync(file_name, 'utf8')
     const o = JSON.parse(read_string)
     const res = new ParityGame(o)
-    expect(res).toEqual(example_pg)
+    expect(res).toEqual(examplePg)
 });
 
 test('trace read write', () => {
     const file_name = dir + 'example.trace.json'
 
-    const write_string = JSON.stringify(example_trace);
+    const write_string = JSON.stringify(exampleTrace);
     fs.writeFileSync(file_name, write_string, 'utf8')
     const read_string = fs.readFileSync(file_name, 'utf8')
     expect(read_string).toEqual(write_string)
 
     const o = JSON.parse(read_string)
     const res = new Trace(o)
-    expect(res).toEqual(example_trace)
+    expect(res).toEqual(exampleTrace)
 })
 
 test('trace validaton test', () => {
-    expect(example_trace.validate()).toBe(true)
-    example_trace.steps.push(
+    expect(exampleTrace.validate()).toBe(true)
+    exampleTrace.steps.push(
         new TraceStep({
             node_sets: [
                 new NodeSet({
@@ -58,10 +58,10 @@ test('trace validaton test', () => {
             node_labels: {}
         })
     );
-    expect(example_trace.validate()).toBe(false)
-    example_trace.steps.pop()
-    expect(example_trace.validate()).toBe(true)
-    example_trace.steps.push(
+    expect(exampleTrace.validate()).toBe(false)
+    exampleTrace.steps.pop()
+    expect(exampleTrace.validate()).toBe(true)
+    exampleTrace.steps.push(
         new TraceStep({
             node_sets: [
                 new NodeSet({
@@ -87,7 +87,7 @@ test('trace validaton test', () => {
             node_labels: {}
         })
     )
-    example_trace.steps.push(
+    exampleTrace.steps.push(
         new TraceStep({
             node_sets: [
                 new NodeSet({
@@ -113,7 +113,7 @@ test('trace validaton test', () => {
             node_labels: {}
         })
     )
-    expect(example_trace.validate()).toBe(false)
+    expect(exampleTrace.validate()).toBe(false)
 });
 
 

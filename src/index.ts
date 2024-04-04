@@ -11,7 +11,7 @@ import {
 } from "./io/exportImport";
 import { setupNodeEvents } from "./events/nodeEvents";
 import { PGParser } from "./board/PGParser";
-import { example_pg } from "./board/ExamplePG";
+import { examplePg } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
 import { fillManual } from "./keymap/fillManual";
 import { keyMappings } from "./keymap/keymap";
