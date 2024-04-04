@@ -33,6 +33,10 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
     const modelY = (mouseY - pan.y) / zoom;
 
     if (keyMap.has(event.key)) {
+      // skip the keybinds from KeyBoardEvents if the user is typing in an input field
+      var nothingIsFocused = document.activeElement === document.body
+      if (!nothingIsFocused) return;
+
       event.preventDefault();
       event.stopPropagation();
       const km = keyMap.get(event.key)

@@ -135,28 +135,28 @@ function deserializeGraphState() {
 }
 
 function validatepgName(pgName) {
-  // check if the name contains slashes
-  console.log(pgName);
 
-  if (pgName.includes('/')) {
+if (pgName.length === 0) {
+    showToast({
+      message: "The name of the parity game cannot be empty.",
+      variant: "danger",
+      duration: 4000,
+    });
+    return false;
+  } else if (pgName.includes('/')) {
     showToast({
       message: "The name of the parity game cannot contain slashes.",
       variant: "danger",
       duration: 4000,
     });
     return false;
-  }
-
-  if (pgName.length > 0) {
-    document.getElementById('parityGameTitle').textContent = pgName;
+  }  if (pgName.length > 0) {
     return true;
-  } else if (pgName.length === 0) {
-    document.getElementById('parityGameTitle').textContent = "New Parity Game";
   }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  deserializeGraphState(); // Load saved state
+  deserializeGraphState();
   const playStopButton = document.getElementById("playAction");
 
   // if the name is in the window, then update the title
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const currentText = currentTitleElement.textContent;
 
     // Create an input field only if it doesn't already exist
-    if (!document.querySelector('.title-edit-input')) {
+    if (currentTitleElement && currentTitleElement.querySelector('.title-edit-input') === null){
         const inputField = document.createElement('input');
         inputField.type = 'text';
         inputField.value = currentText;
@@ -243,11 +243,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 inputField.removeEventListener('blur', handleBlur);
                 inputField.remove(); // Remove input field if the name is valid
             } else {
-                showToast({
-                    message: "The name of the parity game cannot contain slashes.",
-                    variant: "danger",
-                    duration: 4000,
-                });
                 inputField.focus();
             }
         };
@@ -261,11 +256,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (validatepgName(inputField.value)) {
                     inputField.blur(); // Trigger blur to revert and save if the name is valid
                 } else {
-                  showToast({
-                    message: "The name of the parity game cannot contain slashes.",
-                    variant: "danger",
-                    duration: 4000,
-                   });
                     e.preventDefault(); // Prevent the default action if the name is invalid
                 }
             }
@@ -275,6 +265,5 @@ document.addEventListener("DOMContentLoaded", function () {
         inputField.addEventListener('keypress', handleKeypress);
     }
 });
-
   setInterval(serializeGraphState, 500);
 });
