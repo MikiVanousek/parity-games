@@ -8,7 +8,7 @@ export module PGParser {
     file_content: string,
   ): ParityGame {
     // create a list of lines
-    var lines = file_content.split("/\r\n|\r|\n/ ");
+    var lines = file_content.split("/\r\n|\r|\n/");
     let pg = ParityGame.emptyBoard();
 
     assert(lines[0].startsWith('parity '));
