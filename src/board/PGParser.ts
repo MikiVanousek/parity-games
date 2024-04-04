@@ -93,7 +93,6 @@ export module PGParser {
   export function cyToPg(cy) {
     const pg = ParityGame.emptyBoard();
     for (const n of cy.$("node")) {
-      console.log(n)
       pg.addNode(Node.new(parseInt(n.id()), parseInt(n.data("priority")), n.data("isEven") === "true" ? Player.Even : Player.Odd, n.data("label")));
     }
     for (const l of cy.$("edge")) {

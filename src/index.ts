@@ -15,6 +15,7 @@ import { example_pg } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
 import { fillManual } from "./keymap/fillManual";
 import { keyMappings } from "./keymap/keymap";
+import { loadState, saveState } from "./io/autosave";
 
 declare global {
   interface Window {
@@ -30,7 +31,6 @@ declare global {
 var [cy, ur] = setupCytoscape("cy");
 window.cy = cy;
 window.ur = ur;
-cy.add(PGParser.pgToCy(example_pg));
 
 fillManual()
 
@@ -90,49 +90,9 @@ document.getElementById("display-labels").addEventListener("change", function ()
   });
 });
 
-function serializeGraphState() {
-  if (!window.cy) return;
-
-  const elements = window.cy.json().elements;
-  const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
-  const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
-  const trace = window.traceManager ? window.traceManager.getTrace() : [];
-
-  const state = {
-    elements,
-    layoutOptions,
-    currentStepIndex,
-    trace,
-  };
-
-  localStorage.setItem('graphState', JSON.stringify(state));
-}
-
-
-function deserializeGraphState() {
-  const savedState = localStorage.getItem('graphState');
-  if (!savedState) return;
-
-  const { elements, layoutOptions, currentStepIndex, trace } = JSON.parse(savedState);
-
-  if (window.cy) {
-    window.cy.json({ elements }); // Restore elements
-    window.cy.layout(layoutOptions).run(); // Apply the saved layout
-
-    // Restore the trace
-    if (trace) {
-      let t = new Trace((trace));
-      window.traceManager.setTrace(t);
-    }
-
-    if (window.traceManager && currentStepIndex !== undefined) {
-      window.traceManager.setStep(currentStepIndex); // Restore the current step
-    }
-  }
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-  deserializeGraphState(); // Load saved state
+  loadState(); // Load saved state
+  window.cy.fit(cy.elements(), 50);
   const playStopButton = document.getElementById("playAction");
 
   if (playStopButton) {
@@ -186,5 +146,5 @@ document.addEventListener("DOMContentLoaded", function () {
     PGParser.exportOinkFormat(PGParser.cyToPg(cy));
   });
 
-  setInterval(serializeGraphState, 500);
+  setInterval(saveState, 500);
 });
