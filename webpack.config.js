@@ -17,7 +17,7 @@ module.exports = {
   },
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: "src/*.html", to: "[name][ext]" }, { from: "src/*.css", to: "[name][ext]" }],
+      patterns: [{ from: "src/*.html", to: "[name][ext]" }, { from: "src/**/*.css", to: "[name][ext]" }],
     }),
     new webpack.ProvidePlugin({
       $: "jquery",

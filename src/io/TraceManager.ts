@@ -2,7 +2,7 @@ import { showToast } from "../ui/toast";
 import { assert } from "../assert";
 import { Trace } from "../board/Trace";
 import { ParityGame } from "../board/ParityGame";
-import { example_pg, trace_example } from "../board/ExamplePG";
+import { examplePg, exampleTrace } from "../board/ExamplePG";
 import { deepEquals } from "./deepEquals";
 import { PGParser } from "../board/PGParser";
 
@@ -16,12 +16,8 @@ export class TraceManager {
   setsEnabled?: Map<string, boolean>;
   intervalID = null;
 
-  constructor(cy: any, pg: ParityGame = example_pg) {
+  constructor(cy: any) {
     this.cy = cy;
-    // Only registering the PGListener AFTER adding the elements. Otherwise the listener will be triggered by the initial add.
-
-    let n = this.cy.getElementById("3")
-    cy.style().update();
 
     this.listElement = document.getElementById('color-legend');
     this.listElement.hidden = true;
@@ -57,7 +53,6 @@ export class TraceManager {
 
   setTrace(t: Trace) {
     console.log("Setting trace", t);
-
     if (!t.validate()) {
       showToast({
         message: "This trace has internal discrepancies: Its steps do not fit its parity game. More detail in the console.",
@@ -69,12 +64,13 @@ export class TraceManager {
 
     // Compare just the nodes and links, nextNodeId is irrelevant
     const pg = PGParser.cyToPg(this.cy);
-    if (!deepEquals(t.parity_game.nodes, pg.nodes) || !deepEquals(t.parity_game.links, pg.links)) {
+    if (!t.parity_game.equals(pg)) {
       showToast({
         message: "This trace does not fit the current parity game.",
         variant: "danger",
         duration: 4000,
       })
+      console.log("This trace does not fit the current parity game.");
       return;
     }
 

@@ -88,7 +88,7 @@ export function saveOinkFile(cy, name = "game") {
   a.click();
 }
 
-function resetBoardVisuals(cy, pg, layoutManager) {
+export function resetBoardVisuals(cy, pg, layoutManager) {
   const elements = PGParser.pgToCy(pg);
   cy.elements().remove(); // Clear the current graph
   cy.add(elements); // Add the new elements

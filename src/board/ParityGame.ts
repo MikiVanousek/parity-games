@@ -2,6 +2,7 @@ import { Node, Player } from './Node';
 import { Link } from './Link';
 import { JSONObject } from 'ts-json-object';
 import { assert } from '../assert';
+import { deepEquals } from '../io/deepEquals';
 
 export class ParityGame extends JSONObject {
   @JSONObject.required
@@ -44,15 +45,11 @@ export class ParityGame extends JSONObject {
     player: Player,
     id?: number,
     label?: string,
-    degree?: number
   ): number {
     if (id === undefined) {
       id = this.next_node_id();
     }
     const node = Node.new(id, priority, player, label);
-    if (degree !== undefined) {
-      node.setDegree(degree);
-    }
     return this.addNode(node);
   }
   addNode(node: Node): number {
@@ -129,5 +126,22 @@ export class ParityGame extends JSONObject {
       return 0;
     }
     return Math.max(...this.nodes.map((n) => n.id)) + 1;
+  }
+
+  equals(other: ParityGame): boolean {
+    if (this.nodes.length !== other.nodes.length || this.links.length != other.links.length) {
+      return false;
+    }
+    for (const tn of this.nodes) {
+      if (other.nodes.find((on) => deepEquals(tn, on)) === undefined) {
+        return false;
+      }
+    }
+    for (const tl of this.links) {
+      if (other.links.find((ol) => deepEquals(tl, ol)) === undefined) {
+        return false
+      }
+    }
+    return true
   }
 }
