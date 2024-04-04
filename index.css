@@ -443,9 +443,9 @@
       /* Border color on hover */
     }
   
-  .navbar-heading i.fa-pencil {
-      cursor: pointer;
-      /* make it smaller */
-      font-size: 0.8rem;
-  }
+    .navbar-heading i.fa-pencil {
+        cursor: pointer;
+        /* make it smaller */
+        font-size: 0.8rem;
+    }
     
