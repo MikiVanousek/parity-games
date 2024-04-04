@@ -8,7 +8,7 @@ export module PGParser {
     file_content: string,
   ): ParityGame {
     // create a list of lines
-    var lines = file_content.split("\n");
+    var lines = file_content.split("/\r\n|\r|\n/ ");
     let pg = ParityGame.emptyBoard();
 
     assert(lines[0].startsWith('parity '));
@@ -23,8 +23,7 @@ export module PGParser {
       var node_label;
       if (components.length > 4) { // There is a label. If the label contains space, there will be more than 5 components.
         const end = l.slice(l.length - 2, l.length)
-        console.log(end)
-        assert(end == '";' || end == '";\n', `End of line is not '";' but '${end}'`);
+        assert(end == '";', `End of line is not '";' but '${end}'`);
         let j = l.length - 2; // It is the same as l.indexOf('"')
         let i = l.indexOf('"');
         node_label = l.slice(i + 1, j);
