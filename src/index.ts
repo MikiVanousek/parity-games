@@ -17,6 +17,10 @@ import { fillManual } from "./keymap/manual";
 import { loadState, saveState } from "./io/autosave";
 import "./ui/PGNameEditing";
 import { setupPGNameEditing } from "./ui/PGNameEditing";
+import { example_pg } from "./board/ExamplePG";
+import { Trace } from "./board/Trace";
+import { keyMappings } from "./keymap/keymap";
+import { algos } from "./algos/index";
 
 declare global {
   interface Window {
@@ -44,6 +48,27 @@ fileInput.addEventListener("change", (e) => {
   pgManager.handleTraceFileSelect(e);
 });
 window.traceManager = pgManager;
+
+// populate the algorithm select options
+const algoSelect = document.getElementById("algorithm-select");
+Object.keys(algos).forEach((key) => {
+  const option = document.createElement("option");
+  option.value = key;
+  option.text = algos[key].name;
+  algoSelect.appendChild(option);
+});
+
+const algoStart = document.getElementById("start-algorithm-btn");
+algoStart.addEventListener("click", () => {
+  console.log("start algorithm");
+  // get the selected algorithm
+  const algoSelect = document.getElementById(
+    "algorithm-select"
+  ) as HTMLSelectElement;
+  const selectedAlgorithm = algoSelect.value;
+
+  //const res = algos[selectedAlgorithm].run();
+});
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;
