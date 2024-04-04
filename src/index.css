@@ -442,59 +442,10 @@
       border-color: #adb5bd;
       /* Border color on hover */
     }
-
-    .manual-overlay {
-      backdrop-filter: blur(5px);
-      height: 100vh;
-      width: 100vw;
-      padding: 20px;
-      overflow-y: auto;
-      box-sizing: border-box;
-    }
-
-    .manual {
-      margin-inline: auto;
-      width: fit-content;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-      margin-top: 20px;
-      margin-bottom: 20px;
-      text-align: start;
-      background-color: #333;
-    }
-
-    .manual-entry {
-      background-color: #1d1d1d;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px;
-      margin-top: 10px;
-    }
-
-
-
-    .manual-key {
-      display: inline grid;
-      font-size: medium;
-      text-align: center;
-      align-items: center;
-      box-sizing: border-box;
-      min-height: 3rem;
-      min-width: 3rem;
-      max-width: 240px;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      font-weight: bold;
-      background-color: #555;
-      border-radius: 8px;
-    }
-
-    .manual-keys {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-    }
+  
+  .navbar-heading i.fa-pencil {
+      cursor: pointer;
+      /* make it smaller */
+      font-size: 0.8rem;
+  }
+    

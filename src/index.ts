@@ -13,6 +13,7 @@ import { setupNodeEvents } from "./events/nodeEvents";
 import { PGParser } from "./board/PGParser";
 import { example_pg } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
+import { showToast } from "./ui/toast";
 import { fillManual } from "./keymap/fillManual";
 import { keyMappings } from "./keymap/keymap";
 
@@ -23,6 +24,7 @@ declare global {
     ur: any;
     traceManager: TraceManager;
     layoutManager: LayoutManager;
+    pgName: string;
   }
 }
 
@@ -30,7 +32,6 @@ declare global {
 var [cy, ur] = setupCytoscape("cy");
 window.cy = cy;
 window.ur = ur;
-cy.add(PGParser.pgToCy(example_pg));
 
 fillManual()
 
@@ -44,7 +45,6 @@ window.traceManager = pgManager;
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;
-layoutManager.runOnce();
 setupKeyboardEvents(cy, ur);
 setupNodeEvents(cy, ur, layoutManager);
 
@@ -90,35 +90,38 @@ document.getElementById("display-labels").addEventListener("change", function ()
   });
 });
 
-function serializeGraphState() {
-  if (!window.cy) return;
-
-  const elements = window.cy.json().elements;
-  const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
-  const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
-  const trace = window.traceManager ? window.traceManager.getTrace() : [];
-
-  const state = {
-    elements,
-    layoutOptions,
-    currentStepIndex,
-    trace,
-  };
-
-  localStorage.setItem('graphState', JSON.stringify(state));
-}
+  function serializeGraphState() {
+    if (!window.cy) return;
+  
+    const elements = window.cy.json().elements;
+    const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
+    const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
+    const trace = window.traceManager ? window.traceManager.getTrace() : [];
+    const pgName = window.pgName;
+  
+    const state = {
+      elements,
+      layoutOptions,
+      currentStepIndex,
+      trace,
+      pgName,
+    };
+  
+    localStorage.setItem('graphState', JSON.stringify(state));
+  }
 
 
 function deserializeGraphState() {
   const savedState = localStorage.getItem('graphState');
   if (!savedState) return;
 
-  const { elements, layoutOptions, currentStepIndex, trace } = JSON.parse(savedState);
+  const { elements, layoutOptions, currentStepIndex, trace, pgName } = JSON.parse(savedState);
 
   if (window.cy) {
     window.cy.json({ elements }); // Restore elements
-    window.cy.layout(layoutOptions).run(); // Apply the saved layout
-
+    cy.fit(); // Fit the graph to the viewport
+    window.pgName = pgName; // Restore the parity game name
+    
     // Restore the trace
     if (trace) {
       let t = new Trace((trace));
@@ -131,9 +134,40 @@ function deserializeGraphState() {
   }
 }
 
+function validatepgName(pgName) {
+  // check if the name contains slashes
+  console.log(pgName);
+
+  if (pgName.includes('/')) {
+    showToast({
+      message: "The name of the parity game cannot contain slashes.",
+      variant: "danger",
+      duration: 4000,
+    });
+    return false;
+  }
+
+  if (pgName.length > 0) {
+    document.getElementById('parityGameTitle').textContent = pgName;
+    return true;
+  } else if (pgName.length === 0) {
+    document.getElementById('parityGameTitle').textContent = "New Parity Game";
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   deserializeGraphState(); // Load saved state
   const playStopButton = document.getElementById("playAction");
+
+  // if the name is in the window, then update the title
+  if (window.pgName) {
+    if (validatepgName(window.pgName)) {
+      document.getElementById('parityGameTitle').textContent = window.pgName;
+    } else {
+      document.getElementById('parityGameTitle').textContent = 'New Parity Game';
+      window.pgName = 'New Parity Game';
+    }
+  }
 
   if (playStopButton) {
     const playStopIcon = document.querySelector("#playAction .fa");
@@ -185,6 +219,62 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("export-oink-btn").addEventListener("click", (e) => {
     PGParser.exportOinkFormat(PGParser.cyToPg(cy));
   });
+
+  document.getElementById('editTitleIcon').addEventListener('click', function() {
+    const currentTitleElement = document.getElementById('parityGameTitle');
+    const currentText = currentTitleElement.textContent;
+
+    // Create an input field only if it doesn't already exist
+    if (!document.querySelector('.title-edit-input')) {
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.value = currentText;
+        inputField.className = 'title-edit-input';
+
+        currentTitleElement.textContent = '';
+        currentTitleElement.appendChild(inputField);
+        inputField.focus();
+        inputField.select();
+
+        const revertToText = () => {
+            if (validatepgName(inputField.value)) {
+                currentTitleElement.textContent = inputField.value; // Update the text if valid
+                window.pgName = inputField.value; // Update the global parityName
+                inputField.removeEventListener('blur', handleBlur);
+                inputField.remove(); // Remove input field if the name is valid
+            } else {
+                showToast({
+                    message: "The name of the parity game cannot contain slashes.",
+                    variant: "danger",
+                    duration: 4000,
+                });
+                inputField.focus();
+            }
+        };
+
+        // Define a function to handle blur event
+        const handleBlur = () => revertToText();
+
+        // Define a function to handle keypress event
+        const handleKeypress = (e) => {
+            if (e.key === 'Enter') {
+                if (validatepgName(inputField.value)) {
+                    inputField.blur(); // Trigger blur to revert and save if the name is valid
+                } else {
+                  showToast({
+                    message: "The name of the parity game cannot contain slashes.",
+                    variant: "danger",
+                    duration: 4000,
+                   });
+                    e.preventDefault(); // Prevent the default action if the name is invalid
+                }
+            }
+        };
+
+        inputField.addEventListener('blur', handleBlur);
+        inputField.addEventListener('keypress', handleKeypress);
+    }
+});
 
   setInterval(serializeGraphState, 500);
 });
