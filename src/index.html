@@ -43,14 +43,14 @@
         </button>
       </div>
       <div class="row">
-        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".json" />
+        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".cypg_json" />
         <label class="button" for="board-file-input"><span class="icon"><i
               class="fa-solid fa-file-import"></i></span>Load</label>
         <button onclick="handleExportGame(event)"><span class="icon"><i
               class="fa-solid fa-file-export"></i></span>Save</button>
       </div>
-      <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i
-            class="fa-solid fa-image"></i></span>Export as PNG</button>
+      <button id="export-png-button" onclick="exportAsPng()"><span class="icon">
+        <i class="fa-solid fa-image"></i></span>Export as PNG</button>
     </div>
     <div class="navbar-group">
       <div class="navbar-group-heading">Layouts Setting</div>

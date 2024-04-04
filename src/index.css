@@ -10,6 +10,7 @@ html {
   font-size: 14px;
 }
 
+<<<<<<< HEAD
 .card {
   background-color: #333;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
@@ -17,6 +18,8 @@ html {
   color: white;
 }
 
+=======
+>>>>>>> Bar: fix buttons
 .icon {
   margin-right: 0.5rem;
 }
@@ -33,7 +36,11 @@ html {
   position: absolute;
   left: 0;
   top: 0;
+<<<<<<< HEAD
   width: 100%;
+=======
+  width: 80%;
+>>>>>>> Bar: fix buttons
   height: 100%;
   background: #1d1d1d;
 }
@@ -43,13 +50,23 @@ html {
   right: 0;
   top: 50%;
   /* Start at the middle of the page */
+<<<<<<< HEAD
   transform: translateY(-50%) translateX(0px);
   /* Move it up by half its own height */
   width: 245px;
+=======
+  transform: translateY(-50%) translateX(-40px);
+  /* Move it up by half its own height */
+  width: 245px;
+  /* Complementing the width of #cy */
+  background-color: #333;
+  padding: 1.5rem;
+>>>>>>> Bar: fix buttons
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+<<<<<<< HEAD
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
 }
@@ -59,15 +76,25 @@ html {
   word-wrap: break-word;
   width: 100%;
   font-size: 2rem;
+=======
+  border-radius: 20px;
+}
+
+.navbar-heading {
+  font-size: 1.5rem;
+>>>>>>> Bar: fix buttons
   font-weight: bold;
   color: white;
   text-align: center;
 }
 
+<<<<<<< HEAD
 /* .navbar-pgname-input-group {
   display: gird;
 } */
 
+=======
+>>>>>>> Bar: fix buttons
 .navbar-group {
   display: flex;
   flex-direction: column;
@@ -92,6 +119,7 @@ html {
 }
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox] {
     --active: #808080;
     --active-inner: #fff;
@@ -100,6 +128,16 @@ html {
     --border-hover: white;
     --background: #333;
     --disabled: #1D1D1D;
+=======
+  .checkbox-wrapper input[type="checkbox"] {
+    --active: #808080;
+    --active-inner: #fff;
+    --focus: 2px rgba(39, 94, 254, 0.3);
+    --border: white;
+    --border-hover: white;
+    --background: #333;
+    --disabled: #1d1d1d;
+>>>>>>> Bar: fix buttons
     --disabled-inner: #333;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -115,12 +153,17 @@ html {
     transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox]:after {
+=======
+  .checkbox-wrapper input[type="checkbox"]:after {
+>>>>>>> Bar: fix buttons
     content: "";
     display: block;
     left: 0;
     top: 0;
     position: absolute;
+<<<<<<< HEAD
     transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
   }
 
@@ -133,16 +176,36 @@ html {
   }
 
   .checkbox-wrapper input[type=checkbox]:disabled {
+=======
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease),
+      opacity var(--d-o, 0.2s);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:checked {
+    --b: var(--active);
+    --bc: var(--active);
+    --d-o: 0.3s;
+    --d-t: 0.6s;
+    --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:disabled {
+>>>>>>> Bar: fix buttons
     --b: var(--disabled);
     cursor: not-allowed;
     opacity: 0.9;
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox]:disabled:checked {
+=======
+  .checkbox-wrapper input[type="checkbox"]:disabled:checked {
+>>>>>>> Bar: fix buttons
     --b: var(--disabled-inner);
     --bc: var(--border);
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox]:disabled+label {
     cursor: not-allowed;
   }
@@ -168,17 +231,52 @@ html {
   }
 
   .checkbox-wrapper input[type=checkbox]+label {
+=======
+  .checkbox-wrapper input[type="checkbox"]:disabled + label {
+    cursor: not-allowed;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:hover:not(:checked):not(:disabled) {
+    --bc: var(--border-hover);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 var(--focus);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch) {
+    width: 21px;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):after {
+    opacity: var(--o, 0);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):checked {
+    --o: 1;
+  }
+
+  .checkbox-wrapper input[type="checkbox"] + label {
+>>>>>>> Bar: fix buttons
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
     margin-left: 4px;
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox]:not(.switch) {
     border-radius: 7px;
   }
 
   .checkbox-wrapper input[type=checkbox]:not(.switch):after {
+=======
+  .checkbox-wrapper input[type="checkbox"]:not(.switch) {
+    border-radius: 7px;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):after {
+>>>>>>> Bar: fix buttons
     width: 5px;
     height: 9px;
     border: 2px solid var(--active-inner);
@@ -189,16 +287,28 @@ html {
     transform: rotate(var(--r, 20deg));
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox]:not(.switch):checked {
     --r: 43deg;
   }
 
   .checkbox-wrapper input[type=checkbox].switch {
+=======
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):checked {
+    --r: 43deg;
+  }
+
+  .checkbox-wrapper input[type="checkbox"].switch {
+>>>>>>> Bar: fix buttons
     width: 30px;
     border-radius: 11px;
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox].switch:after {
+=======
+  .checkbox-wrapper input[type="checkbox"].switch:after {
+>>>>>>> Bar: fix buttons
     left: 2px;
     top: 2.1px;
     border-radius: 50%;
@@ -208,12 +318,20 @@ html {
     transform: translateX(var(--x, 0));
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox].switch:checked {
+=======
+  .checkbox-wrapper input[type="checkbox"].switch:checked {
+>>>>>>> Bar: fix buttons
     --ab: var(--active-inner);
     --x: 14px;
   }
 
+<<<<<<< HEAD
   .checkbox-wrapper input[type=checkbox].switch:disabled:not(:checked):after {
+=======
+  .checkbox-wrapper input[type="checkbox"].switch:disabled:not(:checked):after {
+>>>>>>> Bar: fix buttons
     opacity: 0.6;
   }
 }
@@ -233,17 +351,29 @@ html {
   background-color: #1d1d1d;
   border-radius: 10px;
   color: white;
+<<<<<<< HEAD
   padding: 0.7rem 1rem;
   border: none;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
   width: 100%;
+=======
+  padding: 0.7rem 0;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+>>>>>>> Bar: fix buttons
   font-size: 12px;
 }
 
 .navbar-group button:hover,
 .navbar-group .button:hover {
+<<<<<<< HEAD
   opacity: 0.8
+=======
+  opacity: 0.7;
+>>>>>>> Bar: fix buttons
 }
 
 #file-name-display {
@@ -273,7 +403,11 @@ html {
   background: rgb(38, 38, 38);
   border-radius: 5px;
   padding: 10px;
+<<<<<<< HEAD
   box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+=======
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+>>>>>>> Bar: fix buttons
   display: none;
 }
 
@@ -293,6 +427,7 @@ html {
 }
 
 .bottom-bar {
+<<<<<<< HEAD
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -306,10 +441,23 @@ html {
   box-sizing: border-box;
   justify-content: center;
   align-items: baseline;
+=======
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+>>>>>>> Bar: fix buttons
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
 
+<<<<<<< HEAD
 .trace-play-controls {
   display: flex;
   gap: 10px;
@@ -323,10 +471,36 @@ html {
   display: block;
   width: 6rem;
   text-align: right;
+=======
+.cross-button {
+  position: absolute;
+  /* Positions the button absolutely within .bottom-bar */
+  top: 0;
+  /* Aligns it to the top edge */
+  right: 0;
+  /* Aligns it to the right edge */
+  background: transparent;
+  /* Optional: makes the button background transparent */
+  border: none;
+  /* Removes the border */
+  color: white;
+  /* Sets the icon color, change as needed */
+  cursor: pointer;
+  /* Changes cursor to a pointer on hover */
+  padding: 0.5rem;
+  /* Adds some space around the icon */
+}
+
+/* Style adjustments for the icon within the cross-button */
+.cross-button .fa {
+  font-size: 1.5rem;
+  /* Adjusts the size of the cross icon */
+>>>>>>> Bar: fix buttons
 }
 
 .bottom-bar button {
   background-color: #1d1d1d;
+<<<<<<< HEAD
   width: 3.5rem;
   height: 3.5rem;
   text-align: center;
@@ -338,26 +512,70 @@ html {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
   font-size: 1.5rem;
+=======
+  border-radius: 10px;
+  color: white;
+  padding: 0.7rem 1.3rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  font-size: 12px;
+>>>>>>> Bar: fix buttons
 }
 
 .bottom-bar button:hover {
   opacity: 0.7;
 }
 
+<<<<<<< HEAD
 .play-speed-container {
   display: flex;
   width: 3.5rem;
   flex-direction: column;
   align-items: center;
+=======
+.speed-dropdown ul li:hover {
+  background-color: #ddd;
+}
+
+.play-speed-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.play-speed-container select {
+  margin-top: 5px;
+  background-color: #1d1d1d;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.play-speed-container select option {
+  background: #333;
+  color: white;
+>>>>>>> Bar: fix buttons
 }
 
 .top-left-panel {
   position: absolute;
   top: 0;
   left: 0;
+<<<<<<< HEAD
   padding-top: 0;
   border-bottom-right-radius: 20px;
   font-size: larger;
+=======
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  border-bottom-right-radius: 20px;
+  z-index: 10;
+>>>>>>> Bar: fix buttons
 }
 
 .top-left-panel ul {
@@ -369,6 +587,7 @@ html {
 .top-left-panel li {
   display: flex;
   align-items: center;
+<<<<<<< HEAD
   margin-bottom: 12px;
 }
 
@@ -378,6 +597,16 @@ html {
   background-color: transparent;
   border: .3em solid #aaa;
   border-radius: .2em;
+=======
+  margin-bottom: 10px;
+}
+
+.color-line {
+  width: 6px;
+  height: 6px;
+  background-color: #ff5733;
+  border: 1px solid #aaa;
+>>>>>>> Bar: fix buttons
   transition: background-color 0.3s ease;
   /* add hand mouse */
   cursor: pointer;
@@ -386,6 +615,7 @@ html {
 .trace-step-display {
   color: #fff;
   /* Example: setting text color */
+<<<<<<< HEAD
 }
 
 input[type=text],
@@ -419,6 +649,56 @@ textarea:hover:not(:focus) {
 }
 
 
+=======
+  padding: 0.5rem;
+  margin-left: 20px;
+  /* Space it out from other elements, adjust as needed */
+  /* place the trace-step to the left */
+  position: relative;
+}
+
+/* Styling for the speed input field */
+#speedInput {
+  width: 60px;
+  /* Adjust the width as needed */
+  margin: 10px;
+  /* Space around the input field */
+  font-size: 1rem;
+  /* Size of the text within the input */
+  line-height: 1.5;
+  /* Adjust the line height for better readability */
+  color: #333;
+  /* Color of the text */
+  background-color: #fff;
+  /* Background color of the input field */
+  border: 1px solid #ccc;
+  /* Border color */
+  border-radius: 5px;
+  /* Rounded corners for the input field */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  /* Subtle inner shadow for depth */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  /* Smooth transition for focus/hover */
+  /* Center the text within the input field */
+  text-align: center;
+}
+
+#speedInput:focus {
+  border-color: #66afe9;
+  /* Border color when the input is focused */
+  outline: 0;
+  /* Remove default focus outline */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(102, 175, 233, 0.6);
+  /* Enhanced shadow on focus */
+}
+
+#speedInput:hover {
+  border-color: #adb5bd;
+  /* Border color on hover */
+}
+
+>>>>>>> Bar: fix buttons
 .manual-overlay {
   backdrop-filter: blur(5px);
   height: 100vh;
@@ -431,7 +711,10 @@ textarea:hover:not(:focus) {
 .manual {
   margin-inline: auto;
   width: fit-content;
+<<<<<<< HEAD
   max-width: 60%;
+=======
+>>>>>>> Bar: fix buttons
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
@@ -446,15 +729,21 @@ textarea:hover:not(:focus) {
   border-radius: 8px;
   display: flex;
   flex-direction: row;
+<<<<<<< HEAD
   gap: 2em;
   align-items: center;
   justify-content: space-between;
   text-align: end;
   text-wrap: balance;
+=======
+  align-items: center;
+  justify-content: space-between;
+>>>>>>> Bar: fix buttons
   padding: 10px;
   margin-top: 10px;
 }
 
+<<<<<<< HEAD
 .manual-txt-entry {
   background-color: #1d1d1d;
   border-radius: 8px;
@@ -467,6 +756,8 @@ textarea:hover:not(:focus) {
 
 
 
+=======
+>>>>>>> Bar: fix buttons
 .manual-key {
   display: inline grid;
   font-size: medium;
@@ -488,6 +779,7 @@ textarea:hover:not(:focus) {
   flex-direction: row;
   gap: 10px;
 }
+<<<<<<< HEAD
 
 .pgname i {
   cursor: pointer;
@@ -525,3 +817,5 @@ textarea:hover:not(:focus) {
 .manual-button:hover {
   background-color: #666;
 }
+=======
+>>>>>>> Bar: fix buttons
