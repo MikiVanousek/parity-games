@@ -1,5 +1,6 @@
 import { updateGraphFileName } from "../ui/utils";
 import { PGParser } from "../board/PGParser";
+import { showToast } from "../ui/toast";
 
 export function handleExportGame(cy, name = "game") {
   const cyState = cy.elements().jsons();
@@ -68,7 +69,18 @@ export function handleOinkFileSelect(event, cy, layoutManager) {
     reader.onload = function (loadEvent) {
       const fileContent = loadEvent.target.result as string;
 
-      const pg = PGParser.importOinkFormat(fileContent);
+      let pg;
+      try {
+        pg = PGParser.importOinkFormat(fileContent);
+      } catch (e) {
+        console.error("Error importing game:", e);
+        showToast({
+          title: "Invalid pg file",
+          message: "The file you selected is not a valid pg file",
+          variant: "danger",
+        })
+        return;
+      }
       resetBoardVisuals(cy, pg, layoutManager);
     };
 

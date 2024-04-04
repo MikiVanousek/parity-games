@@ -11,7 +11,6 @@ export module PGParser {
     var lines = file_content.split("\n");
     let pg = ParityGame.emptyBoard();
 
-    // assert(lines[0] === `parity ${pg.nodes.length};`);
     assert(lines[0].startsWith('parity '));
 
     let arc_id_pairs: [number, number][] = [];
@@ -20,13 +19,18 @@ export module PGParser {
         // Empty line at the end of the file? If not, the assert on number of vertices will fail.
         continue;
       }
-      assert(l.slice(l.length - 2, l.length) == '";');
-      let i = l.indexOf('"');
-      let j = l.length - 2; // It is the same as l.indexOf('"')
-      var node_label = l.slice(i + 1, j);
+      var components = l.split(" "); // i-1 to also remove the spacebefore
+      var node_label;
+      if (components.length > 4) { // There is a label. If the label contains space, there will be more than 5 components.
+        assert(l.slice(l.length - 2, l.length) == '";');
+        let j = l.length - 2; // It is the same as l.indexOf('"')
+        let i = l.indexOf('"');
+        node_label = l.slice(i + 1, j);
+      } else {
+        assert(components.length == 4);
+        node_label = "";
+      }
 
-      var components = l.slice(0, i - 1).split(" "); // i-1 to also remove the spacebefore
-      assert(components.length === 4);
       var id = parseInt(components[0]);
       var priority = parseInt(components[1]);
 
