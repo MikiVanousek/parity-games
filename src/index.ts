@@ -14,6 +14,8 @@ import { PGParser } from "./board/PGParser";
 import { example_pg } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
 import { showToast } from "./ui/toast";
+import { fillManual } from "./keymap/fillManual";
+import { keyMappings } from "./keymap/keymap";
 
 declare global {
   interface Window {
@@ -30,6 +32,8 @@ declare global {
 var [cy, ur] = setupCytoscape("cy");
 window.cy = cy;
 window.ur = ur;
+
+fillManual()
 
 const fileInput = document.getElementById("fileInput");
 var pgManager = new TraceManager(cy);
@@ -77,14 +81,14 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 document.getElementById("display-labels").addEventListener("change", function () {
-    const showLabels = (this as HTMLInputElement).checked;
-    cy.nodes().style({
-      label: showLabels
-        ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-        : "",
-      "text-wrap": "wrap",
-    });
+  const showLabels = (this as HTMLInputElement).checked;
+  cy.nodes().style({
+    label: showLabels
+      ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
+      : "",
+    "text-wrap": "wrap",
   });
+});
 
   function serializeGraphState() {
     if (!window.cy) return;
