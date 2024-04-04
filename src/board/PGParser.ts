@@ -59,13 +59,20 @@ export module PGParser {
   }
 
   export function exportOinkFormat(pg: ParityGame): string {
+    // This is an evil hack, which assures you get the same output when importing and export .pg file with no labels.
+    const skipLabels = pg.nodes.every((n) => n.label === "");
     var res = `parity ${pg.nodes.length};\n`;
     for (let n of pg.nodes) {
       let arc_str = pg
         .target_neighbors(n)
         .map((x) => x.id)
         .join(",");
-      res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`;
+
+      if (skipLabels) {
+        res += `${n.id} ${n.priority} ${n.player} ${arc_str};\n`;
+      } else {
+        res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`;
+      }
     }
     return res;
   }
