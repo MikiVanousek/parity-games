@@ -96,10 +96,8 @@ export module PGParser {
       pg.addNode(Node.new(parseInt(n.id()), parseInt(n.data("priority")), n.data("isEven") === "true" ? Player.Even : Player.Odd, n.data("label")));
     }
     for (const l of cy.$("edge")) {
-      console.log(l)
       pg.addLink(Link.new(parseInt(l.data("source")), parseInt(l.data("target"))));
     }
-    console.log("Reconstructed pg: ", pg);
     return pg;
   }
 }

@@ -16,12 +16,8 @@ export class TraceManager {
   setsEnabled?: Map<string, boolean>;
   intervalID = null;
 
-  constructor(cy: any, pg: ParityGame = examplePg) {
+  constructor(cy: any) {
     this.cy = cy;
-    // Only registering the PGListener AFTER adding the elements. Otherwise the listener will be triggered by the initial add.
-
-    let n = this.cy.getElementById("3")
-    cy.style().update();
 
     this.listElement = document.getElementById('color-legend');
     this.listElement.hidden = true;
@@ -57,7 +53,6 @@ export class TraceManager {
 
   setTrace(t: Trace) {
     console.log("Setting trace", t);
-
     if (!t.validate()) {
       showToast({
         message: "This trace has internal discrepancies: Its steps do not fit its parity game. More detail in the console.",
@@ -75,6 +70,7 @@ export class TraceManager {
         variant: "danger",
         duration: 4000,
       })
+      console.log("This trace does not fit the current parity game.");
       return;
     }
 
