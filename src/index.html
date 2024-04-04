@@ -43,7 +43,7 @@
         </button>
       </div>
       <div class="row">
-        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".cypg_json" />
+        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".json" />
         <label class="button" for="board-file-input"><span class="icon"><i
               class="fa-solid fa-file-import"></i></span>Load</label>
         <button onclick="handleExportGame(event)"><span class="icon"><i
@@ -69,15 +69,13 @@
       </div>
     </div>
     <div class="navbar-group">
-      <div class="navbar-group-heading">Trace</div>
-      <div class="row">
-        <label for="fileInput" class="button">
-          <span class="icon">
-            <i class="fa-solid fa-file-import"></i>
-          </span>Import trace
-        </label>
-        <input type="file" id="fileInput" style="display: none;" accept=".pgtrace_json" />
-      </div>
+      <div class="navbar-group-heading">Trace settings</div>
+      <label for="fileInput" class="button">
+        <span class="icon">
+          <i class="fa-solid fa-file-import"></i>
+        </span>Import trace
+      </label>
+      <input type="file" id="fileInput" style="display: none;" accept=".json" />
     </div>
 
   </div>
