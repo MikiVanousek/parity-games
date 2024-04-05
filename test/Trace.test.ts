@@ -17,7 +17,7 @@ test('read write parity', () => {
 });
 
 test('trace read write', () => {
-    const file_name = dir + 'example.trace.json'
+    const file_name = dir + 'example.pgtrace_json'
 
     const write_string = JSON.stringify(exampleTrace);
     fs.writeFileSync(file_name, write_string, 'utf8')
