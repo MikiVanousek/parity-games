@@ -8,10 +8,10 @@ export module PGParser {
     file_content: string,
   ): ParityGame {
     // create a list of lines
+    // var lines = file_content.split("/\r\n|\r|\n/");
     var lines = file_content.split("\n");
     let pg = ParityGame.emptyBoard();
 
-    // assert(lines[0] === `parity ${pg.nodes.length};`);
     assert(lines[0].startsWith('parity '));
 
     let arc_id_pairs: [number, number][] = [];
@@ -20,13 +20,18 @@ export module PGParser {
         // Empty line at the end of the file? If not, the assert on number of vertices will fail.
         continue;
       }
-      assert(l.slice(l.length - 2, l.length) == '";');
-      let i = l.indexOf('"');
-      let j = l.length - 2; // It is the same as l.indexOf('"')
-      var node_label = l.slice(i + 1, j);
+      var components = l.split(" "); // i-1 to also remove the spacebefore
+      var node_label;
+      if (components.length > 4) { // There is a label. If the label contains space, there will be more than 5 components.
+        let i = l.indexOf('"');
+        let j = l.lastIndexOf('"')
+        assert(l[j + 1] == ';')
+        node_label = l.slice(i + 1, j);
+      } else {
+        assert(components.length == 4);
+        node_label = "";
+      }
 
-      var components = l.slice(0, i - 1).split(" "); // i-1 to also remove the spacebefore
-      assert(components.length === 4);
       var id = parseInt(components[0]);
       var priority = parseInt(components[1]);
 
@@ -55,13 +60,20 @@ export module PGParser {
   }
 
   export function exportOinkFormat(pg: ParityGame): string {
+    // This is an evil hack, which assures you get the same output when importing and export .pg file with no labels.
+    const skipLabels = pg.nodes.every((n) => n.label === "");
     var res = `parity ${pg.nodes.length};\n`;
     for (let n of pg.nodes) {
       let arc_str = pg
         .target_neighbors(n)
         .map((x) => x.id)
         .join(",");
-      res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`;
+
+      if (skipLabels) {
+        res += `${n.id} ${n.priority} ${n.player} ${arc_str};\n`;
+      } else {
+        res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`;
+      }
     }
     return res;
   }

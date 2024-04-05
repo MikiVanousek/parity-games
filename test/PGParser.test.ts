@@ -34,9 +34,11 @@ test('examplePg test', () => {
     expect(pg.equals(examplePg)).toBe(false)
 });
 
-test.skip('elaborate .pg parsing test', () => {
+test('all in test/pg_examples parsing test', () => {
+    let PG_DIR = 'test/pg_examples/'
     let file_list = fs.readdirSync(PG_DIR)
     for (let file_name of file_list) {
+        console.log(file_name)
         let file_string = fs.readFileSync(PG_DIR + file_name).toString()
         let pg = PGParser.importOinkFormat(file_string)
         expect(PGParser.exportOinkFormat(pg)).toBe(file_string)
