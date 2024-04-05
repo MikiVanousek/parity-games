@@ -1,8 +1,12 @@
-import { keyMappings } from "./keymap";
+import { pgEditingMappings } from "./keymap";
 import { KeyMapping } from "./keymapTypes";
 
+const mappingCategories: [string, KeyMapping[]][] = [
+  ["Editing parity game", pgEditingMappings],
+
+]
 export function fillManual(): void {
-  const mappings = keyMappings;
+  const mappings = pgEditingMappings;
   const categoryMap = new Map<string, KeyMapping[]>();
   for (const mapping of mappings) {
     if (!categoryMap.has(mapping.category)) {
@@ -13,7 +17,7 @@ export function fillManual(): void {
 
   const manual = document.getElementById("manual-keybinds");
   manual.innerHTML = '';
-  for (const [category, categoryMappings] of categoryMap) {
+  for (const [category, categoryMappings] of mappingCategories) {
     manual.appendChild(document.createElement("h3")).textContent = category;
     for (const kb of categoryMappings) {
       const entryDiv = document.createElement("div");
@@ -21,9 +25,9 @@ export function fillManual(): void {
       const keysDiv = document.createElement("div");
       keysDiv.className = "manual-keys";
       for (let key of kb.keys) {
-        if (kb.requires_modifier) {
-          key = "⌘ + " + key;
-        }
+        // if () {
+        //   key = "⌘ + " + key;
+        // }
         const keyDiv = document.createElement("div");
         keyDiv.className = "manual-key";
         keyDiv.textContent = key;

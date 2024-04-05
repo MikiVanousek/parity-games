@@ -1,9 +1,8 @@
 import { addNodeAtPosition, copySelectedElements, pasteCopiedElements } from "../events/graphEvents";
 import { KeyMapping, buildKeyMap } from "./keymapTypes";
 
-
-export const keyMappings: KeyMapping[] = [];
-keyMappings.push(new KeyMapping(
+export const otherMappings: KeyMapping[] = [];
+otherMappings.push(new KeyMapping(
   ["?", "/"],
   "Toggle manual",
   (args) => {
@@ -15,21 +14,63 @@ keyMappings.push(new KeyMapping(
     }
   }
 ));
-keyMappings.push(new KeyMapping(
+
+export const cmdMappings: KeyMapping[] = [];
+cmdMappings.push(new KeyMapping(
+  ["c"],
+  "Copy selected elements",
+  ({ cy }) => {
+    copySelectedElements(cy);
+  }
+));
+
+cmdMappings.push(new KeyMapping(
+  ["v"],
+  "Paste copied elements",
+  ({ cy, ur }) => {
+    pasteCopiedElements(cy, ur);
+  },
+));
+
+cmdMappings.push(new KeyMapping(
+  ["z"],
+  "Undo last action",
+  ({ ur, event }) => {
+    if (event.ctrlKey || event.metaKey) {
+      ur.undo();
+    }
+  },
+));
+
+cmdMappings.push(new KeyMapping(
+  ["y"],
+  "Redo last action",
+  ({ ur, event }) => {
+    if (event.ctrlKey || event.metaKey) {
+      ur.redo();
+    }
+  },
+));
+
+export const pgEditingMappings: KeyMapping[] = [];
+
+pgEditingMappings.push(new KeyMapping(
   ["e"],
   "Add even node at the cursor position",
   (args) => {
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, true);
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["o", "w"],
   "Add odd node at the cursor position",
   (args) => {
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, false);
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["q"],
   "Toggle the parity of selected nodes",
   (args) => {
@@ -40,7 +81,8 @@ keyMappings.push(new KeyMapping(
     });
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["Backspace", "Delete"],
   "Remove selected elements",
   ({ cy, ur }) => {
@@ -50,7 +92,8 @@ keyMappings.push(new KeyMapping(
     }
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["+", "="],
   "Increment priority",
   ({ cy, ur }) => {
@@ -58,7 +101,8 @@ keyMappings.push(new KeyMapping(
     ur.do("changePriority", { nodes: selectedNodes, value: 1 });
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["-"],
   "Decrement priority",
   ({ cy, ur }) => {
@@ -66,8 +110,9 @@ keyMappings.push(new KeyMapping(
     ur.do("changePriority", { nodes: selectedNodes, value: -1 });
   }
 ));
-keyMappings.push(new KeyMapping(
-  ["t"],
+
+pgEditingMappings.push(new KeyMapping(
+  ["p"],
   "Set priority for selected nodes",
   ({ cy, ur }) => {
     let priority = Number(
@@ -84,51 +129,7 @@ keyMappings.push(new KeyMapping(
     }
   }
 ));
-keyMappings.push(new KeyMapping(
-  ["p"],
-  "Paste selected elements",
-  ({ cy }) => {
-    cy.elements().forEach(function (ele) {
-      console.log(ele.data());
-    });
-  }
-));
-keyMappings.push(new KeyMapping(
-  ["c"],
-  "Copy selected elements",
-  ({ cy }) => {
-    copySelectedElements(cy);
-  },
-  true
-));
-keyMappings.push(new KeyMapping(
-  ["v"],
-  "Paste copied elements",
-  ({ cy, ur }) => {
-    pasteCopiedElements(cy, ur);
-  },
-  true
-));
-keyMappings.push(new KeyMapping(
-  ["z"],
-  "Undo last action",
-  ({ ur, event }) => {
-    if (event.ctrlKey || event.metaKey) {
-      ur.undo();
-    }
-  },
-  true
-));
-keyMappings.push(new KeyMapping(
-  ["y"],
-  "Redo last action",
-  ({ ur, event }) => {
-    if (event.ctrlKey || event.metaKey) {
-      ur.redo();
-    }
-  },
-  true
-));
 
-
-export const keyMap = buildKeyMap(keyMappings)
+export const pgEditingKeymap = buildKeyMap(pgEditingMappings)
+export const cmdKeymap = buildKeyMap(cmdMappings)
+export const otherKeymap = buildKeyMap(otherMappings)

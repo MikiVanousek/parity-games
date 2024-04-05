@@ -15,7 +15,7 @@ import { examplePg } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
 import { showToast } from "./ui/toast";
 import { fillManual } from "./keymap/fillManual";
-import { keyMappings } from "./keymap/keymap";
+import { pgEditingMappings } from "./keymap/keymap";
 import { loadState, saveState } from "./io/autosave";
 
 declare global {

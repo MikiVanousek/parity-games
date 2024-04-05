@@ -1,6 +1,6 @@
 import * as cytoscape from "cytoscape";
 import { showToast } from "../ui/toast";
-import { keyMap } from "../keymap/keymap";
+import { cmdKeymap as cmdKeymap, otherKeymap, otherMappings, pgEditingKeymap } from "../keymap/keymap";
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
 
@@ -32,29 +32,39 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
     const modelX = (mouseX - pan.x) / zoom;
     const modelY = (mouseY - pan.y) / zoom;
 
-    if (keyMap.has(event.key)) {
-      // skip the keybinds from KeyBoardEvents if the user is typing in an input field
-      var nothingIsFocused = document.activeElement === document.body
-      if (!nothingIsFocused) return;
+    // skip the keybinds from KeyBoardEvents if the user is typing in an input field
+    var nothingIsFocused = document.activeElement === document.body
+    if (!nothingIsFocused) return;
 
-      event.preventDefault();
-      event.stopPropagation();
-      const km = keyMap.get(event.key)
-      if (km.editing_pg && window.traceManager.hasTrace()) {
+    let km;
+    if (window.traceManager.hasTrace()) {
+      if (km = pgEditingKeymap.get(event.key) || (km = cmdKeymap.get(event.key))) {
         showToast({
           message: "Can not change parity game while a trace is loaded. Attempted: \n" + km.description,
           variant: "danger",
         });
         return;
       }
-      else {
-        if (km.requires_modifier && (event.ctrlKey || event.metaKey)) {
-          km.action({ cy, ur, modelX, modelY, event })
-        }
-        if (!km.requires_modifier) {
-          km.action({ cy, ur, modelX, modelY, event })
-        }
+    } else if (event.ctrlKey || event.metaKey) {
+      if (cmdKeymap.has(event.key)) {
+        const km = cmdKeymap.get(event.key);
+        event.preventDefault();
+        event.stopPropagation();
+        km.action({ cy, ur, modelX, modelY, event });
+        return;
+      } else {
+        console.log("No key bind for ⌘ + " + event.key);
       }
+    } else if (km = pgEditingKeymap.get(event.key)) {
+      km.action({ cy, ur, modelX, modelY, event })
+      event.preventDefault();
+      event.stopPropagation();
+    } else if (km = otherKeymap.get(event.key)) {
+      km.action({ cy, ur, modelX, modelY, event })
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      console.log("No key bind for " + event.key);
     }
   });
 
