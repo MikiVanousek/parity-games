@@ -67,8 +67,12 @@ export function setupNodeEvents(cy, ur, layoutManager) {
     if (!isAltPressed && !isShiftCmdPressed) return;
 
     event.preventDefault();
-
     // Get all currently selected nodes
+  });
+
+
+  cy.on("cxttap", "node", function (event) {
+    const target_node = event.target;
     const selectedNodes = cy.$("node:selected");
 
     // Create an edge from each selected node to the shift-clicked node
@@ -77,7 +81,7 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       const existingEdge = cy.edges().some((edge) => {
         return (
           edge.data("source") === selectedNode.id() &&
-          edge.data("target") === node.id()
+          edge.data("target") === target_node.id()
         );
       });
       if (!existingEdge) {
@@ -85,77 +89,13 @@ export function setupNodeEvents(cy, ur, layoutManager) {
           name: "add",
           param: {
             group: "edges",
-            data: { source: selectedNode.id(), target: node.id() },
+            data: { source: selectedNode.id(), target: target_node.id() },
           },
         });
       }
     });
-
     if (actionList.length > 0) {
       ur.do("batch", actionList);
     }
-
-    selectedNodes.unselect();
-  });
-
-  // Right click context menu
-  cy.on("cxttap", "node", (event) => {
-    const node = event.target;
-
-    // Prevent context menu from showing when shift+cmd is pressed
-    const isShiftCmdPressed =
-      event.originalEvent.shiftKey && event.originalEvent.metaKey;
-    if (isShiftCmdPressed) return;
-
-    event.preventDefault();
-
-    const contextMenu = document.getElementById("context-menu");
-    if (contextMenu) {
-      contextMenu.style.display = "block";
-      contextMenu.style.left = event.originalEvent.clientX + "px";
-      contextMenu.style.top = event.originalEvent.clientY + "px";
-    }
-
-    const deleteButton = document.getElementById("delete-button");
-    if (deleteButton) {
-      deleteButton.onclick = () => {
-        ur.do("remove", node);
-        contextMenu.style.display = "none";
-      };
-    }
-  });
-
-  cy.on("cxttap", "node", function (event) {
-    const node = event.target;
-    let menu = document.getElementById("custom-context-menu");
-
-    menu.style.left = event.renderedPosition.x + "px";
-    menu.style.top = event.renderedPosition.y + "px";
-    menu.style.display = "block";
-
-    // Function to hide the menu
-    function hideMenu() {
-      menu.style.display = "none";
-    }
-
-    // Hide the menu on any click
-    window.addEventListener("click", hideMenu);
-
-    // Edit priority action
-    document.getElementById("edit-priority").onclick = function () {
-      let priority = Number(
-        prompt("Enter new priority", node.data("priority") || "")
-      );
-      if (priority !== null && !isNaN(priority)) {
-        let selectedNodes = cy.$("node:selected");
-        if (selectedNodes.length > 0) {
-          ur.do("editPriority", {
-            nodes: selectedNodes,
-            priority: priority,
-          });
-        }
-      }
-      hideMenu();
-    };
   });
 }

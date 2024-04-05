@@ -67,6 +67,24 @@ keyMappings.push(new KeyMapping(
   }
 ));
 keyMappings.push(new KeyMapping(
+  ["t"],
+  "Set priority for selected nodes",
+  ({ cy, ur }) => {
+    let priority = Number(
+      prompt("Enter new priority", "")
+    );
+    if (priority !== null && !isNaN(priority)) {
+      let selectedNodes = cy.$("node:selected");
+      if (selectedNodes.length > 0) {
+        ur.do("editPriority", {
+          nodes: selectedNodes,
+          priority: priority,
+        });
+      }
+    }
+  }
+));
+keyMappings.push(new KeyMapping(
   ["p"],
   "Paste selected elements",
   ({ cy }) => {
