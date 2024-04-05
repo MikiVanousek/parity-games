@@ -10,6 +10,7 @@ export function saveState() {
   const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
   const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
   const trace = window.traceManager ? window.traceManager.getTrace() : [];
+  const pgName = window.pgName;
 
   const zoom = window.cy.zoom();
   const pan = window.cy.pan();
@@ -20,6 +21,7 @@ export function saveState() {
     trace,
     zoom,
     pan,
+    pgName,
   };
 
   localStorage.setItem('graphState', JSON.stringify(state));
@@ -33,9 +35,13 @@ export function loadState() {
     return;
   }
 
-  const { elements, layoutOptions, currentStepIndex, trace, zoom, pan } = JSON.parse(savedState);
+  const { elements, layoutOptions, currentStepIndex, trace, zoom, pan, pgName } = JSON.parse(savedState);
   window.cy.zoom(zoom);
   window.cy.pan(pan);
+
+  // set the name of the parity game in the window object
+  window.pgName = pgName;
+
   if (window.cy) {
     window.cy.json({ elements }); // Restore elements
     if (trace) {
