@@ -23,7 +23,7 @@ keyMappings.push(new KeyMapping(
   }
 ));
 keyMappings.push(new KeyMapping(
-  ["o"],
+  ["o", "w"],
   "Add odd node at the cursor position",
   (args) => {
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, false);
