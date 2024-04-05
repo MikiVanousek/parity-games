@@ -119,13 +119,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const playStopButton = document.getElementById("playAction");
 
   // if the name is in the window, then update the title
-  if (window.pgName) {
-    if (validatepgName(window.pgName)) {
-      document.getElementById('parityGameTitle').textContent = window.pgName;
-    } else {
-      document.getElementById('parityGameTitle').textContent = 'New Parity Game';
-      window.pgName = 'New Parity Game';
-    }
+  if (window.pgName && validatepgName(window.pgName)) {
+    document.getElementById('parityGameTitle').textContent = window.pgName;
+  } else {
+    document.getElementById('parityGameTitle').textContent = 'New Parity Game';
+    window.pgName = 'New Parity Game';
   }
 
   if (playStopButton) {

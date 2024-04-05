@@ -23,8 +23,9 @@ export function handleImportGame(event, cy) {
 
   if (file) {
     updateGraphFileName(file.name);
+
     window.pgName = file.name;
-    console.log("Importing game:", file.name);
+    document.getElementById('parityGameTitle').textContent = window.pgName;
 
     const reader = new FileReader();
 
@@ -60,8 +61,9 @@ export function handleOinkFileSelect(event, cy, layoutManager) {
 
   if (file) {
     updateGraphFileName(file.name);
+
     window.pgName = file.name;
-    console.log("Importing game:", file.name);
+    document.getElementById('parityGameTitle').textContent = window.pgName;
 
     const reader = new FileReader();
 
