@@ -1,9 +1,10 @@
-import { pgEditingMappings } from "./keymap";
+import { cmdMappings, otherMappings, pgEditingMappings } from "./keymap";
 import { KeyMapping } from "./keymapTypes";
 
 const mappingCategories: [string, KeyMapping[]][] = [
+  ["General mappings", otherMappings],
   ["Editing parity game", pgEditingMappings],
-
+  ["Control mappings", cmdMappings],
 ]
 export function fillManual(): void {
   const mappings = pgEditingMappings;
@@ -25,9 +26,9 @@ export function fillManual(): void {
       const keysDiv = document.createElement("div");
       keysDiv.className = "manual-keys";
       for (let key of kb.keys) {
-        // if () {
-        //   key = "⌘ + " + key;
-        // }
+        if (categoryMappings === cmdMappings) { // Yes, this is evil. But it works.
+          key = "⌘ + " + key;
+        }
         const keyDiv = document.createElement("div");
         keyDiv.className = "manual-key";
         keyDiv.textContent = key;
