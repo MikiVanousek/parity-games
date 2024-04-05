@@ -19,9 +19,11 @@ keyMappings.push(new KeyMapping(
   ["e"],
   "Add even node at the cursor position",
   (args) => {
+    console.log(args);
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, true);
   }
 ));
+
 keyMappings.push(new KeyMapping(
   ["o"],
   "Add odd node at the cursor position",
