@@ -1,37 +1,20 @@
-import { cmdMappings, otherMappings, pgEditingMappings } from "./keymap";
+import { all_keymaps, cmdMappings, otherMappings, pgEditingMappings } from "./keymap";
 import { KeyMapping } from "./keymapTypes";
 
-const mappingCategories: [string, KeyMapping[]][] = [
-  ["General mappings", otherMappings],
-  ["Editing parity game", pgEditingMappings],
-  ["Control mappings", cmdMappings],
-]
 export function fillManual(): void {
-  const mappings = pgEditingMappings;
-  const categoryMap = new Map<string, KeyMapping[]>();
-  for (const mapping of mappings) {
-    if (!categoryMap.has(mapping.category)) {
-      categoryMap.set(mapping.category, []);
-    }
-    categoryMap.get(mapping.category).push(mapping);
-  }
-
   const manual = document.getElementById("manual-keybinds");
   manual.innerHTML = '';
-  for (const [category, categoryMappings] of mappingCategories) {
-    manual.appendChild(document.createElement("h3")).textContent = category;
-    for (const kb of categoryMappings) {
+  for (const km of all_keymaps) {
+    manual.appendChild(document.createElement("h3")).textContent = km.manualDescription;
+    for (const kb of km.keyMappings) {
       const entryDiv = document.createElement("div");
       entryDiv.className = "manual-entry";
       const keysDiv = document.createElement("div");
       keysDiv.className = "manual-keys";
       for (let key of kb.keys) {
-        if (categoryMappings === cmdMappings) { // Yes, this is evil. But it works.
-          key = "⌘ + " + key;
-        }
         const keyDiv = document.createElement("div");
         keyDiv.className = "manual-key";
-        keyDiv.textContent = key;
+        keyDiv.textContent = km.key_to_string(key);
         keysDiv.appendChild(keyDiv);
       }
       entryDiv.appendChild(keysDiv);

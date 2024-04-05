@@ -1,7 +1,7 @@
 import { addNodeAtPosition, copySelectedElements, pasteCopiedElements } from "../events/graphEvents";
-import { KeyMapping, buildKeyMap } from "./keymapTypes";
+import { KeyMap, KeyMapping, buildKeyMap } from "./keymapTypes";
 
-export const otherMappings: KeyMapping[] = [];
+export const otherMappings = new KeyMap("Other mappings");
 otherMappings.push(new KeyMapping(
   ["?", "/"],
   "Toggle manual",
@@ -15,7 +15,8 @@ otherMappings.push(new KeyMapping(
   }
 ));
 
-export const cmdMappings: KeyMapping[] = [];
+export const cmdMappings = new KeyMap("Command mappings");
+cmdMappings.key_to_string = (key) => "⌘ + " + key;
 cmdMappings.push(new KeyMapping(
   ["c"],
   "Copy selected elements",
@@ -52,7 +53,7 @@ cmdMappings.push(new KeyMapping(
   },
 ));
 
-export const pgEditingMappings: KeyMapping[] = [];
+export const pgEditingMappings = new KeyMap("Parity game editing mappings");
 
 pgEditingMappings.push(new KeyMapping(
   ["e"],
@@ -130,6 +131,19 @@ pgEditingMappings.push(new KeyMapping(
   }
 ));
 
-export const pgEditingKeymap = buildKeyMap(pgEditingMappings)
-export const cmdKeymap = buildKeyMap(cmdMappings)
-export const otherKeymap = buildKeyMap(otherMappings)
+export const traceKeymap = new KeyMap("When trace is loaded");
+traceKeymap.push(new KeyMapping(
+  ["ArrowRight"],
+  "Next step",
+  (args) => {
+    const manual_overlay = document.getElementById("manual-overlay");
+    if (manual_overlay.style.display === "none") {
+      manual_overlay.style.display = "";
+    } else {
+      manual_overlay.style.display = "none";
+    }
+  }
+));
+
+
+export const all_keymaps = [otherMappings, cmdMappings, pgEditingMappings, traceKeymap]

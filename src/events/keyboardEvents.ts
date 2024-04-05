@@ -1,6 +1,6 @@
 import * as cytoscape from "cytoscape";
 import { showToast } from "../ui/toast";
-import { cmdKeymap as cmdKeymap, otherKeymap, otherMappings, pgEditingKeymap } from "../keymap/keymap";
+import { cmdMappings, otherMappings, pgEditingMappings, traceKeymap } from "../keymap/keymap";
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
 
@@ -38,7 +38,12 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
 
     let km;
     if (window.traceManager.hasTrace()) {
-      if (km = pgEditingKeymap.get(event.key) || (km = cmdKeymap.get(event.key))) {
+      if (km = traceKeymap.keyMap.get(event.key)) {
+        event.preventDefault();
+        event.stopPropagation();
+        km.action({ cy, ur, modelX, modelY, event });
+        return;
+      } else if (km = pgEditingMappings.keyMap.get(event.key) || (km = cmdMappings.keyMap.get(event.key))) {
         showToast({
           message: "Can not change parity game while a trace is loaded. Attempted: \n" + km.description,
           variant: "danger",
@@ -46,8 +51,8 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
         return;
       }
     } else if (event.ctrlKey || event.metaKey) {
-      if (cmdKeymap.has(event.key)) {
-        const km = cmdKeymap.get(event.key);
+      if (cmdMappings.keyMap.has(event.key)) {
+        const km = cmdMappings.keyMap.get(event.key);
         event.preventDefault();
         event.stopPropagation();
         km.action({ cy, ur, modelX, modelY, event });
@@ -55,11 +60,11 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
       } else {
         console.log("No key bind for ⌘ + " + event.key);
       }
-    } else if (km = pgEditingKeymap.get(event.key)) {
+    } else if (km = pgEditingMappings.keyMap.get(event.key)) {
       km.action({ cy, ur, modelX, modelY, event })
       event.preventDefault();
       event.stopPropagation();
-    } else if (km = otherKeymap.get(event.key)) {
+    } else if (km = otherMappings.keyMap.get(event.key)) {
       km.action({ cy, ur, modelX, modelY, event })
       event.preventDefault();
       event.stopPropagation();

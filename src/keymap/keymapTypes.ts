@@ -21,6 +21,29 @@ export class KeyMapping {
     this.action = action;
   }
 }
+
+export class KeyMap {
+  keyMappings: KeyMapping[] = []
+  keyMap = new Map<string, KeyMapping>()
+  manualDescription: string
+
+  constructor(manualDescription: string) {
+    this.manualDescription = manualDescription
+  }
+
+  push(mapping: KeyMapping) {
+    this.keyMappings.push(mapping)
+    for (const key of mapping.keys) {
+      assert(!this.keyMap.has(key), `Duplicate key mapping for key ${key}`)
+      this.keyMap.set(key, mapping)
+    }
+  }
+
+  key_to_string(key: string): string {
+    return key
+  }
+}
+
 export function buildKeyMap(keyMappings: KeyMapping[]): Map<string, KeyMapping> {
   const keyMap = new Map<string, KeyMapping>()
   for (const mapping of keyMappings) {
