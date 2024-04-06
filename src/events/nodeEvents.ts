@@ -127,6 +127,27 @@ export function setupNodeEvents(cy, ur, layoutManager) {
 
   cy.on("cxttap", "node", function (event) {
     const node = event.target;
+
+    // Check if the clicked node is a parent (has children)
+    if(node.isParent()) {
+      let menu = document.getElementById('custom-context-menu-group');
+      menu.style.left = event.renderedPosition.x + 'px';
+      menu.style.top = event.renderedPosition.y + 'px';
+      menu.style.display = 'block';
+
+      // Hide the menu on any click outside
+      window.addEventListener('click', () => {
+        menu.style.display = 'none';
+      });
+
+      // When the 'delete group' option is clicked in the context menu
+      document.getElementById('delete-group').onclick = function() {
+        layoutManager.unlockNodes(node.id());
+        menu.style.display = 'none';
+      };
+      return;
+    }
+
     let menu = document.getElementById("custom-context-menu");
 
     menu.style.left = event.renderedPosition.x + "px";
@@ -157,5 +178,12 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       }
       hideMenu();
     };
+
+    // Pin node action
+    document.getElementById("lock-node").onclick = function () {
+      layoutManager.lockNodes(cy.$("node:selected"));
+      hideMenu();
+    };
+
   });
 }

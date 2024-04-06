@@ -1,6 +1,6 @@
 export const colaLayout: any = {
   name: "cola",
-  // refresh: 2, // number of ticks per frame; higher is faster but more jerky
+  refresh: 1, // number of ticks per frame; higher is faster but more jerky
   animate: true, // whether to show the layout as it's running
   ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
   fit: true, // on every layout reposition of nodes, fit the viewport

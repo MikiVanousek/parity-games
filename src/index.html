@@ -1,115 +1,121 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graph Visualizer</title>
-  <script src="https://kit.fontawesome.com/a4ee9b505a.js" crossorigin="anonymous"></script>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graph Visualizer</title>
+    <script src="https://kit.fontawesome.com/a4ee9b505a.js" crossorigin="anonymous"></script>
+  </head>
 
-<body>
-  <div id="cy"></div>
-  <div id="custom-context-menu" class="custom-context-menu">
-    <ul>
-      <li id="edit-priority">Edit Priority</li>
-    </ul>
-  </div>
-  <div class="navbar">
-<div class="navbar-heading">
-  <span id="editableContainer">
-    <span id="parityGameTitle"></span>
-  </span>
-  <i class="fa fa-pencil" id="editTitleIcon" aria-hidden="true"></i>
-</div>
-    <div class="navbar-group">
-      <div class="row">
-        <input type="file" accept=".pg" id="oink-file-input" hidden onchange="handleOinkFileSelect(event)" />
-        <label class="button" for="oink-file-input"><span class="icon"><i
-              class="fa-solid fa-upload"></span></i>Import</label>
-        <button class="button" id="export-oink-btn" onclick="saveOinkFile(event)"> <span class="icon"><i
-              class="fa-solid fa-download"></span></i>Export
-        </button>
-      </div>
-      <div class="row">
-        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".cypg_json" />
-        <label class="button" for="board-file-input"><span class="icon"><i
-              class="fa-solid fa-file-import"></i></span>Load</label>
-        <button onclick="handleExportGame(event)"><span class="icon"><i
-              class="fa-solid fa-file-export"></i></span>Save</button>
-      </div>
-      <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i
-            class="fa-solid fa-image"></i></span>Export as PNG</button>
+  <body>
+    <div id="cy"></div>
+    <div id="custom-context-menu" class="custom-context-menu">
+      <ul>
+        <li id="edit-priority">Edit Priority</li>
+        <li id="lock-node">Group Nodes</li>
+      </ul>
     </div>
-    <div class="navbar-group">
-      <div class="navbar-group-heading">Layouts Setting</div>
-      <div class="row">
-        <select class="button" id="layout-select" onchange="changeLayout(event)">
-        </select>
-        <button id="layout-run-button" onclick="runLayout()"><i class="fa-solid fa-play"></i></button>
-      </div>
-      <div class="checkbox-wrapper">
-        <input id="layout-on-drag" type="checkbox" class="switch">
-        <label for="layout-on-drag">Layout on Drag</label>
-      </div>
-      <div class="checkbox-wrapper">
-        <input id="display-labels" type="checkbox" class="switch">
-        <label for="display-labels">Display labels</label>
-      </div>
+    <div id="custom-context-menu-group" class="custom-context-menu">
+      <ul>
+        <li id="delete-group">Delete Group</li>
+      </ul>
     </div>
+    <div class="navbar">
+      <div class="navbar-heading">
+        <span id="editableContainer">
+          <span id="parityGameTitle"></span>
+        </span>
+        <i class="fa fa-pencil" id="editTitleIcon" aria-hidden="true"></i>
+      </div>
+      <div class="navbar-group">
+        <div class="row">
+          <input type="file" accept=".pg" id="oink-file-input" hidden onchange="handleOinkFileSelect(event)" />
+          <label class="button" for="oink-file-input"><span class="icon"><i
+            class="fa-solid fa-upload"></span></i>Import</label>
+          <button class="button" id="export-oink-btn" onclick="saveOinkFile(event)"> <span class="icon"><i
+            class="fa-solid fa-download"></span></i>Export
+          </button>
+        </div>
+        <div class="row">
+          <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".cypg_json" />
+          <label class="button" for="board-file-input"><span class="icon"><i
+            class="fa-solid fa-file-import"></i></span>Load</label>
+          <button onclick="handleExportGame(event)"><span class="icon"><i
+            class="fa-solid fa-file-export"></i></span>Save</button>
+        </div>
+        <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i
+          class="fa-solid fa-image"></i></span>Export as PNG</button>
+      </div>
+      <div class="navbar-group">
+        <div class="navbar-group-heading">Layouts Setting</div>
+        <div class="row">
+          <select class="button" id="layout-select" onchange="changeLayout(event)">
+          </select>
+          <button id="layout-run-button" onclick="runLayout()"><i class="fa-solid fa-play"></i></button>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="layout-on-drag" type="checkbox" class="switch">
+          <label for="layout-on-drag">Layout on Drag</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="display-labels" type="checkbox" class="switch">
+          <label for="display-labels">Display labels</label>
+        </div>
+      </div>
 
-    <div class="navbar-group">
-      <div class="navbar-group-heading">Trace settings</div>
-      <label for="fileInput" class="button">
-        <span class="icon">
-          <i class="fa-solid fa-file-import"></i>
-        </span>Import trace
-      </label>
-      <input type="file" id="fileInput" style="display: none;" accept=".trace.json" />
+      <div class="navbar-group">
+        <div class="navbar-group-heading">Trace settings</div>
+        <label for="fileInput" class="button">
+          <span class="icon">
+            <i class="fa-solid fa-file-import"></i>
+          </span>Import trace
+        </label>
+        <input type="file" id="fileInput" style="display: none;" accept=".trace.json" />
+      </div>
+
     </div>
-
-  </div>
-  </div>
-  </div>
-
-  <div class="bottom-bar" id="trace_controls">
-    <button id="closeButton" class="cross-button"><i class="fa fa-times"></i></button>
-    <button id="skipToBeginningAction"><span class="icon"><i class="fa-solid fa-backward-fast"></i></span></button>
-    <button id="lastStepAction"><span class="icon"><i class="fa-solid fa-backward-step"></i></span></button>
-
-    <div class="play-speed-container">
-      <button id="playAction"><span class="icon"><i class="fa fa-play" id="playStopIcon"></i></span>Play</button>
-      <input type="number" id="speedInput" value="1.0" min="0.1" step="0.1">
+    </div>
     </div>
 
-    <button id="nextStepAction"><span class="icon"><i class="fa-solid fa-forward-step"></i></span></button>
-    <button id="skipToEndAction"><span class="icon"><i class="fa-solid fa-forward-fast"></i></span></button>
+    <div class="bottom-bar" id="trace_controls">
+      <button id="closeButton" class="cross-button"><i class="fa fa-times"></i></button>
+      <button id="skipToBeginningAction"><span class="icon"><i class="fa-solid fa-backward-fast"></i></span></button>
+      <button id="lastStepAction"><span class="icon"><i class="fa-solid fa-backward-step"></i></span></button>
 
-    <div id="traceStepDisplay" class="trace-step-display">Step: 0</div>
-  </div>
+      <div class="play-speed-container">
+        <button id="playAction"><span class="icon"><i class="fa fa-play" id="playStopIcon"></i></span>Play</button>
+        <input type="number" id="speedInput" value="1.0" min="0.1" step="0.1">
+      </div>
 
-  <div class="top-left-panel" id="color-legend">
-  </div>
-  <div class="manual-overlay" id="manual-overlay" style="display: none">
-    <div class=" manual" id="manual">
-      <center>
-        <h1>ParityGames.io</h1>
-      </center>
-      <h2>Selecting</h2>
-      <par>
-        Click on a node or edge to select it. Click on the background to deselect. Hold <div class="manual-key">Shift
-        </div> to select multiple
-        elements.
-      </par>
-      <h2>Key Bindings</h2>
-      <div id="manual-keybinds"></div>
+      <button id="nextStepAction"><span class="icon"><i class="fa-solid fa-forward-step"></i></span></button>
+      <button id="skipToEndAction"><span class="icon"><i class="fa-solid fa-forward-fast"></i></span></button>
+
+      <div id="traceStepDisplay" class="trace-step-display">Step: 0</div>
     </div>
-  </div>
 
-  <script src="main.js"></script>
+    <div class="top-left-panel" id="color-legend">
+    </div>
+    <div class="manual-overlay" id="manual-overlay" style="display: none">
+      <div class=" manual" id="manual">
+        <center>
+          <h1>ParityGames.io</h1>
+        </center>
+        <h2>Selecting</h2>
+        <par>
+          Click on a node or edge to select it. Click on the background to deselect. Hold <div class="manual-key">Shift
+          </div> to select multiple
+          elements.
+        </par>
+        <h2>Key Bindings</h2>
+        <div id="manual-keybinds"></div>
+      </div>
+    </div>
 
-  <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="toast.css">
-</body>
+    <script src="main.js"></script>
+
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="toast.css">
+  </body>
 
 </html>

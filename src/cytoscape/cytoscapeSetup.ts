@@ -81,6 +81,16 @@ export function setupCytoscape(containerId: string) {
           "target-arrow-color": "data(line_color)",
         }
       },
+      {
+        selector: ':parent', 
+        style: {
+          'background-opacity': 0.333,
+          'background-color': 'grey',
+          'border-width': 2,
+          'border-color': 'white',
+          'border-style': 'solid',
+        }
+      }
     ],
   });
   undoRedo(cytoscape);
