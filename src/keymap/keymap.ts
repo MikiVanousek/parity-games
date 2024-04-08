@@ -1,21 +1,71 @@
 import { addNodeAtPosition, copySelectedElements, pasteCopiedElements } from "../events/graphEvents";
-import { KeyMapping, buildKeyMap } from "./keymapTypes";
+import { KeyMap, KeyMapping } from "./keymapTypes";
+import { closeManual, isManualOpen, toggleManual } from "./manual";
 
-
-export const keyMappings: KeyMapping[] = [];
-keyMappings.push(new KeyMapping(
+export const otherMappings = new KeyMap("Other mappings");
+otherMappings.push(new KeyMapping(
   ["?", "/"],
   "Toggle manual",
   (args) => {
+    toggleManual();
+  }
+));
+otherMappings.push(new KeyMapping(
+  ["Escape"],
+  "Exit trace or manual",
+  (args) => {
     const manual_overlay = document.getElementById("manual-overlay");
-    if (manual_overlay.style.display === "none") {
-      manual_overlay.style.display = "";
+    if (isManualOpen()) {
+      closeManual();
+    } else if (window.traceManager.hasTrace()) {
+      window.traceManager.removeTrace();
     } else {
-      manual_overlay.style.display = "none";
+      console.log("Pressed Escape but the manual is closed and there is no trace loaded.");
     }
   }
 ));
-keyMappings.push(new KeyMapping(
+
+export const cmdMappings = new KeyMap("Command mappings");
+cmdMappings.key_to_string = (key) => "⌘ + " + key;
+cmdMappings.push(new KeyMapping(
+  ["c"],
+  "Copy selected elements",
+  ({ cy }) => {
+    copySelectedElements(cy);
+  }
+));
+
+cmdMappings.push(new KeyMapping(
+  ["v"],
+  "Paste copied elements",
+  ({ cy, ur }) => {
+    pasteCopiedElements(cy, ur);
+  },
+));
+
+cmdMappings.push(new KeyMapping(
+  ["z"],
+  "Undo last action",
+  ({ ur, event }) => {
+    if (event.ctrlKey || event.metaKey) {
+      ur.undo();
+    }
+  },
+));
+
+cmdMappings.push(new KeyMapping(
+  ["y"],
+  "Redo last action",
+  ({ ur, event }) => {
+    if (event.ctrlKey || event.metaKey) {
+      ur.redo();
+    }
+  },
+));
+
+export const pgEditingMappings = new KeyMap("Parity game editing mappings");
+
+pgEditingMappings.push(new KeyMapping(
   ["e"],
   "Add even node at the cursor position",
   (args) => {
@@ -24,14 +74,15 @@ keyMappings.push(new KeyMapping(
   }
 ));
 
-keyMappings.push(new KeyMapping(
-  ["o"],
+pgEditingMappings.push(new KeyMapping(
+  ["o", "w"],
   "Add odd node at the cursor position",
   (args) => {
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, false);
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["q"],
   "Toggle the parity of selected nodes",
   (args) => {
@@ -42,7 +93,8 @@ keyMappings.push(new KeyMapping(
     });
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["Backspace", "Delete"],
   "Remove selected elements",
   ({ cy, ur }) => {
@@ -52,7 +104,8 @@ keyMappings.push(new KeyMapping(
     }
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["+", "="],
   "Increment priority",
   ({ cy, ur }) => {
@@ -60,7 +113,8 @@ keyMappings.push(new KeyMapping(
     ur.do("changePriority", { nodes: selectedNodes, value: 1 });
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["-"],
   "Decrement priority",
   ({ cy, ur }) => {
@@ -68,51 +122,41 @@ keyMappings.push(new KeyMapping(
     ur.do("changePriority", { nodes: selectedNodes, value: -1 });
   }
 ));
-keyMappings.push(new KeyMapping(
+
+pgEditingMappings.push(new KeyMapping(
   ["p"],
-  "Paste selected elements",
-  ({ cy }) => {
-    cy.elements().forEach(function (ele) {
-      console.log(ele.data());
-    });
+  "Set priority for selected nodes",
+  ({ cy, ur }) => {
+    let priority = Number(
+      prompt("Enter new priority", "")
+    );
+    if (priority !== null && !isNaN(priority)) {
+      let selectedNodes = cy.$("node:selected");
+      if (selectedNodes.length > 0) {
+        ur.do("editPriority", {
+          nodes: selectedNodes,
+          priority: priority,
+        });
+      }
+    }
   }
 ));
-keyMappings.push(new KeyMapping(
-  ["c"],
-  "Copy selected elements",
-  ({ cy }) => {
-    copySelectedElements(cy);
-  },
-  true
+
+export const traceKeymap = new KeyMap("When trace is loaded");
+traceKeymap.push(new KeyMapping(
+  ["ArrowRight"],
+  "Next step",
+  () => {
+    window.traceManager.nextStep();
+  }
 ));
-keyMappings.push(new KeyMapping(
-  ["v"],
-  "Paste copied elements",
-  ({ cy, ur }) => {
-    pasteCopiedElements(cy, ur);
-  },
-  true
-));
-keyMappings.push(new KeyMapping(
-  ["z"],
-  "Undo last action",
-  ({ ur, event }) => {
-    if (event.ctrlKey || event.metaKey) {
-      ur.undo();
-    }
-  },
-  true
-));
-keyMappings.push(new KeyMapping(
-  ["y"],
-  "Redo last action",
-  ({ ur, event }) => {
-    if (event.ctrlKey || event.metaKey) {
-      ur.redo();
-    }
-  },
-  true
+traceKeymap.push(new KeyMapping(
+  ["ArrowLeft"],
+  "Next step",
+  () => {
+    window.traceManager.prevStep();
+  }
 ));
 
 
-export const keyMap = buildKeyMap(keyMappings)
+export const all_keymaps = [otherMappings, cmdMappings, pgEditingMappings, traceKeymap]

@@ -15,15 +15,35 @@ export class KeyMapping {
   editing_pg: boolean
   requires_modifier: boolean
   category: string
-  constructor(keys: string[], description: string, action: (KeyActionArgs) => void, requires_modifier: boolean = false, category: string = "Other", editing_pg: boolean = true,) {
+  constructor(keys: string[], description: string, action: (KeyActionArgs) => void) {
     this.keys = keys
     this.description = description
     this.action = action;
-    this.editing_pg = editing_pg;
-    this.requires_modifier = requires_modifier
-    this.category = category
   }
 }
+
+export class KeyMap {
+  keyMappings: KeyMapping[] = []
+  keyMap = new Map<string, KeyMapping>()
+  manualDescription: string
+
+  constructor(manualDescription: string) {
+    this.manualDescription = manualDescription
+  }
+
+  push(mapping: KeyMapping) {
+    this.keyMappings.push(mapping)
+    for (const key of mapping.keys) {
+      assert(!this.keyMap.has(key), `Duplicate key mapping for key ${key}`)
+      this.keyMap.set(key, mapping)
+    }
+  }
+
+  key_to_string(key: string): string {
+    return key
+  }
+}
+
 export function buildKeyMap(keyMappings: KeyMapping[]): Map<string, KeyMapping> {
   const keyMap = new Map<string, KeyMapping>()
   for (const mapping of keyMappings) {

@@ -1,6 +1,6 @@
 import * as cytoscape from "cytoscape";
 import { showToast } from "../ui/toast";
-import { keyMap } from "../keymap/keymap";
+import { cmdMappings, otherMappings, pgEditingMappings, traceKeymap } from "../keymap/keymap";
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
 
@@ -32,30 +32,44 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
     const modelX = (mouseX - pan.x) / zoom;
     const modelY = (mouseY - pan.y) / zoom;
 
-    if (keyMap.has(event.key)) {
-      // skip the keybinds from KeyBoardEvents if the user is typing in an input field
-      var nothingIsFocused = document.activeElement === document.body
-      if (!nothingIsFocused) return;
+    // skip the keybinds from KeyBoardEvents if the user is typing in an input field
+    var nothingIsFocused = document.activeElement === document.body
+    if (!nothingIsFocused) return;
 
+    let km;
+    if (km = otherMappings.keyMap.get(event.key)) {
+      km.action({ cy, ur, modelX, modelY, event })
       event.preventDefault();
       event.stopPropagation();
-      const km = keyMap.get(event.key)
-      if (km.editing_pg && window.traceManager.hasTrace()) {
+    } else if (window.traceManager.hasTrace()) {
+      if (km = traceKeymap.keyMap.get(event.key)) {
+        event.preventDefault();
+        event.stopPropagation();
+        km.action({ cy, ur, modelX, modelY, event });
+        return;
+      } else if (km = pgEditingMappings.keyMap.get(event.key) || (km = cmdMappings.keyMap.get(event.key))) {
         showToast({
           message: "Can not change parity game while a trace is loaded. Attempted: \n" + km.description,
           variant: "danger",
         });
         return;
       }
-      else {
-        if (km.requires_modifier && (event.ctrlKey || event.metaKey)) {
-          km.action({ cy, ur, modelX, modelY, event })
-        }
-        if (!km.requires_modifier) {
-          km.action({ cy, ur, modelX, modelY, event })
-        }
+    } else if (event.ctrlKey || event.metaKey) {
+      if (cmdMappings.keyMap.has(event.key)) {
+        const km = cmdMappings.keyMap.get(event.key);
+        event.preventDefault();
+        event.stopPropagation();
+        km.action({ cy, ur, modelX, modelY, event });
+        return;
+      } else {
+        console.log("No key bind for ⌘ + " + event.key);
       }
+    } else if (km = pgEditingMappings.keyMap.get(event.key)) {
+      km.action({ cy, ur, modelX, modelY, event })
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      console.log("No key bind for " + event.key);
     }
   });
-
 }
