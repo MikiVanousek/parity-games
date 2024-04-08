@@ -23,3 +23,33 @@ export function fillManual(): void {
     }
   }
 }
+
+const manual_overlay = document.getElementById("manual-overlay");
+const manual_button = document.getElementById("manual-open-button");
+export function openManual() {
+  manual_overlay.style.display = "";
+  manual_button.innerHTML = "✕";
+
+}
+export function closeManual() {
+  manual_overlay.style.display = "none";
+  manual_button.innerHTML = "?";
+}
+
+export function isManualOpen() {
+  return manual_overlay.style.display !== "none"
+}
+
+export function toggleManual() {
+  if (isManualOpen()) {
+    closeManual();
+  } else {
+    openManual();
+  }
+}
+
+manual_button.addEventListener("click", toggleManual);
+
+
+
+

@@ -11,11 +11,8 @@ import {
 } from "./io/exportImport";
 import { setupNodeEvents } from "./events/nodeEvents";
 import { PGParser } from "./board/PGParser";
-import { examplePg } from "./board/ExamplePG";
-import { Trace } from "./board/Trace";
 import { showToast } from "./ui/toast";
-import { fillManual } from "./keymap/fillManual";
-import { pgEditingMappings } from "./keymap/keymap";
+import { fillManual } from "./keymap/manual";
 import { loadState, saveState } from "./io/autosave";
 
 declare global {

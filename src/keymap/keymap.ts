@@ -1,17 +1,13 @@
 import { addNodeAtPosition, copySelectedElements, pasteCopiedElements } from "../events/graphEvents";
-import { KeyMap, KeyMapping, buildKeyMap } from "./keymapTypes";
+import { KeyMap, KeyMapping } from "./keymapTypes";
+import { closeManual, isManualOpen, toggleManual } from "./manual";
 
 export const otherMappings = new KeyMap("Other mappings");
 otherMappings.push(new KeyMapping(
   ["?", "/"],
   "Toggle manual",
   (args) => {
-    const manual_overlay = document.getElementById("manual-overlay");
-    if (manual_overlay.style.display === "none") {
-      manual_overlay.style.display = "";
-    } else {
-      manual_overlay.style.display = "none";
-    }
+    toggleManual();
   }
 ));
 otherMappings.push(new KeyMapping(
@@ -19,8 +15,8 @@ otherMappings.push(new KeyMapping(
   "Exit trace or manual",
   (args) => {
     const manual_overlay = document.getElementById("manual-overlay");
-    if (manual_overlay.style.display !== "none") {
-      manual_overlay.style.display = "none";
+    if (isManualOpen()) {
+      closeManual();
     } else if (window.traceManager.hasTrace()) {
       window.traceManager.removeTrace();
     } else {
