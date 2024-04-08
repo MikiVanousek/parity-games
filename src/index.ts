@@ -177,6 +177,11 @@ document.addEventListener("DOMContentLoaded", function () {
     PGParser.exportOinkFormat(PGParser.cyToPg(cy));
   });
 
+  // reset view button. so when this button is clicked, the graph will be reset to the original view
+  document.getElementById("resetView").addEventListener("click", (e) => {
+    cy.reset();
+  });
+
   document.getElementById('editTitleIcon').addEventListener('click', function () {
     const currentTitleElement = document.getElementById('parityGameTitle');
     const currentText = currentTitleElement.textContent;
