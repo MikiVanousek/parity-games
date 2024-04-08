@@ -19,17 +19,6 @@ export class Trace extends JSONObject {
   @JSONObject.required
   steps: TraceStep[];
 
-  constructor(
-    parity_game: ParityGame,
-    algorithm_name: string,
-    steps: TraceStep[] = []
-  ) {
-    super(parity_game);
-    this.parity_game = parity_game;
-    this.algorithm_name = algorithm_name;
-    this.steps = steps;
-  }
-
   addStep(...args: TraceStepFlexible): void {
     let step: TraceStep | undefined;
     let nodeSets: NodeSet[] | undefined;
@@ -55,7 +44,11 @@ export class Trace extends JSONObject {
       this.steps.push(step);
     } else {
       nodeLabels = nodeLabels || {};
-      const newStep = new TraceStep(nodeSets || [], linkSets || [], nodeLabels);
+      const newStep = new TraceStep({
+        node_sets: nodeSets || [],
+        link_sets: linkSets || [],
+        node_labels: nodeLabels,
+      });
       this.steps.push(newStep);
     }
   }
@@ -116,17 +109,6 @@ export class TraceStep extends JSONObject {
   @JSONObject.required
   node_labels: { [key: number]: string };
 
-  constructor(
-    node_sets: NodeSet[] = [],
-    link_sets: LinkSet[] = [],
-    node_labels: { [key: number]: string } = {}
-  ) {
-    super(node_sets);
-    this.node_sets = node_sets;
-    this.link_sets = link_sets;
-    this.node_labels = node_labels;
-  }
-
   hasSet(name: string): boolean {
     return (
       this.node_sets.some((ns) => ns.name === name) ||
@@ -140,12 +122,6 @@ export class NodeSet extends JSONObject {
   name: string;
   @JSONObject.required
   node_ids: number[];
-
-  constructor(name: string, node_ids: number[]) {
-    super(name);
-    this.name = name;
-    this.node_ids = node_ids;
-  }
 }
 
 export class LinkSet extends JSONObject {
@@ -153,10 +129,4 @@ export class LinkSet extends JSONObject {
   name: string;
   @JSONObject.required
   link_source_target_ids: [number, number][];
-
-  constructor(name: string, link_source_target_ids: [number, number][]) {
-    super(name);
-    this.name = name;
-    this.link_source_target_ids = link_source_target_ids;
-  }
 }

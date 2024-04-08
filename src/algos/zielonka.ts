@@ -17,8 +17,15 @@ export class ZielonkaAlgorithm {
   }
 
   solve(): ParityGameSolution & { trace: Trace } {
-    let trace: Trace = new Trace(this.gameGraph, "Zielonka's Algorithm");
+    console.log(this.gameGraph);
+    let trace: Trace = new Trace({
+      parity_game: this.gameGraph,
+      algorithm_name: "Zielonka's Algorithm",
+      steps: [],
+    });
+    console.log(trace);
     const result = this.zielonkaRecursive(this.gameGraph, trace);
+    console.log(trace);
     return { ...result, trace };
   }
 
@@ -26,7 +33,7 @@ export class ZielonkaAlgorithm {
     subgraph: ParityGame,
     trace: Trace
   ): ParityGameSolution {
-    trace.addStep([new NodeSet("Test Set", [0, 1])]);
+    trace.addStep([new NodeSet({ name: "Test Set", node_ids: [1, 2] })]);
 
     return new ParityGameSolution();
   }

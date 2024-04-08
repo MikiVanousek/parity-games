@@ -67,7 +67,12 @@ algoStart.addEventListener("click", () => {
   ) as HTMLSelectElement;
   const selectedAlgorithm = algoSelect.value;
 
-  //const res = algos[selectedAlgorithm].run();
+  const res = algos[selectedAlgorithm].run(PGParser.cyToPg(cy));
+
+  // Update the trace with the result from the algorithm
+  if (res.trace) {
+    window.traceManager.setTrace(res.trace);
+  }
 });
 
 const layoutManager = new LayoutManager(cy);
