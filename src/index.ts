@@ -174,9 +174,10 @@ document.addEventListener("DOMContentLoaded", function () {
     PGParser.exportOinkFormat(PGParser.cyToPg(cy));
   });
 
-  // reset view button. so when this button is clicked, the graph will be reset to the original view
+  // reset view button. so when this button is clicked, the graph will be reset to the original view and have the graph centered
   document.getElementById("resetView").addEventListener("click", (e) => {
     cy.reset();
+    cy.centre();
   });
 
   document.getElementById('editTitleIcon').addEventListener('click', function () {
