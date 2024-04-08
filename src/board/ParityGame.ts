@@ -65,37 +65,40 @@ export class ParityGame extends JSONObject {
     let toCheck = [...targetNodes];
 
     while (toCheck.length > 0) {
-      const node = toCheck.pop();
-      this.nodes.forEach((n) => {
-        if (!attractor.has(n)) {
-          const successors = this.adjList.get(n);
-          if (n.player === player) {
-            // If the node is controlled by the player, check if any successor is in the attractor
-            for (let successor of successors) {
-              if (attractor.has(successor)) {
-                attractor.add(n);
-                toCheck.push(n);
-                break; // Found a successor in the attractor, no need to check others
-              }
-            }
+      const currentNode = toCheck.pop();
+      console.log(`Evaluating: ${currentNode.id}`);
+
+      this.nodes.forEach((node) => {
+        if (!attractor.has(node)) {
+          const successors = this.adjList.get(node);
+          let shouldAddNode = false;
+
+          if (node.player === player) {
+            // Node controlled by the player: add if any successor is in the attractor.
+            shouldAddNode = Array.from(successors).some((successor) =>
+              attractor.has(successor)
+            );
           } else {
-            // If the node is not controlled by the player, check if all successors are in the attractor
-            let allSuccessorsInAttractor = true;
-            for (let successor of successors) {
-              if (!attractor.has(successor)) {
-                allSuccessorsInAttractor = false;
-                break; // Found a successor not in the attractor, no need to check others
-              }
-            }
-            if (allSuccessorsInAttractor) {
-              attractor.add(n);
-              toCheck.push(n);
-            }
+            // Node not controlled by the player: add if all successors are in the attractor.
+            shouldAddNode = Array.from(successors).every((successor) =>
+              attractor.has(successor)
+            );
+          }
+
+          if (shouldAddNode) {
+            console.log(`Adding node ${node.id} to attractor`);
+            attractor.add(node);
+            toCheck.push(node);
           }
         }
       });
     }
 
+    console.log(
+      `Final attractor set: ${Array.from(attractor)
+        .map((n) => n.id)
+        .join(", ")}`
+    );
     return Array.from(attractor);
   }
 

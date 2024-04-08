@@ -43,6 +43,7 @@ export class ZielonkaAlgorithm {
     const maxPriority = subgraph.getMaxPriority();
     // Winner of highest priority
     const player = maxPriority % 2 === 0 ? Player.Even : Player.Odd;
+    console.log(player);
 
     // Find the set of nodes with the maximum priority.
     const maxPriorityNodes = subgraph.getNodesWithPriority(maxPriority);
@@ -61,6 +62,10 @@ export class ZielonkaAlgorithm {
         node_ids: attractorSet.map((node) => node.id),
       }),
     ]);
+
+    // should output attractor node with priority 8, not sure why is it not doing that
+
+    return;
 
     // Remove the attractor set from the subgraph to form a new subgame.
     const subgame = subgraph.deepCopy().removeNodes(attractorSet);
