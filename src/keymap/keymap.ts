@@ -69,6 +69,7 @@ pgEditingMappings.push(new KeyMapping(
   ["e"],
   "Add even node at the cursor position",
   (args) => {
+    console.log(args);
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, true);
   }
 ));
