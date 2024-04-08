@@ -14,6 +14,20 @@ otherMappings.push(new KeyMapping(
     }
   }
 ));
+otherMappings.push(new KeyMapping(
+  ["Escape"],
+  "Exit trace or manual",
+  (args) => {
+    const manual_overlay = document.getElementById("manual-overlay");
+    if (manual_overlay.style.display !== "none") {
+      manual_overlay.style.display = "none";
+    } else if (window.traceManager.hasTrace()) {
+      window.traceManager.removeTrace();
+    } else {
+      console.log("Pressed Escape but the manual is closed and there is no trace loaded.");
+    }
+  }
+));
 
 export const cmdMappings = new KeyMap("Command mappings");
 cmdMappings.key_to_string = (key) => "⌘ + " + key;
@@ -135,13 +149,15 @@ export const traceKeymap = new KeyMap("When trace is loaded");
 traceKeymap.push(new KeyMapping(
   ["ArrowRight"],
   "Next step",
-  (args) => {
-    const manual_overlay = document.getElementById("manual-overlay");
-    if (manual_overlay.style.display === "none") {
-      manual_overlay.style.display = "";
-    } else {
-      manual_overlay.style.display = "none";
-    }
+  () => {
+    window.traceManager.nextStep();
+  }
+));
+traceKeymap.push(new KeyMapping(
+  ["ArrowLeft"],
+  "Next step",
+  () => {
+    window.traceManager.prevStep();
   }
 ));
 

@@ -37,7 +37,11 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
     if (!nothingIsFocused) return;
 
     let km;
-    if (window.traceManager.hasTrace()) {
+    if (km = otherMappings.keyMap.get(event.key)) {
+      km.action({ cy, ur, modelX, modelY, event })
+      event.preventDefault();
+      event.stopPropagation();
+    } else if (window.traceManager.hasTrace()) {
       if (km = traceKeymap.keyMap.get(event.key)) {
         event.preventDefault();
         event.stopPropagation();
@@ -64,13 +68,8 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
       km.action({ cy, ur, modelX, modelY, event })
       event.preventDefault();
       event.stopPropagation();
-    } else if (km = otherMappings.keyMap.get(event.key)) {
-      km.action({ cy, ur, modelX, modelY, event })
-      event.preventDefault();
-      event.stopPropagation();
     } else {
       console.log("No key bind for " + event.key);
     }
   });
-
 }
