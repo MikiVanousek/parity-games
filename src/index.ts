@@ -17,7 +17,7 @@ import { fillManual } from "./keymap/manual";
 import { loadState, saveState } from "./io/autosave";
 import "./ui/PGNameEditing";
 import { setupPGNameEditing } from "./ui/PGNameEditing";
-import { example_pg } from "./board/ExamplePG";
+import { example_pg, example_zielonka } from "./board/ExamplePG";
 import { Trace } from "./board/Trace";
 import { keyMappings } from "./keymap/keymap";
 import { algos } from "./algos/index";
@@ -38,6 +38,7 @@ window.PGParser = PGParser;
 var [cy, ur] = setupCytoscape("cy");
 window.cy = cy;
 window.ur = ur;
+cy.add(PGParser.pgToCy(example_zielonka));
 
 fillManual();
 

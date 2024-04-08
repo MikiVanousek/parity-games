@@ -1,8 +1,8 @@
-import { Node, Player } from './Node';
-import { Link } from './Link';
-import { JSONObject } from 'ts-json-object';
-import { assert } from '../assert';
-import { deepEquals } from '../io/deepEquals';
+import { Node, Player } from "./Node";
+import { Link } from "./Link";
+import { JSONObject } from "ts-json-object";
+import { assert } from "../assert";
+import { deepEquals } from "../io/deepEquals";
 
 export class ParityGame extends JSONObject {
   @JSONObject.required
@@ -17,15 +17,108 @@ export class ParityGame extends JSONObject {
     let res = new Map<Node, Set<Node>>();
     pg.nodes.forEach((n) => res.set(n, new Set<Node>()));
     pg.links.forEach((l) => {
-      res.get(pg.find_node_by_id(l.source_id)).add(pg.find_node_by_id(l.target_id));
+      res
+        .get(pg.find_node_by_id(l.source_id))
+        .add(pg.find_node_by_id(l.target_id));
     });
     return res;
   })
   adjList: Map<Node, Set<Node>>;
 
-
   static emptyBoard(): ParityGame {
-    return new ParityGame({ nodes: [], links: [], name: "New Parity Game", adjList: new Map<Node, Set<Node>>() });
+    return new ParityGame({
+      nodes: [],
+      links: [],
+      name: "New Parity Game",
+      adjList: new Map<Node, Set<Node>>(),
+    });
+  }
+
+  deepCopy(): ParityGame {
+    const newNodes = this.nodes.map((node) => node);
+    const newLinks = this.links.map((link) => link);
+    const newAdjList = new Map<Node, Set<Node>>();
+    this.adjList.forEach((targets, source) => {
+      newAdjList.set(source, new Set<Node>(targets));
+    });
+    return new ParityGame({
+      nodes: newNodes,
+      links: newLinks,
+      adjList: newAdjList,
+    });
+  }
+
+  isEmpty(): boolean {
+    return this.nodes.length === 0;
+  }
+
+  getMaxPriority(): number {
+    return Math.max(...this.nodes.map((node) => node.priority));
+  }
+
+  getNodesWithPriority(priority: number): Node[] {
+    return this.nodes.filter((node) => node.priority === priority);
+  }
+
+  attractorSet(targetNodes: Node[], player: Player): Node[] {
+    let attractor = new Set<Node>(targetNodes);
+    let toCheck = [...targetNodes];
+
+    while (toCheck.length > 0) {
+      const node = toCheck.pop();
+      this.nodes.forEach((n) => {
+        if (!attractor.has(n)) {
+          const successors = this.adjList.get(n);
+          if (n.player === player) {
+            // If the node is controlled by the player, check if any successor is in the attractor
+            for (let successor of successors) {
+              if (attractor.has(successor)) {
+                attractor.add(n);
+                toCheck.push(n);
+                break; // Found a successor in the attractor, no need to check others
+              }
+            }
+          } else {
+            // If the node is not controlled by the player, check if all successors are in the attractor
+            let allSuccessorsInAttractor = true;
+            for (let successor of successors) {
+              if (!attractor.has(successor)) {
+                allSuccessorsInAttractor = false;
+                break; // Found a successor not in the attractor, no need to check others
+              }
+            }
+            if (allSuccessorsInAttractor) {
+              attractor.add(n);
+              toCheck.push(n);
+            }
+          }
+        }
+      });
+    }
+
+    return Array.from(attractor);
+  }
+
+  removeNodes(nodesToRemove: Node[]): ParityGame {
+    this.nodes = this.nodes.filter((node) => !nodesToRemove.includes(node));
+    nodesToRemove.forEach((nodeToRemove) => {
+      this.adjList.delete(nodeToRemove);
+      this.adjList.forEach((targets, source) => {
+        if (targets.has(nodeToRemove)) {
+          targets.delete(nodeToRemove);
+        }
+      });
+    });
+
+    // Also, remove any links associated with the removed nodes
+    this.links = this.links.filter(
+      (link) =>
+        !nodesToRemove.find(
+          (node) => node.id === link.source_id || node.id === link.target_id
+        )
+    );
+
+    return this; // Allow chaining
   }
 
   addLinkFromNodes(source: Node, target: Node): void {
@@ -46,7 +139,7 @@ export class ParityGame extends JSONObject {
     priority: number,
     player: Player,
     id?: number,
-    label?: string,
+    label?: string
   ): number {
     if (id === undefined) {
       id = this.next_node_id();
@@ -55,7 +148,10 @@ export class ParityGame extends JSONObject {
     return this.addNode(node);
   }
   addNode(node: Node): number {
-    assert(this.nodes.findIndex((e) => e.id == node.id) < 0, "Node already exists!");
+    assert(
+      this.nodes.findIndex((e) => e.id == node.id) < 0,
+      "Node already exists!"
+    );
     this.nodes.push(node);
     this.adjList.set(node, new Set());
 
@@ -94,13 +190,9 @@ export class ParityGame extends JSONObject {
     const sourceNode = this.nodes.find((node) => node.id === sourceId);
     if (!sourceNode) return; // Source node not found
 
-
-
     // Get the set of target nodes from the adjacency list for the source node
     const targets = this.adjList.get(sourceNode);
     if (!targets) return; // No targets for source node
-
-
 
     // Find and remove the target node from the set of targets
     const targetNode = [...targets].find((node) => node.id === targetId);
@@ -115,7 +207,10 @@ export class ParityGame extends JSONObject {
   }
 
   target_neighbors(n: Node): Node[] {
-    return this.links.filter((l) => l.source_id === n.id).map((l) => l.target_id).map((id) => this.find_node_by_id(id));
+    return this.links
+      .filter((l) => l.source_id === n.id)
+      .map((l) => l.target_id)
+      .map((id) => this.find_node_by_id(id));
   }
 
   find_node_by_id(id: number): Node {
@@ -132,7 +227,10 @@ export class ParityGame extends JSONObject {
 
   // It checks if the underlying parity game is the same. Labels and order of nodes and links do not matter, but the ids of nodes do (isomorphism is not detected).
   sameAs(other: ParityGame): boolean {
-    if (this.nodes.length !== other.nodes.length || this.links.length != other.links.length) {
+    if (
+      this.nodes.length !== other.nodes.length ||
+      this.links.length != other.links.length
+    ) {
       return false;
     }
     for (const tn of this.nodes) {
@@ -142,9 +240,9 @@ export class ParityGame extends JSONObject {
     }
     for (const tl of this.links) {
       if (other.links.find((ol) => deepEquals(tl, ol)) === undefined) {
-        return false
+        return false;
       }
     }
-    return true
+    return true;
   }
 }
