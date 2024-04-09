@@ -5,8 +5,6 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       let nodes = args.nodes;
       let priority = args.priority;
       // The do action: updating the priority
-      console.log(nodes);
-      console.log(priority);
       let oldPriorities = nodes.map((node) => {
         return { node: node, priority: node.data("priority") };
       });
@@ -69,7 +67,6 @@ export function setupNodeEvents(cy, ur, layoutManager) {
     event.preventDefault();
     // Get all currently selected nodes
   });
-
 
   cy.on("cxttap", "node", function (event) {
     const target_node = event.target;
