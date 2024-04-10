@@ -57,6 +57,7 @@ cmdMappings.push(
   })
 );
 
+
 export const pgEditingMappings = new KeyMap("Parity game editing mappings");
 
 pgEditingMappings.push(
@@ -119,6 +120,24 @@ pgEditingMappings.push(
         ur.do("editPriority", {
           nodes: selectedNodes,
           priority: priority,
+        });
+      }
+    }
+  })
+);
+
+
+
+pgEditingMappings.push(
+  new KeyMapping(["l", "c"], "Edit label of selected node(s)", ({ cy, ur }) => {
+    let label = prompt("Enter new label", "");
+    if (label !== null) {
+      let selectedNodes = cy.$("node:selected");
+      if (selectedNodes.length > 0) {
+        ur.do("editLabels", {
+          nodes: selectedNodes,
+          label: label,
+          cy: cy,
         });
       }
     }

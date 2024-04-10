@@ -26,6 +26,51 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       return newArgs;
     }
   );
+
+  function renderLabelsAndPriorities(cy) {
+    const displayLabelsElement = document.getElementById("display-labels") as HTMLInputElement;
+    const showLabels = displayLabelsElement.checked; // Directly get the checked state
+  
+    cy.nodes().style({
+      label: showLabels
+        ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
+        : "",
+      "text-wrap": "wrap",
+    });
+  }
+  ur.action(
+    "editLabels",
+    (args) => {
+      let nodes = args.nodes;
+      let label = args.label;
+      let cy = args.cy;
+      // The do action: updating the label
+      let oldLabels = nodes.map((node) => {
+        return { node: node, label: node.data("label") };
+      });
+      nodes.forEach(function (n) {
+        n.data("label", label);
+      });
+      renderLabelsAndPriorities(cy);
+      return { nodes: nodes, oldLabels: oldLabels, cy:cy};
+    },
+    (args) => {
+      // The undo action: reverting to the old labels
+      let oldLabels = args.oldLabels;
+      let cy = args.cy;
+      let newArgs = {
+        nodes: args.nodes,
+        label: oldLabels[0].node.data("label"),
+        cy:cy
+      };
+      oldLabels.forEach((item) =>
+        item.node.data("label", item.label)
+      );
+      renderLabelsAndPriorities(cy);
+      return newArgs;
+    }
+  );
+
   ur.action(
     "changePriority",
     (args) => {
