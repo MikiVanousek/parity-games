@@ -3,6 +3,7 @@ import {
   copySelectedElements,
   pasteCopiedElements,
 } from "../events/graphEvents";
+import { showToast } from "../ui/toast";
 import { KeyMap, KeyMapping } from "./keymapTypes";
 import { closeManual, isManualOpen, toggleManual } from "./manual";
 
@@ -121,6 +122,27 @@ pgEditingMappings.push(
           priority: priority,
         });
       }
+    }
+  })
+);
+
+pgEditingMappings.push(
+  new KeyMapping(["g"], "Group selected nodes", ({ cy, ur }) => {
+    var selectedNodes = cy.$("node:selected");
+    let inGroup = false;
+    selectedNodes.forEach((node) => {
+      if (node.isParent() || !node.isOrphan()) {
+        inGroup = true;
+        showToast({
+          message: "Can not group nodes that are already in a group.",
+          variant: "danger",
+        });
+        return;
+      }
+    });
+    if (selectedNodes.length > 0 && !inGroup) {
+      // check each node if it is already in a group
+      ur.do("group", selectedNodes);
     }
   })
 );

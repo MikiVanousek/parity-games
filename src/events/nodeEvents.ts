@@ -52,6 +52,28 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       return { nodes: nodes, value: value };
     }
   );
+  ur.action(
+    "group",
+    (nodes: cytoscape.NodeCollection) => {
+      let groupId = layoutManager.groupNodes(nodes);
+      return groupId;
+    },
+    (groupId: string) => {
+      let nodes = layoutManager.ungroupNodes(groupId);
+      return nodes;
+    }
+  );
+  ur.action(
+    "ungroup",
+    (groupId: string) => {
+      let nodes = layoutManager.ungroupNodes(groupId);
+      return nodes;
+    },
+    (nodes: cytoscape.NodeCollection) => {
+      let groupId = layoutManager.groupNodes(nodes);
+      return groupId;
+    }
+  );
 
   cy.on("drag", "node", function () {
     layoutManager.runLayout();
