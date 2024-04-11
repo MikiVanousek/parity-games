@@ -66,11 +66,6 @@ export class TraceManager {
     // Compare just the nodes and links, nextNodeId is irrelevant
     const pg = PGParser.cyToPg(this.cy);
     if (!t.parity_game.equals(pg)) {
-      showToast({
-        message: "This trace does not fit the current parity game.",
-        variant: "danger",
-        duration: 4000,
-      })
       console.log("This trace does not fit the current parity game.");
       const conf = window.confirm("The trace you are importing was not made for the parity game you are editing. Should we replace your parity game? Unsaved changes will be lost!");
       if (!conf) {

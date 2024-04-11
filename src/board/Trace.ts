@@ -1,6 +1,7 @@
 import { ParityGame } from './ParityGame';
 import { JSONObject } from 'ts-json-object'
-
+// This is the trace, which parity game algorithms can output to show the steps they took to solve the game.
+// Labels for vertices are not yet supported by the GUI.
 export class Trace extends JSONObject {
     @JSONObject.required
     parity_game: ParityGame;
