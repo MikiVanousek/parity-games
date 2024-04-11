@@ -89,7 +89,6 @@ document.getElementById("display-labels").addEventListener("change", function ()
 });
 
 function validatepgName(pgName) {
-
   if (pgName.length === 0) {
     showToast({
       message: "The name of the parity game cannot be empty.",
@@ -113,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function () {
   loadState(); // Load saved state
   window.cy.fit(cy.elements(), 50);
 
-  const playStopButton = document.getElementById("playAction");
 
   // if the name is in the window, then update the title
   if (window.pgName && validatepgName(window.pgName)) {
@@ -123,36 +121,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.pgName = 'New Parity Game';
   }
 
-  if (playStopButton) {
-    const playStopIcon = document.querySelector("#playAction .fa");
-
-    if (playStopIcon) {
-      // Initial button state setup
-      playStopButton.dataset.playing = "false";
-      playStopIcon.classList.add("fa-play");
-      playStopButton.textContent = "Play";
-
-      playStopButton.addEventListener("click", function () {
-        const isPlaying = playStopButton.dataset.playing === "true";
-
-        if (!isPlaying) {
-          // If not playing, start play
-          playStopButton.dataset.playing = "true";
-          playStopIcon.classList.remove("fa-play");
-          playStopIcon.classList.add("fa-stop");
-          playStopButton.textContent = "Stop";
-          pgManager.play(); // Call the play method
-        } else {
-          // If playing, stop
-          playStopButton.dataset.playing = "false";
-          playStopIcon.classList.remove("fa-stop");
-          playStopIcon.classList.add("fa-play");
-          playStopButton.textContent = "Play";
-          pgManager.stop(); // Call the stop method
-        }
-      });
-    }
-  }
 
   document
     .getElementById("nextStepAction")

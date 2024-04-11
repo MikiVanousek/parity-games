@@ -16,6 +16,9 @@ export class TraceManager {
   controlElement: HTMLElement;
   setsEnabled?: Map<string, boolean>;
   intervalID = null;
+  private playStopButton: HTMLElement;
+  private playStopIcon: Element;
+  private stepSlider: HTMLInputElement;
 
   constructor(cy: any) {
     this.cy = cy;
@@ -25,6 +28,16 @@ export class TraceManager {
     this.controlElement = document.getElementById('trace_controls');
     this.controlElement.hidden = true;
     this.controlElement.style.display = 'none'
+
+    this.playStopButton = document.getElementById("playAction");
+    this.playStopIcon = document.getElementById("playAction").children[0];
+    this.playStopButton.dataset.playing = "false";
+    this.playStopIcon.classList.add("fa-play");
+    this.playStopButton.addEventListener("click", this.togglePlay.bind(this));
+    this.stepSlider = document.getElementById("traceSlider") as HTMLInputElement;
+    this.stepSlider.addEventListener("input", (e) => {
+      this.setStep(parseInt(this.stepSlider.value));
+    });
   }
 
   handleTraceFileSelect(event) {
@@ -83,6 +96,7 @@ export class TraceManager {
     this.listElement.hidden = false;
     this.controlElement.hidden = false;
     this.controlElement.style.display = 'flex'
+    this.stepSlider.setAttribute("max", (this.trace.steps.length - 1).toString());
     this.setStep(0);
   }
 
@@ -101,6 +115,7 @@ export class TraceManager {
     assert(this.trace != undefined);
 
     this.step = i;
+    this.stepSlider.value = i.toString();
     this.listElement.innerHTML = '';
     const traceStep = this.trace.steps[i];
 
@@ -117,7 +132,6 @@ export class TraceManager {
     });
 
     this.refreshColor();
-    this.updateTraceStepDisplay();
   }
 
   getStep() {
@@ -151,7 +165,6 @@ export class TraceManager {
     assert(this.trace !== undefined)
     if (this.step < this.trace.steps.length - 1) {
       this.setStep(this.step + 1);
-      this.updateTraceStepDisplay();
     } else {
       showToast({
         message: "This is the last step!",
@@ -164,7 +177,6 @@ export class TraceManager {
     assert(this.trace !== undefined)
     if (this.step > 0) {
       this.setStep(this.step - 1);
-      this.updateTraceStepDisplay();
     } else {
       showToast({
         message: "This is the first step!",
@@ -204,28 +216,18 @@ export class TraceManager {
   }
 
   play() {
-    this.stop()
+    this.playStopButton.dataset.playing = "true";
+    this.playStopIcon.classList.remove("fa-play");
+    this.playStopIcon.classList.add("fa-pause");
 
     // get the current factor
     const factor = document.getElementById('speedInput') as HTMLSelectElement;
     const speedFactor = parseFloat(factor.value);
 
     // if speedFactor is 0, stop the play
-    if (speedFactor === 0) {
-      this.stop();
-      return;
-    }
-
     // check the validity of the speedFactor
-    if (isNaN(speedFactor) || speedFactor < 0) {
-      showToast({
-        message: "Invalid speed factor",
-        variant: "danger"
-      });
-      return;
-    }
 
-    const interval = 2000 / speedFactor;
+    const interval = 200 / speedFactor;
 
     this.intervalID = setInterval(() => {
       if (this.isLastStep()) {
@@ -236,8 +238,40 @@ export class TraceManager {
     }, interval);
 
   }
+  togglePlay() {
+    const isPlaying = this.playStopButton.dataset.playing === "true";
+
+    if (!isPlaying) {
+
+      const factor = document.getElementById('speedInput') as HTMLSelectElement;
+      const speedFactor = parseFloat(factor.value);
+      // if speedFactor is 0, stop the play
+      if (speedFactor === 0) {
+        showToast({
+          message: "Speed factor cannot be 0",
+          variant: "danger"
+        })
+        return;
+      }
+      if (isNaN(speedFactor) || speedFactor < 0) {
+        showToast({
+          message: "Invalid speed factor",
+          variant: "danger"
+        });
+        return;
+      }
+
+      // If not playing, start play
+      this.play(); // Call the play method
+    } else {
+      this.stop();
+    }
+  }
 
   stop() {
+    this.playStopButton.dataset.playing = "false";
+    this.playStopIcon.classList.remove("fa-stop");
+    this.playStopIcon.classList.add("fa-play");
     if (this.intervalID !== null) {
       clearInterval(this.intervalID);
       this.intervalID = null; // Reset the intervalId
@@ -287,12 +321,6 @@ export class TraceManager {
 
   hasTrace() {
     return this.trace !== undefined;
-  }
-  updateTraceStepDisplay() {
-    const stepDisplay = document.getElementById('traceStepDisplay');
-    if (stepDisplay) {
-      stepDisplay.textContent = `Step: ${this.step + 1} / ${this.trace.steps.length}`;
-    }
   }
 
   getTrace() {

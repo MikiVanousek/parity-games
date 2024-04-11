@@ -280,54 +280,49 @@
     }
 
     .bottom-bar {
-      position: fixed;
+      position: absolute;
+      display: flex;
+      flex-direction: column;
       bottom: 0;
-      left: 0;
-      width: 100%;
+      left: 50%;
+      transform: translateY(0) translateX(-50%);
+      margin: 0 auto;
       background-color: #333;
       padding: 1rem;
       box-sizing: border-box;
-      display: flex;
       justify-content: center;
+      align-items: baseline;
       gap: 20px;
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
     }
 
-    .cross-button {
-      position: absolute;
-      /* Positions the button absolutely within .bottom-bar */
-      top: 0;
-      /* Aligns it to the top edge */
-      right: 0;
-      /* Aligns it to the right edge */
-      background: transparent;
-      /* Optional: makes the button background transparent */
-      border: none;
-      /* Removes the border */
-      color: white;
-      /* Sets the icon color, change as needed */
-      cursor: pointer;
-      /* Changes cursor to a pointer on hover */
-      padding: 0.5rem;
-      /* Adds some space around the icon */
+    .trace-play-controls {
+      display: flex;
+      gap: 10px;
     }
 
-    /* Style adjustments for the icon within the cross-button */
-    .cross-button .fa {
-      font-size: 1.5rem;
-      /* Adjusts the size of the cross icon */
+    .trace-slider {
+      width: 100%;
+    }
+
+    .cross-button {
+      display: flow;
     }
 
     .bottom-bar button {
       background-color: #1d1d1d;
+      width: 3.5rem;
+      height: 3.5rem;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
       border-radius: 10px;
       color: white;
-      padding: 0.7rem 1.3rem;
       border: none;
       cursor: pointer;
       box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
-      font-size: 12px;
+      font-size: 1.5rem;
     }
 
     .bottom-bar button:hover {
@@ -359,6 +354,7 @@
       background: #333;
       color: white;
     }
+
 
     .top-left-panel {
       position: absolute;
@@ -396,11 +392,6 @@
     .trace-step-display {
       color: #fff;
       /* Example: setting text color */
-      padding: 0.5rem;
-      margin-left: 20px;
-      /* Space it out from other elements, adjust as needed */
-      /* place the trace-step to the left */
-      position: relative;
     }
 
     /* Styling for the speed input field */
