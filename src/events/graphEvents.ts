@@ -15,6 +15,7 @@ export function addNodeAtPosition(
       id: String(getNewMaxId(cy)),
       isEven: String(isEven), // Store isEven as a string to match the selector
       priority: 1,
+      label: "",
     },
     position: { x: x, y: y },
   });

@@ -92,7 +92,10 @@ export function setupNodeEvents(cy, ur, layoutManager) {
 
   cy.on("cxttap", "node", function (event) {
     const target_node = event.target;
-    const selectedNodes = cy.$("node:selected");
+    if (target_node.isParent()) return;
+    const selectedNodes = cy
+      .$("node:selected")
+      .filter((node) => !node.isParent());
 
     // Create an edge from each selected node to the shift-clicked node
     const actionList = [];

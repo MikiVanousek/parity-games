@@ -62,7 +62,6 @@ export const pgEditingMappings = new KeyMap("Parity game editing mappings");
 
 pgEditingMappings.push(
   new KeyMapping(["e"], "Add even node at the cursor position", (args) => {
-    console.log(args);
     addNodeAtPosition(args.cy, args.ur, args.modelX, args.modelY, true);
   })
 );
@@ -75,7 +74,9 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["q"], "Toggle the parity of selected nodes", (args) => {
-    var selectedNodes = args.cy.$("node:selected");
+    var selectedNodes = args.cy
+      .$("node:selected")
+      .filter((node) => !node.isParent());
     selectedNodes.forEach((node) => {
       let currentIsEven = node.data("isEven");
       node.data("isEven", currentIsEven === "true" ? "false" : "true");
@@ -98,15 +99,23 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["+", "="], "Increment priority", ({ cy, ur }) => {
-    var selectedNodes = cy.$("node:selected");
-    ur.do("changePriority", { nodes: selectedNodes, value: 1 });
+    var selectedNodes = cy
+      .$("node:selected")
+      .filter((node) => !node.isParent());
+    if (selectedNodes.length > 0) {
+      ur.do("changePriority", { nodes: selectedNodes, value: 1 });
+    }
   })
 );
 
 pgEditingMappings.push(
   new KeyMapping(["-"], "Decrement priority", ({ cy, ur }) => {
-    var selectedNodes = cy.$("node:selected");
-    ur.do("changePriority", { nodes: selectedNodes, value: -1 });
+    var selectedNodes = cy
+      .$("node:selected")
+      .filter((node) => !node.isParent());
+    if (selectedNodes.length > 0) {
+      ur.do("changePriority", { nodes: selectedNodes, value: -1 });
+    }
   })
 );
 
@@ -115,7 +124,9 @@ pgEditingMappings.push(
     let input = prompt("Enter new priority", "");
     let priority = Number(input);
     if (input !== null && !isNaN(priority)) {
-      let selectedNodes = cy.$("node:selected");
+      let selectedNodes = cy
+        .$("node:selected")
+        .filter((node) => !node.isParent());
       if (selectedNodes.length > 0) {
         ur.do("editPriority", {
           nodes: selectedNodes,

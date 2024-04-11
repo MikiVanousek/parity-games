@@ -89,6 +89,7 @@ export function setupCytoscape(containerId: string) {
           "border-width": 2,
           "border-color": "white",
           "border-style": "solid",
+          content: "",
         },
       },
     ],
@@ -108,6 +109,12 @@ export function setupCytoscape(containerId: string) {
     enableCreateAnchorOnDrag: true,
     zIndex: 0,
     undoable: true,
+    validateEdge: function (edge, newSource, newTarget) {
+      if (newSource.isParent() || newTarget.isParent()) {
+        return "invalid";
+      }
+      return "valid";
+    },
   });
 
   cy.style().update();
