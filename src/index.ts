@@ -71,11 +71,11 @@ setupNodeEvents(cy, ur, layoutManager);
   // decheck the layout on layout-on-drag
   const toggle = document.getElementById("layout-on-drag") as HTMLInputElement;
   toggle.checked = false;
-  layoutManager.toggleLayout(false);
+  layoutManager.setRunOnDrag(false);
 };
 
 (window as any).runLayout = function () {
-  layoutManager.runOnce();
+  layoutManager.runLayout();
 };
 
 document.getElementById("display-labels").addEventListener("change", function () {

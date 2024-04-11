@@ -30,7 +30,7 @@ export function setupNodeEvents(cy, ur, layoutManager) {
   function renderLabelsAndPriorities(cy) {
     const displayLabelsElement = document.getElementById("display-labels") as HTMLInputElement;
     const showLabels = displayLabelsElement.checked; // Directly get the checked state
-  
+
     cy.nodes().style({
       label: showLabels
         ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
@@ -52,7 +52,7 @@ export function setupNodeEvents(cy, ur, layoutManager) {
         n.data("label", label);
       });
       renderLabelsAndPriorities(cy);
-      return { nodes: nodes, oldLabels: oldLabels, cy:cy};
+      return { nodes: nodes, oldLabels: oldLabels, cy: cy };
     },
     (args) => {
       // The undo action: reverting to the old labels
@@ -61,7 +61,7 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       let newArgs = {
         nodes: args.nodes,
         label: oldLabels[0].node.data("label"),
-        cy:cy
+        cy: cy
       };
       oldLabels.forEach((item) =>
         item.node.data("label", item.label)
@@ -99,7 +99,7 @@ export function setupNodeEvents(cy, ur, layoutManager) {
   );
 
   cy.on("drag", "node", function () {
-    layoutManager.runLayout();
+    layoutManager.onDrag();
   });
 
   cy.on("click", "node", (event) => {
