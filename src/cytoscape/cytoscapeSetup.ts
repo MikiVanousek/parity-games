@@ -92,6 +92,12 @@ export function setupCytoscape(containerId: string) {
           content: "",
         },
       },
+      {
+        selector: ":parent:selected",
+        style: {
+          "background-color": SELECTION_COLOR,
+        },
+      }
     ],
   });
   undoRedo(cytoscape);
