@@ -46,7 +46,6 @@ html {
   transform: translateY(-50%) translateX(0px);
   /* Move it up by half its own height */
   width: 245px;
-  /* Complementing the width of #cy */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -56,6 +55,8 @@ html {
 }
 
 .navbar-heading {
+  height: auto;
+  width: 100%;
   font-size: 1.5rem;
   font-weight: bold;
   color: white;
@@ -381,7 +382,7 @@ html {
   /* Example: setting text color */
 }
 
-#speedInput {
+.txtInput {
   width: 3rem;
   margin: 10px;
   font-size: 1rem;
@@ -399,7 +400,7 @@ html {
   text-align: center;
 }
 
-#speedInput:focus {
+.txtInput:focus {
   /* Border color when the input is focused */
   outline: 0;
   /* Remove default focus outline */
@@ -407,7 +408,7 @@ html {
   /* Enhanced shadow on focus */
 }
 
-#speedInput:hover {
+.txtInput:hover {
   opacity: .7;
   /* Border color on hover */
 }
