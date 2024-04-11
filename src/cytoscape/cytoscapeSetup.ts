@@ -101,6 +101,6 @@ export function setupCytoscape(containerId: string) {
   });
 
   cy.style().update();
-
+  document.getElementById("cy").style.width = "100%";
   return [cy, ur]; // Return the Cytoscape instance for further use
 }
