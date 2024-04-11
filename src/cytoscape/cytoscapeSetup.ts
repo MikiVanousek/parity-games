@@ -49,11 +49,11 @@ export function setupCytoscape(containerId: string) {
         },
       },
       {
-        selector: 'node[background_color]',
+        selector: "node[background_color]",
         style: {
-          'background-color': 'data(background_color)',
-          'text-outline-color': 'data(background_color)',
-        }
+          "background-color": "data(background_color)",
+          "text-outline-color": "data(background_color)",
+        },
       },
       {
         selector: "edge",
@@ -75,11 +75,22 @@ export function setupCytoscape(containerId: string) {
         },
       },
       {
-        selector: 'edge[line_color]',
+        selector: "edge[line_color]",
         style: {
-          'line-color': 'data(line_color)',
+          "line-color": "data(line_color)",
           "target-arrow-color": "data(line_color)",
-        }
+        },
+      },
+      {
+        selector: ":parent",
+        style: {
+          "background-opacity": 0.333,
+          "background-color": "grey",
+          "border-width": 2,
+          "border-color": "white",
+          "border-style": "solid",
+          content: "",
+        },
       },
     ],
   });
@@ -98,6 +109,12 @@ export function setupCytoscape(containerId: string) {
     enableCreateAnchorOnDrag: true,
     zIndex: 0,
     undoable: true,
+    validateEdge: function (edge, newSource, newTarget) {
+      if (newSource.isParent() || newTarget.isParent()) {
+        return "invalid";
+      }
+      return "valid";
+    },
   });
 
   cy.style().update();
