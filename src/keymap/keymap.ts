@@ -141,6 +141,11 @@ pgEditingMappings.push(
   new KeyMapping(["g"], "Group selected nodes", ({ cy, ur }) => {
     var selectedNodes = cy.$("node:selected");
     let inGroup = false;
+    if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
+      ur.do("ungroup", { groupId: selectedNodes[0].id() });
+      return;
+    }
+
     selectedNodes.forEach((node) => {
       if (node.isParent() || !node.isOrphan()) {
         inGroup = true;

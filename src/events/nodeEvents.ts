@@ -55,23 +55,19 @@ export function setupNodeEvents(cy, ur, layoutManager) {
   ur.action(
     "group",
     (nodes: cytoscape.NodeCollection) => {
-      let groupId = layoutManager.groupNodes(nodes);
-      return groupId;
+      return layoutManager.groupNodes(nodes);
     },
     (groupId: string) => {
-      let nodes = layoutManager.ungroupNodes(groupId);
-      return nodes;
+      return layoutManager.ungroupNodes(groupId);
     }
   );
   ur.action(
     "ungroup",
-    (groupId: string) => {
-      let nodes = layoutManager.ungroupNodes(groupId);
-      return nodes;
+    (args) => {
+      return { nodes: layoutManager.ungroupNodes(args.groupId) };
     },
-    (nodes: cytoscape.NodeCollection) => {
-      let groupId = layoutManager.groupNodes(nodes);
-      return groupId;
+    (args) => {
+      return { groupId: layoutManager.groupNodes(args.nodes) };
     }
   );
 
