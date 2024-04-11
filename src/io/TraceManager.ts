@@ -24,7 +24,7 @@ export class TraceManager {
     this.cy = cy;
 
     this.listElement = document.getElementById('color-legend');
-    this.listElement.hidden = true;
+    this.listElement.parentElement.hidden = true;
     this.controlElement = document.getElementById('trace_controls');
     this.controlElement.hidden = true;
     this.controlElement.style.display = 'none'
@@ -93,7 +93,7 @@ export class TraceManager {
       this.setsEnabled.set(setName, true);
     }
 
-    this.listElement.hidden = false;
+    this.listElement.parentElement.hidden = false;
     this.controlElement.hidden = false;
     this.controlElement.style.display = 'flex'
     this.stepSlider.setAttribute("max", (this.trace.steps.length - 1).toString());
@@ -101,7 +101,7 @@ export class TraceManager {
   }
 
   removeTrace() {
-    this.listElement.hidden = true;
+    this.listElement.parentElement.hidden = true;
     this.controlElement.hidden = true;
     this.controlElement.style.display = 'none';
 
@@ -227,7 +227,7 @@ export class TraceManager {
     // if speedFactor is 0, stop the play
     // check the validity of the speedFactor
 
-    const interval = 200 / speedFactor;
+    const interval = 800 / speedFactor;
 
     this.intervalID = setInterval(() => {
       if (this.isLastStep()) {

@@ -75,21 +75,24 @@
   </div>
   </div>
 
-  <div class="bottom-bar" id="trace_controls">
-    <input id="traceSlider" class="trace-slider" type="range" min="0" max="0" step="1"></slider>
+  <div class="card bottom-bar" id="trace_controls">
+    <input id="traceSlider" class="trace-slider" type="range" min="0" max="0" step="1">
     <div class="trace-play-controls">
+      <div class="cross-button-box"></div>
       <button id="skipToBeginningAction"><i class="fa-solid fa-backward-fast"></i></button>
       <button id="lastStepAction"><i class="fa-solid fa-backward-step"></i></button>
 
       <div class="play-speed-container">
         <button id="playAction"><i class="fa-solid fa-play"></i></button>
-        <input type="number" id="speedInput" value="1.0" min="0.1" step="0.1">
+        <input class="play-speed-container-input" type="number" maxlength="4" id="speedInput" value="1.0" step="0.1">
       </div>
 
       <button id="nextStepAction"><i class="fa-solid fa-forward-step"></i></button>
       <button id="skipToEndAction"><i class="fa-solid fa-forward-fast"></i></button>
+      <div class="cross-button-box">
+        <button id="closeButton" class="cross-button"><i class="fa fa-times"></i></button>
+      </div>
     </div>
-    <button id="closeButton" class="cross-button"><i class="fa fa-times"></i></button>
   </div>
 
   <div class="top-left-panel">
