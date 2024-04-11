@@ -23,9 +23,21 @@ export function addNodeAtPosition(
 }
 
 export function copySelectedElements(cy: cytoscape.Core) {
-  let selectedEles = cy.$(":selected").jsons();
+  // Filter out parent nodes, do not check for edges
+  const selectedEles = cy.$(":selected").filter((ele) => ele.isEdge() || !ele.isParent()).jsons();
+
+  // kill nodes parents 
+  const preparedEles = selectedEles.map((ele: any) => {
+    if (ele.group === "nodes") {
+      delete ele.data.parent;
+      ele.locked = false;
+      ele.grabbable = true;
+    }
+    return ele;
+  })
+
   // Deep copy and store in global variable
-  copiedElements = JSON.parse(JSON.stringify(selectedEles));
+  copiedElements = JSON.parse(JSON.stringify(preparedEles));
 }
 
 export function pasteCopiedElements(cy: cytoscape.Core, ur) {
