@@ -165,7 +165,7 @@ class LayoutManager {
 
     this.cy.add({
       group: "nodes",
-      data: { id: groupId, label: "Test" },
+      data: { id: groupId, label: "" },
     });
 
     // Set the parent attribute of the nodes to the new group ID
