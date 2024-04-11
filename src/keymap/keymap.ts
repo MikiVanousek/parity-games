@@ -158,7 +158,7 @@ pgEditingMappings.push(
     });
     if (selectedNodes.length > 0 && !inGroup) {
       // check each node if it is already in a group
-      ur.do("group", selectedNodes);
+      ur.do("group", { nodes: selectedNodes });
     }
   })
 );
