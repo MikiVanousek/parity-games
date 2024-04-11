@@ -5,6 +5,7 @@ import { ParityGame } from "../board/ParityGame";
 import { examplePg, exampleTrace } from "../board/ExamplePG";
 import { deepEquals } from "./deepEquals";
 import { PGParser } from "../board/PGParser";
+import { resetBoardVisuals } from "./exportImport";
 
 export class TraceManager {
   cy: any;
@@ -71,7 +72,11 @@ export class TraceManager {
         duration: 4000,
       })
       console.log("This trace does not fit the current parity game.");
-      return;
+      const conf = window.confirm("The trace you are importing was not made for the parity game you are editing. Should we replace your parity game? Unsaved changes will be lost!");
+      if (!conf) {
+        return;
+      }
+      resetBoardVisuals(this.cy, t.parity_game, window.layoutManager);
     }
 
     this.trace = t;
