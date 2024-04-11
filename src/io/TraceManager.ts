@@ -290,6 +290,7 @@ export class TraceManager {
     const colorLine = document.createElement('div');
     colorLine.classList.add('color-line');
     colorLine.style.backgroundColor = initialColor; // Set initial color
+    colorLine.style.borderColor = initialColor; // Set initial color
     colorLine.setAttribute('data-initial-color', initialColor); // Store initial color
 
     // Update color toggle functionality

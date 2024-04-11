@@ -13,6 +13,8 @@ html {
 .card {
   background-color: #333;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  color: white;
 }
 
 .icon {
@@ -41,17 +43,16 @@ html {
   right: 0;
   top: 50%;
   /* Start at the middle of the page */
-  transform: translateY(-50%) translateX(-40px);
+  transform: translateY(-50%) translateX(0px);
   /* Move it up by half its own height */
   width: 245px;
   /* Complementing the width of #cy */
-  background-color: #333;
-  padding: 1.5rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
 .navbar-heading {
@@ -292,9 +293,8 @@ html {
   left: 50%;
   transform: translateY(0) translateX(-50%);
   margin: 0 auto;
-  padding-left: 2rem;
-  padding-right: 2rem;
   padding-top: 1rem;
+  padding-bottom: 0;
   gap: .5rem;
   box-sizing: border-box;
   justify-content: center;
@@ -348,11 +348,9 @@ html {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #333;
-  color: white;
-  padding: 10px;
+  padding-top: 0;
   border-bottom-right-radius: 20px;
-  z-index: 10;
+  font-size: larger;
 }
 
 .top-left-panel ul {
@@ -364,14 +362,15 @@ html {
 .top-left-panel li {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .color-line {
-  width: 6px;
-  height: 6px;
-  background-color: #FF5733;
-  border: 1px solid #aaa;
+  width: .8em;
+  height: .8em;
+  background-color: transparent;
+  border: .3em solid #aaa;
+  border-radius: .2em;
   transition: background-color 0.3s ease;
   /* add hand mouse */
   cursor: pointer;
