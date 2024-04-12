@@ -9,13 +9,13 @@ import { resetBoardVisuals } from "./exportImport";
 
 export class TraceManager {
   cy: any;
-  trace?: Trace;
+  private trace?: Trace;
   private step?: number;
-  colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
-  listElement: HTMLElement;
-  controlElement: HTMLElement;
-  setsEnabled?: Map<string, boolean>;
-  intervalID = null;
+  private colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
+  private listElement: HTMLElement;
+  private controlElement: HTMLElement;
+  private setsEnabled?: Map<string, boolean>;
+  private intervalID = null;
   private playStopButton: HTMLElement;
   private playStopIcon: Element;
   private stepSlider: HTMLInputElement;
@@ -57,7 +57,7 @@ export class TraceManager {
     } catch (error) {
       showToast({
         message: "This file does not contain a valid trace.",
-        variant: "danger", // "danger" | "warning" | "info"
+        variant: "danger",
       });
       console.error("Error importing trace:", error);
       return;
@@ -85,6 +85,7 @@ export class TraceManager {
         return;
       }
       resetBoardVisuals(this.cy, t.parity_game, window.layoutManager);
+
     }
 
     this.trace = t;

@@ -75,7 +75,7 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 (window as any).runLayout = function () {
-  layoutManager.runLayout();
+  layoutManager.runOnce();
 };
 
 document.getElementById("display-labels").addEventListener("change", function () {

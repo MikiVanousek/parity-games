@@ -66,7 +66,7 @@ class LayoutManager {
     }
   }
 
-  public runLayout() {
+  public runOnce() {
     this.cy.layout(this.currentLayout).run();
   }
 

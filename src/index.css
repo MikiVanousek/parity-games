@@ -230,16 +230,17 @@ html {
   background-color: #1d1d1d;
   border-radius: 10px;
   color: white;
-  padding: 0.7rem 1.3rem;
+  padding: 0.7rem 1rem;
   border: none;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  width: 100%;
   font-size: 12px;
 }
 
 .navbar-group button:hover,
 .navbar-group .button:hover {
-  opacity: 0.100%
+  opacity: 0.8
 }
 
 #file-name-display {
@@ -498,7 +499,8 @@ i input[type=text]:hover:not(:focus) {
   box-sizing: border-box;
   border-radius: 50%;
   background-color: #444;
-  font-style: bold;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+  font-weight: bold;
   font-size: larger;
   color: white;
   cursor: pointer;

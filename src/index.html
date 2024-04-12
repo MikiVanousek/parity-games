@@ -22,8 +22,10 @@
       </span>
       <i class="fa fa-pencil" id="editTitleIcon" aria-hidden="true"></i>
       <!-- add a reset button, with a tooltip -->
-      <button id="resetView"><i class="fa fa-window-restore" aria-hidden="true" title="Reset view"
-          style="cursor: pointer"></i></button>
+    </div>
+    <div class="navbar-group">
+      <button id="resetView"><i class="fa fa-window-restore icon" aria-hidden="true" title="Reset view"
+          style="cursor: pointer"></i>Reset view</button>
     </div>
     <div class="navbar-group">
       <div class="row">
@@ -60,15 +62,16 @@
         <label for="display-labels">Display labels</label>
       </div>
     </div>
-
     <div class="navbar-group">
-      <div class="navbar-group-heading">Trace settings</div>
-      <label for="fileInput" class="button">
-        <span class="icon">
-          <i class="fa-solid fa-file-import"></i>
-        </span>Import trace
-      </label>
-      <input type="file" id="fileInput" style="display: none;" accept=".pgtrace_json" />
+      <div class="navbar-group-heading">Trace</div>
+      <div class="row">
+        <label for="fileInput" class="button">
+          <span class="icon">
+            <i class="fa-solid fa-file-import"></i>
+          </span>Import trace
+        </label>
+        <input type="file" id="fileInput" style="display: none;" accept=".pgtrace_json" />
+      </div>
     </div>
 
   </div>
