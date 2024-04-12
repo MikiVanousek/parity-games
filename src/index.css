@@ -13,7 +13,7 @@ html {
 .card {
   background-color: #333;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
-  padding: 2rem;
+  padding: 1.7rem;
   color: white;
 }
 
@@ -55,13 +55,15 @@ html {
 }
 
 .navbar-heading {
-  height: auto;
+  overflow: warp;
+  word-wrap: break-word;
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   color: white;
   text-align: center;
 }
+
 
 .navbar-group {
   display: flex;
@@ -237,7 +239,7 @@ html {
 
 .navbar-group button:hover,
 .navbar-group .button:hover {
-  opacity: 0.7;
+  opacity: 0.100%
 }
 
 #file-name-display {
@@ -382,36 +384,34 @@ html {
   /* Example: setting text color */
 }
 
-.txtInput {
-  width: 3rem;
-  margin: 10px;
-  font-size: 1rem;
-  /* Size of the text within the input */
-  line-height: 1.5;
-  /* Adjust the line height for better readability */
+input[type=text],
+textarea {
   color: white;
   /* Color of the text */
   background-color: #1D1D1D;
   border: none;
   border-radius: 5px;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  /* Smooth transition for focus/hover */
-  /* Center the text within the input field */
   text-align: center;
 }
 
-.txtInput:focus {
-  /* Border color when the input is focused */
+input[type=text]:focus {
   outline: 0;
-  /* Remove default focus outline */
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(255, 255, 255, 0.3);
-  /* Enhanced shadow on focus */
 }
 
-.txtInput:hover {
+i input[type=text]:hover:not(:focus) {
   opacity: .7;
   /* Border color on hover */
 }
+
+
+.textInput {
+  width: 3rem;
+  line-height: 1.5;
+  margin: 10px;
+  /* Adjust the line height for better readability */
+}
+
 
 .manual-overlay {
   backdrop-filter: blur(5px);

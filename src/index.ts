@@ -155,9 +155,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Create an input field only if it doesn't already exist
     if (currentTitleElement && currentTitleElement.querySelector('.title-edit-input') === null) {
       const inputField = document.createElement('input');
-      inputField.type = 'text';
       inputField.value = currentText;
-      inputField.className = 'title-edit-input';
+      inputField.type = 'text';
+      inputField.className = 'navbar-heading';
 
       currentTitleElement.textContent = '';
       currentTitleElement.appendChild(inputField);
