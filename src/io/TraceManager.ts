@@ -6,6 +6,7 @@ import { examplePg, exampleTrace } from "../board/ExamplePG";
 import { deepEquals } from "./deepEquals";
 import { PGParser } from "../board/PGParser";
 import { resetBoardVisuals } from "./exportImport";
+import { colaLayout } from "../layout/colaLayout";
 
 export class TraceManager {
   cy: any;
@@ -129,7 +130,7 @@ export class TraceManager {
     traceStep.link_sets.forEach((link_set, index) => {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name)
       let color = this.colors[setId % this.colors.length]
-      this.addListItem(this.listElement, link_set.name, color);
+      this.addListItem(this.listElement, link_set.name, color,);
     });
 
     this.refreshColor();
@@ -279,10 +280,6 @@ export class TraceManager {
     }
   }
 
-  close() {
-    this.removeTrace();
-  }
-
   addListItem(listElement, text, initialColor) {
     const listItem = document.createElement('li');
     listItem.style.display = 'flex';
@@ -293,6 +290,7 @@ export class TraceManager {
     colorLine.style.backgroundColor = initialColor; // Set initial color
     colorLine.style.borderColor = initialColor; // Set initial color
     colorLine.setAttribute('data-initial-color', initialColor); // Store initial color
+    colorLine.style.backgroundColor = this.setsEnabled.get(text) ? initialColor : 'transparent';
 
     // Update color toggle functionality
     colorLine.addEventListener('click', function () {

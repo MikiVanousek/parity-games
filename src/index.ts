@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", pgManager.goToLastStep.bind(pgManager));
   document
     .getElementById("closeButton")
-    .addEventListener("click", pgManager.close.bind(pgManager));
+    .addEventListener("click", pgManager.removeTrace.bind(pgManager));
 
   document.getElementById("export-oink-btn").addEventListener("click", (e) => {
     PGParser.exportOinkFormat(PGParser.cyToPg(cy));
