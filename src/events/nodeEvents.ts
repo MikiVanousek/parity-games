@@ -1,3 +1,5 @@
+import { showToast } from "../ui/toast";
+
 export function setupNodeEvents(cy, ur, layoutManager) {
   ur.action(
     "editPriority",
@@ -140,6 +142,13 @@ export function setupNodeEvents(cy, ur, layoutManager) {
   });
 
   cy.on("cxttap", "node", function (event) {
+    if (window.traceManager.hasTrace()) {
+      showToast({
+        message: "Can not change parity (create edge) game while a trace is loaded.",
+        variant: "danger",
+      });
+      return;
+    }
     const target_node = event.target;
     if (target_node.isParent()) return;
     const selectedNodes = cy
