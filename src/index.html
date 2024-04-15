@@ -16,12 +16,18 @@
     </ul>
   </div>
   <div class="card navbar">
-    <div class="navbar-heading">
+    <div class="pgname" id="pgnameDisplayGroup">
+      <span id="pgnameDisplaySpan"></span>
+      <i class="fa fa-pencil" id="pgnameEdit"></i>
+    </div>
+    <div class="pgname" id="pgnameEditGroup">
       <span id="editableContainer">
-        <span id="parityGameTitle"></span>
+        <textarea type="text" id="pgnameEditInput" class="pgname" aria-hidden="true"></textarea>
+        <div class="pgname-edit-icons">
+          <i class="fa fa-xmark" id="cancelPgnameEdit"></i>
+          <i class="fa fa-pen-to-square" id="confirmPgnameEdit"></i>
+        </div>
       </span>
-      <i class="fa fa-pencil" id="editTitleIcon" aria-hidden="true"></i>
-      <!-- add a reset button, with a tooltip -->
     </div>
     <div class="navbar-group">
       <button id="resetView"><i class="fa fa-window-restore icon" aria-hidden="true" title="Reset view"

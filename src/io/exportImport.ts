@@ -1,8 +1,9 @@
 import { updateGraphFileName } from "../ui/utils";
 import { PGParser } from "../board/PGParser";
 import { showToast } from "../ui/toast";
+import { getPGName, setPGName } from "../ui/PGNameEditing";
 
-export function handleExportGame(cy, name = window.pgName) {
+export function handleExportGame(cy, name = getPGName()) {
   const cyState = cy.elements().jsons();
 
   const exportData = {
@@ -26,8 +27,7 @@ export function handleImportGame(event, cy) {
     updateGraphFileName(file.name);
 
     // remove the file extension
-    window.pgName = file.name.replace(/\.[^/.]+$/, "");
-    document.getElementById('parityGameTitle').textContent = window.pgName;
+    setPGName(file.name.replace(/\.[^/.]+$/, ""));
 
     const reader = new FileReader();
 
@@ -50,7 +50,7 @@ export function handleImportGame(event, cy) {
   }
 }
 
-export function exportAsPng(cy, name = window.pgName) {
+export function exportAsPng(cy, name = getPGName()) {
   const png = cy.png({ full: true });
   const a = document.createElement("a");
   a.href = png;
@@ -65,8 +65,7 @@ export function handleOinkFileSelect(event, cy, layoutManager) {
     updateGraphFileName(file.name);
 
     // remove the file extension
-    window.pgName = file.name.replace(/\.[^/.]+$/, "");
-    document.getElementById('parityGameTitle').textContent = window.pgName;
+    setPGName(file.name.replace(/\.[^/.]+$/, ""));
 
     const reader = new FileReader();
 
@@ -92,7 +91,7 @@ export function handleOinkFileSelect(event, cy, layoutManager) {
   }
 }
 
-export function saveOinkFile(cy, name = window.pgName) {
+export function saveOinkFile(cy, name = getPGName()) {
   const pg = PGParser.cyToPg(cy);
   const exportString = PGParser.exportOinkFormat(pg);
 
