@@ -9,6 +9,7 @@ import {
   handleOinkFileSelect,
   saveOinkFile,
 } from "./io/exportImport";
+import { setupUndoRedoActions } from "./undo-redo/urActionSetup";
 import { setupNodeEvents } from "./events/nodeEvents";
 import { PGParser } from "./board/PGParser";
 import { showToast } from "./ui/toast";
@@ -44,6 +45,7 @@ window.traceManager = pgManager;
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;
+setupUndoRedoActions(cy, ur, layoutManager);
 setupKeyboardEvents(cy, ur);
 setupNodeEvents(cy, ur, layoutManager);
 
@@ -76,7 +78,7 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 (window as any).runLayout = function () {
-  layoutManager.runOnce();
+  ur.do("runLayout", { nodes: cy.nodes() });
 };
 
 document
