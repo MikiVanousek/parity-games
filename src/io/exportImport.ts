@@ -20,7 +20,7 @@ export function handleExportGame(cy, name = getPGName()) {
   a.click();
 }
 
-export function handleImportGame(event, cy) {
+export function handleImportGame(event, cy, ur) {
   const file = event.target.files[0];
 
   if (file) {
@@ -41,8 +41,14 @@ export function handleImportGame(event, cy) {
         cy.fit(cy.elements(), 50);
 
         var fileName = file.name.replace(/\.[^/.]+$/, "");
-      } catch (error) {
-        console.error("Error importing game:", error);
+        ur.reset();
+      } catch (e) {
+        console.error("Error loading game:", e);
+        showToast({
+          title: "Invalid file",
+          message: "The file you selected is not a valid cypg_json file",
+          variant: "danger",
+        });
       }
     };
 
@@ -58,7 +64,7 @@ export function exportAsPng(cy, name = getPGName()) {
   a.click();
 }
 
-export function handleOinkFileSelect(event, cy, layoutManager) {
+export function handleOinkFileSelect(event, cy, layoutManager, ur) {
   const file = event.target.files[0];
 
   if (file) {
@@ -75,13 +81,14 @@ export function handleOinkFileSelect(event, cy, layoutManager) {
       let pg;
       try {
         pg = PGParser.importOinkFormat(fileContent);
+        ur.reset();
       } catch (e) {
         console.error("Error importing game:", e);
         showToast({
           title: "Invalid pg file",
           message: "The file you selected is not a valid pg file",
           variant: "danger",
-        })
+        });
         return;
       }
       resetBoardVisuals(cy, pg, layoutManager);
