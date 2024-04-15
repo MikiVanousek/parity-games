@@ -5,25 +5,40 @@ import { ParityGame } from "../board/ParityGame";
 import { examplePg, exampleTrace } from "../board/ExamplePG";
 import { deepEquals } from "./deepEquals";
 import { PGParser } from "../board/PGParser";
+import { resetBoardVisuals } from "./exportImport";
+import { colaLayout } from "../layout/colaLayout";
 
 export class TraceManager {
   cy: any;
-  trace?: Trace;
+  private trace?: Trace;
   private step?: number;
-  colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
-  listElement: HTMLElement;
-  controlElement: HTMLElement;
-  setsEnabled?: Map<string, boolean>;
-  intervalID = null;
+  private colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
+  private listElement: HTMLElement;
+  private controlElement: HTMLElement;
+  private setsEnabled?: Map<string, boolean>;
+  private intervalID = null;
+  private playStopButton: HTMLElement;
+  private playStopIcon: Element;
+  private stepSlider: HTMLInputElement;
 
   constructor(cy: any) {
     this.cy = cy;
 
     this.listElement = document.getElementById('color-legend');
-    this.listElement.hidden = true;
+    this.listElement.parentElement.hidden = true;
     this.controlElement = document.getElementById('trace_controls');
     this.controlElement.hidden = true;
     this.controlElement.style.display = 'none'
+
+    this.playStopButton = document.getElementById("playAction");
+    this.playStopIcon = document.getElementById("playAction").children[0];
+    this.playStopButton.dataset.playing = "false";
+    this.playStopIcon.classList.add("fa-play");
+    this.playStopButton.addEventListener("click", this.togglePlay.bind(this));
+    this.stepSlider = document.getElementById("traceSlider") as HTMLInputElement;
+    this.stepSlider.addEventListener("input", (e) => {
+      this.setStep(parseInt(this.stepSlider.value));
+    });
   }
 
   handleTraceFileSelect(event) {
@@ -43,7 +58,7 @@ export class TraceManager {
     } catch (error) {
       showToast({
         message: "This file does not contain a valid trace.",
-        variant: "danger", // "danger" | "warning" | "info"
+        variant: "danger",
       });
       console.error("Error importing trace:", error);
       return;
@@ -65,13 +80,13 @@ export class TraceManager {
     // Compare just the nodes and links, nextNodeId is irrelevant
     const pg = PGParser.cyToPg(this.cy);
     if (!t.parity_game.equals(pg)) {
-      showToast({
-        message: "This trace does not fit the current parity game.",
-        variant: "danger",
-        duration: 4000,
-      })
       console.log("This trace does not fit the current parity game.");
-      return;
+      const conf = window.confirm("The trace you are importing was not made for the parity game you are editing. Should we replace your parity game? Unsaved changes will be lost!");
+      if (!conf) {
+        return;
+      }
+      resetBoardVisuals(this.cy, t.parity_game, window.layoutManager);
+
     }
 
     this.trace = t;
@@ -80,14 +95,15 @@ export class TraceManager {
       this.setsEnabled.set(setName, true);
     }
 
-    this.listElement.hidden = false;
+    this.listElement.parentElement.hidden = false;
     this.controlElement.hidden = false;
     this.controlElement.style.display = 'flex'
+    this.stepSlider.setAttribute("max", (this.trace.steps.length - 1).toString());
     this.setStep(0);
   }
 
   removeTrace() {
-    this.listElement.hidden = true;
+    this.listElement.parentElement.hidden = true;
     this.controlElement.hidden = true;
     this.controlElement.style.display = 'none';
 
@@ -101,6 +117,7 @@ export class TraceManager {
     assert(this.trace != undefined);
 
     this.step = i;
+    this.stepSlider.value = i.toString();
     this.listElement.innerHTML = '';
     const traceStep = this.trace.steps[i];
 
@@ -113,11 +130,10 @@ export class TraceManager {
     traceStep.link_sets.forEach((link_set, index) => {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name)
       let color = this.colors[setId % this.colors.length]
-      this.addListItem(this.listElement, link_set.name, color);
+      this.addListItem(this.listElement, link_set.name, color,);
     });
 
     this.refreshColor();
-    this.updateTraceStepDisplay();
   }
 
   getStep() {
@@ -151,7 +167,6 @@ export class TraceManager {
     assert(this.trace !== undefined)
     if (this.step < this.trace.steps.length - 1) {
       this.setStep(this.step + 1);
-      this.updateTraceStepDisplay();
     } else {
       showToast({
         message: "This is the last step!",
@@ -164,7 +179,6 @@ export class TraceManager {
     assert(this.trace !== undefined)
     if (this.step > 0) {
       this.setStep(this.step - 1);
-      this.updateTraceStepDisplay();
     } else {
       showToast({
         message: "This is the first step!",
@@ -204,28 +218,18 @@ export class TraceManager {
   }
 
   play() {
-    this.stop()
+    this.playStopButton.dataset.playing = "true";
+    this.playStopIcon.classList.remove("fa-play");
+    this.playStopIcon.classList.add("fa-pause");
 
     // get the current factor
     const factor = document.getElementById('speedInput') as HTMLSelectElement;
     const speedFactor = parseFloat(factor.value);
 
     // if speedFactor is 0, stop the play
-    if (speedFactor === 0) {
-      this.stop();
-      return;
-    }
-
     // check the validity of the speedFactor
-    if (isNaN(speedFactor) || speedFactor < 0) {
-      showToast({
-        message: "Invalid speed factor",
-        variant: "danger"
-      });
-      return;
-    }
 
-    const interval = 2000 / speedFactor;
+    const interval = 800 / speedFactor;
 
     this.intervalID = setInterval(() => {
       if (this.isLastStep()) {
@@ -236,16 +240,44 @@ export class TraceManager {
     }, interval);
 
   }
+  togglePlay() {
+    const isPlaying = this.playStopButton.dataset.playing === "true";
+
+    if (!isPlaying) {
+
+      const factor = document.getElementById('speedInput') as HTMLSelectElement;
+      const speedFactor = parseFloat(factor.value);
+      // if speedFactor is 0, stop the play
+      if (speedFactor === 0) {
+        showToast({
+          message: "Speed factor cannot be 0",
+          variant: "danger"
+        })
+        return;
+      }
+      if (isNaN(speedFactor) || speedFactor < 0) {
+        showToast({
+          message: "Invalid speed factor",
+          variant: "danger"
+        });
+        return;
+      }
+
+      // If not playing, start play
+      this.play(); // Call the play method
+    } else {
+      this.stop();
+    }
+  }
 
   stop() {
+    this.playStopButton.dataset.playing = "false";
+    this.playStopIcon.classList.remove("fa-stop");
+    this.playStopIcon.classList.add("fa-play");
     if (this.intervalID !== null) {
       clearInterval(this.intervalID);
       this.intervalID = null; // Reset the intervalId
     }
-  }
-
-  close() {
-    this.removeTrace();
   }
 
   addListItem(listElement, text, initialColor) {
@@ -256,7 +288,9 @@ export class TraceManager {
     const colorLine = document.createElement('div');
     colorLine.classList.add('color-line');
     colorLine.style.backgroundColor = initialColor; // Set initial color
+    colorLine.style.borderColor = initialColor; // Set initial color
     colorLine.setAttribute('data-initial-color', initialColor); // Store initial color
+    colorLine.style.backgroundColor = this.setsEnabled.get(text) ? initialColor : 'transparent';
 
     // Update color toggle functionality
     colorLine.addEventListener('click', function () {
@@ -287,12 +321,6 @@ export class TraceManager {
 
   hasTrace() {
     return this.trace !== undefined;
-  }
-  updateTraceStepDisplay() {
-    const stepDisplay = document.getElementById('traceStepDisplay');
-    if (stepDisplay) {
-      stepDisplay.textContent = `Step: ${this.step + 1} / ${this.trace.steps.length}`;
-    }
   }
 
   getTrace() {

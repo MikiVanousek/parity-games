@@ -36,6 +36,8 @@ This option will lead to the best experience, as you will be able to very easily
 
 Follow the steps outlined in the [Development](#development) section to build the project and make sure everything works as you are used to from the online version. Then create a new file in `src/algo` whose structure mimics [`zielonka.ts`](TODO). Your algorithm will be a TypeScript (JavaScript) function which takes [`ParityGame`](src/board/ParityGame.ts) as input and returns a [`Trace`](src/board/Trace.ts). 
 
+**Beware** that using someone else's parity game algorithm on your computer will execute 
+
 ### Import Trace File
 Your other option is to use any language, parse a parity game from the `.pg` file (used by [Oink](https://github.com/trolando/oink)) and create a `.pgtrace_json` file. The trace file is a JSON serialization of the [`Trace`](src/board/Trace.ts) class. you can find an example [here](test/Trace.test.ts).
 

@@ -82,6 +82,54 @@ export const exampleTrace = new Trace({
         })
       ],
       node_labels: {}
+    }),
+    new TraceStep({
+      node_sets: [
+        new NodeSet({
+          name: "current",
+          node_ids: [0, 1]
+        }),
+
+        new NodeSet({
+          name: "next",
+          node_ids: [2, 3]
+        })
+      ],
+      link_sets: [
+        new LinkSet({
+          name: "pretty",
+          link_source_target_ids: [[0, 8], [1, 9]]
+        }),
+        new LinkSet({
+          name: "ugly",
+          link_source_target_ids: [[2, 9]]
+        })
+      ],
+      node_labels: {}
+    }),
+    new TraceStep({
+      node_sets: [
+        new NodeSet({
+          name: "current",
+          node_ids: [4, 5]
+        }),
+
+        new NodeSet({
+          name: "other",
+          node_ids: [6]
+        })
+      ],
+      link_sets: [
+        new LinkSet({
+          name: "pretty",
+          link_source_target_ids: [[3, 2], [4, 7]]
+        }),
+        new LinkSet({
+          name: "wierd",
+          link_source_target_ids: [[8, 4]]
+        })
+      ],
+      node_labels: {}
     })
   ]
 

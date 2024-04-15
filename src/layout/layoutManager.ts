@@ -26,9 +26,9 @@ class Group {
 
 class LayoutManager {
   private cy: cytoscape.Core;
+  private runOnDrag: boolean;
   private lockedGroups: Array<{ leaves: string[] }> = [];
   private groups: Group[] = [];
-  public isEnabled: boolean;
   public currentLayout: any;
   private colaLayoutOptions: any = colaLayout;
   public layouts = {
@@ -40,7 +40,7 @@ class LayoutManager {
 
   constructor(cyInstance: any, defaultLayout?: string) {
     this.cy = cyInstance;
-    this.isEnabled = false;
+    this.runOnDrag = false;
     this.currentLayout = this.layouts[defaultLayout] || colaLayout;
 
     let this1 = this;
@@ -58,25 +58,29 @@ class LayoutManager {
           layoutSelect.appendChild(option);
         }
       }
-      layoutSelect.value = defaultLayout;
+      // This is ugly, but better than broken (Han)
+      layoutSelect.value = defaultLayout || "Force directed";
     });
 
     document
       .getElementById("layout-on-drag")
       .addEventListener("change", function () {
-        this1.toggleLayout((this as HTMLInputElement).checked);
+        this1.setRunOnDrag((this as HTMLInputElement).checked);
       });
   }
 
-  public toggleLayout(bool: boolean) {
-    this.isEnabled = bool;
-    if (this.isEnabled) {
-      this.runLayout();
-    }
+  public setRunOnDrag(bool: boolean) {
+    this.runOnDrag = bool;
+    this.onDrag();
   }
 
   public changeLayout(layout: string) {
     this.currentLayout = this.layouts[layout] || this.colaLayoutOptions;
+    if (layout == "Force directed") {
+      this.showLayoutOnDragElement();
+    } else {
+      this.hideLayoutOnDragElement();
+    }
   }
 
   private calculateBoundingBoxConstraints() {
@@ -119,8 +123,8 @@ class LayoutManager {
     return constraints;
   }
 
-  public runLayout() {
-    if (this.isEnabled) {
+  public onDrag() {
+    if (this.runOnDrag) {
       this.runOnce();
     }
   }
@@ -158,6 +162,13 @@ class LayoutManager {
 
   public getCurrentLayoutOptions() {
     return this.currentLayout;
+  }
+
+  private hideLayoutOnDragElement() {
+    document.getElementById("layout-on-drag-container").style.display = "none";
+  }
+  private showLayoutOnDragElement() {
+    document.getElementById("layout-on-drag-container").style.display = "";
   }
 
   public groupNodes(nodes: cytoscape.NodeCollection) {

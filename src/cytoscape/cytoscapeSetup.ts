@@ -124,6 +124,5 @@ export function setupCytoscape(containerId: string) {
   });
 
   cy.style().update();
-
   return [cy, ur]; // Return the Cytoscape instance for further use
 }

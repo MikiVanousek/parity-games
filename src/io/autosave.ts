@@ -1,6 +1,7 @@
 import { examplePg } from "../board/ExamplePG";
 import { PGParser } from "../board/PGParser";
 import { Trace } from "../board/Trace";
+import { getPGName, setPGName } from "../ui/PGNameEditing";
 import { resetBoardVisuals } from "./exportImport";
 
 export function saveState() {
@@ -10,7 +11,7 @@ export function saveState() {
   const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
   const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
   const trace = window.traceManager ? window.traceManager.getTrace() : [];
-  const pgName = window.pgName;
+  const pgName = getPGName();
 
   const zoom = window.cy.zoom();
   const pan = window.cy.pan();
@@ -40,7 +41,7 @@ export function loadState() {
   window.cy.pan(pan);
 
   // set the name of the parity game in the window object
-  window.pgName = pgName;
+  setPGName(pgName);
 
   if (window.cy) {
     window.cy.json({ elements }); // Restore elements
