@@ -58,7 +58,6 @@ cmdMappings.push(
   })
 );
 
-
 export const pgEditingMappings = new KeyMap("Parity game editing mappings");
 
 pgEditingMappings.push(
@@ -74,14 +73,13 @@ pgEditingMappings.push(
 );
 
 pgEditingMappings.push(
-  new KeyMapping(["q"], "Toggle the parity of selected nodes", (args) => {
-    var selectedNodes = args.cy
+  new KeyMapping(["q"], "Toggle the owner of selected nodes", ({ cy, ur }) => {
+    var selectedNodes = cy
       .$("node:selected")
       .filter((node) => !node.isParent());
-    selectedNodes.forEach((node) => {
-      let currentIsEven = node.data("isEven");
-      node.data("isEven", currentIsEven === "true" ? "false" : "true");
-    });
+    if (selectedNodes.length > 0) {
+      ur.do("editOwner", { nodes: selectedNodes });
+    }
   })
 );
 

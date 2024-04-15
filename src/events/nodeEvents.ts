@@ -2,6 +2,28 @@ import { showToast } from "../ui/toast";
 
 export function setupNodeEvents(cy, ur, layoutManager) {
   ur.action(
+    "editOwner",
+    (args) => {
+      let nodes = args.nodes;
+      // The do action: updating the owner
+      nodes.forEach((node) => {
+        let currentIsEven = node.data("isEven");
+        node.data("isEven", currentIsEven === "true" ? "false" : "true");
+      });
+      return { nodes: nodes };
+    },
+    (args) => {
+      let nodes = args.nodes;
+      // The undo action: updating the owner
+      nodes.forEach((node) => {
+        let currentIsEven = node.data("isEven");
+        node.data("isEven", currentIsEven === "true" ? "false" : "true");
+      });
+      return { nodes: nodes };
+    }
+  );
+
+  ur.action(
     "editPriority",
     (args) => {
       let nodes = args.nodes;
@@ -144,7 +166,8 @@ export function setupNodeEvents(cy, ur, layoutManager) {
   cy.on("cxttap", "node", function (event) {
     if (window.traceManager.hasTrace()) {
       showToast({
-        message: "Can not change parity (create edge) game while a trace is loaded.",
+        message:
+          "Can not change parity (create edge) game while a trace is loaded.",
         variant: "danger",
       });
       return;
