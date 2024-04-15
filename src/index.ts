@@ -32,7 +32,7 @@ var [cy, ur] = setupCytoscape("cy");
 window.cy = cy;
 window.ur = ur;
 
-fillManual()
+fillManual();
 
 const fileInput = document.getElementById("fileInput");
 var pgManager = new TraceManager(cy);
@@ -79,15 +79,25 @@ setupNodeEvents(cy, ur, layoutManager);
   layoutManager.runOnce();
 };
 
-document.getElementById("display-labels").addEventListener("change", function () {
-  const showLabels = (this as HTMLInputElement).checked;
-  cy.nodes().style({
-    label: showLabels
-      ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-      : "",
-    "text-wrap": "wrap",
+document
+  .getElementById("display-labels")
+  .addEventListener("change", function () {
+    const showLabels = (this as HTMLInputElement).checked;
+    cy.nodes()
+      .filter((ele: any) => !ele.isParent())
+      .style({
+        label: showLabels
+          ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
+          : "",
+        "text-wrap": "wrap",
+      });
+    cy.nodes()
+      .filter((ele: any) => ele.isParent())
+      .style({
+        label: showLabels ? (ele: any) => `${ele.data("label")}` : "",
+        "text-wrap": "wrap",
+      });
   });
-});
 
 
 document.addEventListener("DOMContentLoaded", function () {

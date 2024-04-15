@@ -28,15 +28,25 @@ export function setupNodeEvents(cy, ur, layoutManager) {
   );
 
   function renderLabelsAndPriorities(cy) {
-    const displayLabelsElement = document.getElementById("display-labels") as HTMLInputElement;
+    const displayLabelsElement = document.getElementById(
+      "display-labels"
+    ) as HTMLInputElement;
     const showLabels = displayLabelsElement.checked; // Directly get the checked state
 
-    cy.nodes().style({
-      label: showLabels
-        ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-        : "",
-      "text-wrap": "wrap",
-    });
+    cy.nodes()
+      .filter((ele: any) => !ele.isParent())
+      .style({
+        label: showLabels
+          ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
+          : "",
+        "text-wrap": "wrap",
+      });
+    cy.nodes()
+      .filter((ele: any) => ele.isParent())
+      .style({
+        label: showLabels ? (ele: any) => `${ele.data("label")}` : "",
+        "text-wrap": "wrap",
+      });
   }
   ur.action(
     "editLabels",
@@ -61,11 +71,9 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       let newArgs = {
         nodes: args.nodes,
         label: oldLabels[0].node.data("label"),
-        cy: cy
+        cy: cy,
       };
-      oldLabels.forEach((item) =>
-        item.node.data("label", item.label)
-      );
+      oldLabels.forEach((item) => item.node.data("label", item.label));
       renderLabelsAndPriorities(cy);
       return newArgs;
     }
@@ -97,6 +105,24 @@ export function setupNodeEvents(cy, ur, layoutManager) {
       return { nodes: nodes, value: value };
     }
   );
+  ur.action(
+    "group",
+    (args) => {
+      return { groupId: layoutManager.groupNodes(args.nodes) };
+    },
+    (args) => {
+      return { nodes: layoutManager.ungroupNodes(args.groupId) };
+    }
+  );
+  ur.action(
+    "ungroup",
+    (args) => {
+      return { nodes: layoutManager.ungroupNodes(args.groupId) };
+    },
+    (args) => {
+      return { groupId: layoutManager.groupNodes(args.nodes) };
+    }
+  );
 
   cy.on("drag", "node", function () {
     layoutManager.onDrag();
@@ -115,7 +141,10 @@ export function setupNodeEvents(cy, ur, layoutManager) {
 
   cy.on("cxttap", "node", function (event) {
     const target_node = event.target;
-    const selectedNodes = cy.$("node:selected");
+    if (target_node.isParent()) return;
+    const selectedNodes = cy
+      .$("node:selected")
+      .filter((node) => !node.isParent());
 
     // Create an edge from each selected node to the shift-clicked node
     const actionList = [];

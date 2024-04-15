@@ -1,18 +1,16 @@
-import { ParityGame } from './ParityGame';
+import { ParityGame } from "./ParityGame";
 import { Node, Player } from "./Node";
 import { Link } from "./Link";
-import { assert } from '../assert';
+import { assert } from "../assert";
 
 export module PGParser {
-  export function importOinkFormat(
-    file_content: string,
-  ): ParityGame {
+  export function importOinkFormat(file_content: string): ParityGame {
     // create a list of lines
     // var lines = file_content.split("/\r\n|\r|\n/");
     var lines = file_content.split("\n");
     let pg = ParityGame.emptyBoard();
 
-    assert(lines[0].startsWith('parity '));
+    assert(lines[0].startsWith("parity "));
 
     let arc_id_pairs: [number, number][] = [];
     for (let l of lines.slice(1)) {
@@ -22,10 +20,11 @@ export module PGParser {
       }
       var components = l.split(" "); // i-1 to also remove the spacebefore
       var node_label;
-      if (components.length > 4) { // There is a label. If the label contains space, there will be more than 5 components.
+      if (components.length > 4) {
+        // There is a label. If the label contains space, there will be more than 5 components.
         let i = l.indexOf('"');
-        let j = l.lastIndexOf('"')
-        assert(l[j + 1] == ';')
+        let j = l.lastIndexOf('"');
+        assert(l[j + 1] == ";");
         node_label = l.slice(i + 1, j);
       } else {
         assert(components.length == 4);
@@ -50,7 +49,7 @@ export module PGParser {
     }
     for (let [s, t] of arc_id_pairs) {
       let source_id = pg.find_node_by_id(s);
-      let target_id = pg.find_node_by_id(t)
+      let target_id = pg.find_node_by_id(t);
       if (source_id && target_id) {
         pg.addLink(Link.new(source_id.id, target_id.id));
       }
@@ -92,7 +91,11 @@ export module PGParser {
   function linkToCy(link: Link): Object {
     return {
       group: "edges",
-      data: { id: `${link.source_id + "," + link.target_id}`, source: `${link.source_id}`, target: `${link.target_id}` },
+      data: {
+        id: `${link.source_id + "," + link.target_id}`,
+        source: `${link.source_id}`,
+        target: `${link.target_id}`,
+      },
     };
   }
 
@@ -105,10 +108,21 @@ export module PGParser {
   export function cyToPg(cy) {
     const pg = ParityGame.emptyBoard();
     for (const n of cy.$("node")) {
-      pg.addNode(Node.new(parseInt(n.id()), parseInt(n.data("priority")), n.data("isEven") === "true" ? Player.Even : Player.Odd, n.data("label")));
+      if (!n.isParent()) {
+        pg.addNode(
+          Node.new(
+            parseInt(n.id()),
+            parseInt(n.data("priority")),
+            n.data("isEven") === "true" ? Player.Even : Player.Odd,
+            n.data("label")
+          )
+        );
+      }
     }
     for (const l of cy.$("edge")) {
-      pg.addLink(Link.new(parseInt(l.data("source")), parseInt(l.data("target"))));
+      pg.addLink(
+        Link.new(parseInt(l.data("source")), parseInt(l.data("target")))
+      );
     }
     return pg;
   }
