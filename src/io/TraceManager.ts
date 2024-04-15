@@ -22,6 +22,22 @@ export class TraceManager {
     "#00FFFF",
     "#000000",
     "#FFFFFF",
+    "#FFA07A",
+    "#20B2AA",
+    "#778899",
+    "#B0C4DE",
+    "#FFFFE0",
+    "#00FA9A",
+    "#6A5ACD",
+    "#FFD700",
+    "#1E90FF",
+    "#F08080",
+    "#32CD32",
+    "#8A2BE2",
+    "#FF4500",
+    "#2E8B57",
+    "#DAA520",
+    "#98FB98",
   ];
   private listElement: HTMLElement;
   private controlElement: HTMLElement;

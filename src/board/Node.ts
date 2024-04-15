@@ -32,4 +32,12 @@ export class Node extends JSONObject {
   sameAs(other: Node): boolean {
     return this.id == other.id && this.player == other.player && this.priority == other.priority;
   }
+
+  toString(): string {
+    return `Node ID: ${this.id}, Player: ${
+      this.player === Player.Even ? "Even" : "Odd"
+    }, Label: ${this.label}, Degree: ${this.degree}, Priority: ${
+      this.priority
+    }`;
+  }
 }

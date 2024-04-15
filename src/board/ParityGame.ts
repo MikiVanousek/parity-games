@@ -57,48 +57,48 @@ export class ParityGame extends JSONObject {
   }
 
   getNodesWithPriority(priority: number): Node[] {
+    console.log("nodes with prio:" + this.nodes);
     return this.nodes.filter((node) => node.priority === priority);
   }
 
   attractorSet(targetNodes: Node[], player: Player): Node[] {
     let attractor = new Set<Node>(targetNodes);
-    let toCheck = [...targetNodes];
 
-    while (toCheck.length > 0) {
-      const currentNode = toCheck.pop();
-      console.log(`Evaluating: ${currentNode.id}`);
+    let isNotEmpty = true;
+    while (isNotEmpty) {
+      let nodesToAdd: Node[] = [];
 
       this.nodes.forEach((node) => {
-        if (!attractor.has(node)) {
-          const successors = this.adjList.get(node);
-          let shouldAddNode = false;
-
-          if (node.player === player) {
-            // Node controlled by the player: add if any successor is in the attractor.
-            shouldAddNode = Array.from(successors).some((successor) =>
-              attractor.has(successor)
-            );
-          } else {
-            // Node not controlled by the player: add if all successors are in the attractor.
-            shouldAddNode = Array.from(successors).every((successor) =>
-              attractor.has(successor)
-            );
-          }
-
-          if (shouldAddNode) {
-            console.log(`Adding node ${node.id} to attractor`);
-            attractor.add(node);
-            toCheck.push(node);
-          }
+        if (attractor.has(node)) {
+          return;
+        }
+        let successors = this.adjList.get(node);
+        console.log("Successors: " + Array.from(successors));
+        // if the node is owned by the player and there is an edge to attractor, we can add it to the attractor
+        if (
+          node.player === player &&
+          Array.from(successors).some((successor) => attractor.has(successor))
+        ) {
+          console.log("Adding to attractor: " + node);
+          nodesToAdd.push(node);
+        }
+        // if its owned by a different player but every edge is connected to the attractor, we can add it to the attractor
+        if (
+          node.player !== player &&
+          Array.from(successors).every((successor) => attractor.has(successor))
+        ) {
+          console.log("Adding to attractor: " + node);
+          nodesToAdd.push(node);
         }
       });
+
+      if (nodesToAdd.length === 0) {
+        isNotEmpty = false;
+      } else {
+        nodesToAdd.forEach((node) => attractor.add(node));
+      }
     }
 
-    console.log(
-      `Final attractor set: ${Array.from(attractor)
-        .map((n) => n.id)
-        .join(", ")}`
-    );
     return Array.from(attractor);
   }
 

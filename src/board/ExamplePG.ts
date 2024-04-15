@@ -5,15 +5,15 @@ import { LinkSet, NodeSet, Trace, TraceStep } from "./Trace";
 export let example_zielonka = ParityGame.emptyBoard();
 
 // Add nodes with their respective players
-example_zielonka.addNodeWith(0, Player.Odd);
-example_zielonka.addNodeWith(2, Player.Even);
-example_zielonka.addNodeWith(7, Player.Odd);
-example_zielonka.addNodeWith(1, Player.Even);
-example_zielonka.addNodeWith(5, Player.Odd);
-example_zielonka.addNodeWith(8, Player.Odd);
-example_zielonka.addNodeWith(6, Player.Odd);
+example_zielonka.addNodeWith(0, Player.Even);
 example_zielonka.addNodeWith(2, Player.Odd);
-example_zielonka.addNodeWith(3, Player.Odd);
+example_zielonka.addNodeWith(7, Player.Even);
+example_zielonka.addNodeWith(1, Player.Odd);
+example_zielonka.addNodeWith(5, Player.Even);
+example_zielonka.addNodeWith(8, Player.Even);
+example_zielonka.addNodeWith(6, Player.Even);
+example_zielonka.addNodeWith(2, Player.Even);
+example_zielonka.addNodeWith(3, Player.Even);
 
 // // Add links between nodes
 example_zielonka.addLinkFromNodes(
