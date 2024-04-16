@@ -112,6 +112,11 @@ export class TraceManager {
     delete this.step;
     delete this.setsEnabled;
     this.resetColor();
+
+    for (const n of this.cy.nodes()) {
+      n.data('traceLabel', '')
+    }
+    refreshNodeLabels();
   }
 
   setStep(i) {
