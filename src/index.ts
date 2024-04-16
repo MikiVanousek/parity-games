@@ -79,29 +79,39 @@ setupNodeEvents(cy, ur, layoutManager);
   layoutManager.runOnce();
 };
 
-document
-  .getElementById("display-labels")
-  .addEventListener("change", function () {
-    const showLabels = (this as HTMLInputElement).checked;
-    cy.nodes()
-      .filter((ele: any) => !ele.isParent())
-      .style({
-        label: showLabels
-          ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-          : "",
-        "text-wrap": "wrap",
-      });
-    cy.nodes()
-      .filter((ele: any) => ele.isParent())
-      .style({
-        label: showLabels ? (ele: any) => `${ele.data("label")}` : "",
-        "text-wrap": "wrap",
-      });
-  });
+const displayLabelsInput = document.getElementById("display-labels") as HTMLInputElement;
+displayLabelsInput.addEventListener("change", refreshNodeLabels);
+
+function refreshNodeLabels() {
+  // Label means two things in this function: node.data.label is the name of the node, and node.style.label is the text that is displayed on the node, which also incudes the priority or the label from trace if needed.
+  const displayLabels = displayLabelsInput.checked;
+
+  function compositeLabel(ele) {
+    // Parent nodes are the groups of nodes created with "g". 
+    if (ele.isParent()) {
+      return ele.data("label");
+    }
+    let res = ele.data("priority").toString();
+    if (displayLabels) {
+      res += `\n${ele.data("label")}`;
+    }
+    if (ele.data("traceLabel")) {
+      res += `\n${ele.data("traceLabel")}`;
+    }
+    return res
+  }
+
+  cy.nodes()
+    .style({
+      label: compositeLabel,
+      "text-wrap": "wrap",
+    });
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
   loadState(); // Load saved state
+  refreshNodeLabels()
   window.cy.fit(cy.elements(), 50);
 
 
