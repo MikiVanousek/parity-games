@@ -9,6 +9,7 @@ import {
   handleOinkFileSelect,
   saveOinkFile,
 } from "./io/exportImport";
+import { setupUndoRedoActions } from "./undo-redo/urActionSetup";
 import { setupNodeEvents } from "./events/nodeEvents";
 import { PGParser } from "./board/PGParser";
 import { showToast } from "./ui/toast";
@@ -46,6 +47,7 @@ window.traceManager = pgManager;
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;
+setupUndoRedoActions(cy, ur, layoutManager);
 setupKeyboardEvents(cy, ur);
 setupNodeEvents(cy, ur, layoutManager);
 
@@ -55,11 +57,11 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 (window as any).handleImportGame = function (event) {
-  handleImportGame(event, cy);
+  handleImportGame(event, cy, ur);
 };
 
 (window as any).handleOinkFileSelect = function (event) {
-  handleOinkFileSelect(event, cy, layoutManager);
+  handleOinkFileSelect(event, cy, layoutManager, ur);
 };
 (window as any).saveOinkFile = function (event) {
   saveOinkFile(cy);
@@ -78,7 +80,7 @@ setupNodeEvents(cy, ur, layoutManager);
 };
 
 (window as any).runLayout = function () {
-  layoutManager.runOnce();
+  ur.do("runLayout", { nodes: cy.nodes() });
 };
 
 const displayLabelsInput = document.getElementById("display-labels") as HTMLInputElement;
@@ -110,12 +112,10 @@ export function refreshNodeLabels() {
     });
 }
 
-
 document.addEventListener("DOMContentLoaded", function () {
   loadState(); // Load saved state
   refreshNodeLabels()
   window.cy.fit(cy.elements(), 50);
-
 
   setupPGNameEditing();
 
