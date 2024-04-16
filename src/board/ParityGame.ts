@@ -6,8 +6,10 @@ import { deepEquals } from '../io/deepEquals';
 
 export class ParityGame extends JSONObject {
   @JSONObject.required
+  @JSONObject.array(Node)
   nodes: Node[];
   @JSONObject.required
+  @JSONObject.array(Link)
   links: Link[];
 
   // This is not serialized
@@ -128,12 +130,13 @@ export class ParityGame extends JSONObject {
     return Math.max(...this.nodes.map((n) => n.id)) + 1;
   }
 
-  equals(other: ParityGame): boolean {
+  // It checks if the underlying parity game is the same. Labels and order of nodes and links do not matter, but the ids of nodes do (isomorphism is not detected).
+  sameAs(other: ParityGame): boolean {
     if (this.nodes.length !== other.nodes.length || this.links.length != other.links.length) {
       return false;
     }
     for (const tn of this.nodes) {
-      if (other.nodes.find((on) => deepEquals(tn, on)) === undefined) {
+      if (other.nodes.find((on) => tn.sameAs(on)) === undefined) {
         return false;
       }
     }

@@ -57,7 +57,7 @@ export const exampleTrace = new Trace({
           link_source_target_ids: [[2, 9]]
         })
       ],
-      node_labels: {}
+      node_labels: { 0: "special", 1: "ordinary" }
     }),
     new TraceStep({
       node_sets: [
@@ -81,7 +81,7 @@ export const exampleTrace = new Trace({
           link_source_target_ids: [[8, 4]]
         })
       ],
-      node_labels: {}
+      node_labels: { 2: "special", 3: "ordinary" }
     }),
     new TraceStep({
       node_sets: [
@@ -105,7 +105,7 @@ export const exampleTrace = new Trace({
           link_source_target_ids: [[2, 9]]
         })
       ],
-      node_labels: {}
+      node_labels: { 4: "special", 5: "ordinary" }
     }),
     new TraceStep({
       node_sets: [
@@ -129,7 +129,7 @@ export const exampleTrace = new Trace({
           link_source_target_ids: [[8, 4]]
         })
       ],
-      node_labels: {}
+      node_labels: { 6: "special", 7: "ordinary" }
     })
   ]
 
