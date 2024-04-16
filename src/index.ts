@@ -86,7 +86,7 @@ displayLabelsInput.addEventListener("change", refreshNodeLabels);
 
 export function refreshNodeLabels() {
   // Label means two things in this function: node.data.label is the name of the node, and node.style.label is the text that is displayed on the node, which also incudes the priority or the label from trace if needed.
-  const displayLabels = displayLabelsInput.checked;
+  const displayNodeLabels = displayLabelsInput.checked;
 
   function compositeLabel(ele) {
     // Parent nodes are the groups of nodes created with "g". 
@@ -94,7 +94,7 @@ export function refreshNodeLabels() {
       return ele.data("label");
     }
     let res = ele.data("priority").toString();
-    if (displayLabels && ele.data("label")) {
+    if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) { // Skip line if there is trace label, to make it clear the label is trace label
       res += `\n${ele.data("label")}`;
     }
     if (ele.data("traceLabel")) {
@@ -106,7 +106,7 @@ export function refreshNodeLabels() {
   cy.nodes()
     .style({
       label: compositeLabel,
-      "text-wrap": "wrap",
+
     });
 }
 
