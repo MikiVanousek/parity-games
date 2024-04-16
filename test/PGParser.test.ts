@@ -2,7 +2,6 @@ import { Player } from '../src/board/Node';
 import { PGParser } from '../src/board/PGParser'
 import { examplePg } from '../src/board/ExamplePG'
 import * as fs from 'fs';
-import { example } from 'yargs';
 
 let PG_DIR = 'test/pg_examples/'
 
@@ -29,9 +28,9 @@ test('examplePg test', () => {
     fs.writeFileSync(`${PG_DIR}example.pg`, pgstr);
 
     let pg = PGParser.importOinkFormat(pgstr)
-    expect(pg.equals(examplePg)).toBe(true)
+    expect(pg.sameAs(examplePg)).toBe(true)
     pg.nodes[0].label = "0"
-    expect(pg.equals(examplePg)).toBe(false)
+    expect(pg.sameAs(examplePg)).toBe(true)
 });
 
 test('all in test/pg_examples parsing test', () => {

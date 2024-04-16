@@ -7,6 +7,7 @@ import { deepEquals } from "./deepEquals";
 import { PGParser } from "../board/PGParser";
 import { resetBoardVisuals } from "./exportImport";
 import { colaLayout } from "../layout/colaLayout";
+import { refreshNodeLabels } from "..";
 
 export class TraceManager {
   cy: any;
@@ -79,7 +80,7 @@ export class TraceManager {
 
     // Compare just the nodes and links, nextNodeId is irrelevant
     const pg = PGParser.cyToPg(this.cy);
-    if (!t.parity_game.equals(pg)) {
+    if (!t.parity_game.sameAs(pg)) {
       console.log("This trace does not fit the current parity game.");
       const conf = window.confirm("The trace you are importing was not made for the parity game you are editing. Should we replace your parity game? Unsaved changes will be lost!");
       if (!conf) {
@@ -132,6 +133,15 @@ export class TraceManager {
       let color = this.colors[setId % this.colors.length]
       this.addListItem(this.listElement, link_set.name, color,);
     });
+    for (const n of this.cy.nodes()) {
+      const traceLabel = traceStep.node_labels[parseInt(n.id())]
+      if (traceLabel) {
+        n.data('traceLabel', traceStep.node_labels[parseInt(n.id())])
+      } else {
+        n.data('traceLabel', '')
+      }
+    }
+    refreshNodeLabels();
 
     this.refreshColor();
   }

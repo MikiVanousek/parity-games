@@ -2,12 +2,45 @@ import { ParityGame } from './ParityGame';
 import { JSONObject } from 'ts-json-object'
 // This is the trace, which parity game algorithms can output to show the steps they took to solve the game.
 // Labels for vertices are not yet supported by the GUI.
+
+export class NodeSet extends JSONObject {
+    @JSONObject.required
+    name: string;
+    @JSONObject.required
+    node_ids: number[];
+}
+
+export class LinkSet extends JSONObject {
+    @JSONObject.required
+    name: string;
+    @JSONObject.required
+    link_source_target_ids: [number, number][];
+
+}
+
+export class TraceStep extends JSONObject {
+    @JSONObject.required
+    @JSONObject.array(NodeSet)
+    node_sets: NodeSet[];
+    @JSONObject.required
+    @JSONObject.array(LinkSet)
+    link_sets: LinkSet[];
+    @JSONObject.required
+    node_labels: { [key: number]: string };
+
+    hasSet(name: string): boolean {
+        return this.node_sets.some((ns) => ns.name === name) || this.link_sets.some((ls) => ls.name === name);
+    }
+}
+
+
 export class Trace extends JSONObject {
     @JSONObject.required
     parity_game: ParityGame;
     @JSONObject.required
     algorithm_name: string;
     @JSONObject.required
+    @JSONObject.array(TraceStep)
     steps: TraceStep[]
 
     // Check if the trace is valid, i.e. all nodes and links are in the parity game
@@ -45,32 +78,4 @@ export class Trace extends JSONObject {
         });
         return Array.from(names);
     }
-}
-
-export class TraceStep extends JSONObject {
-    @JSONObject.required
-    node_sets: NodeSet[];
-    @JSONObject.required
-    link_sets: LinkSet[];
-    @JSONObject.required
-    node_labels: { [key: number]: string };
-
-    hasSet(name: string): boolean {
-        return this.node_sets.some((ns) => ns.name === name) || this.link_sets.some((ls) => ls.name === name);
-    }
-}
-
-export class NodeSet extends JSONObject {
-    @JSONObject.required
-    name: string;
-    @JSONObject.required
-    node_ids: number[];
-}
-
-export class LinkSet extends JSONObject {
-    @JSONObject.required
-    name: string;
-    @JSONObject.required
-    link_source_target_ids: [number, number][];
-
 }

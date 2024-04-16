@@ -24,8 +24,10 @@ declare global {
     ur: any;
     traceManager: TraceManager;
     layoutManager: LayoutManager;
+    PGParser: any;
   }
 }
+window.PGParser = PGParser
 
 // Set up the cytoscape instance
 var [cy, ur] = setupCytoscape("cy");
@@ -82,7 +84,7 @@ setupNodeEvents(cy, ur, layoutManager);
 const displayLabelsInput = document.getElementById("display-labels") as HTMLInputElement;
 displayLabelsInput.addEventListener("change", refreshNodeLabels);
 
-function refreshNodeLabels() {
+export function refreshNodeLabels() {
   // Label means two things in this function: node.data.label is the name of the node, and node.style.label is the text that is displayed on the node, which also incudes the priority or the label from trace if needed.
   const displayLabels = displayLabelsInput.checked;
 
@@ -92,7 +94,7 @@ function refreshNodeLabels() {
       return ele.data("label");
     }
     let res = ele.data("priority").toString();
-    if (displayLabels) {
+    if (displayLabels && ele.data("label")) {
       res += `\n${ele.data("label")}`;
     }
     if (ele.data("traceLabel")) {
