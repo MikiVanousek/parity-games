@@ -44,7 +44,15 @@ const fileInput = document.getElementById("fileInput");
 var pgManager = new TraceManager(cy);
 fileInput.addEventListener("change", (e) => {
   console.log("fileInput changed");
+
+  const target = e.target as HTMLInputElement;
   pgManager.handleTraceFileSelect(e);
+
+  // Reset the file input value
+  if (target && target.value) {
+    target.value = '';
+  }
+  
 });
 window.traceManager = pgManager;
 
