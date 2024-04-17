@@ -14,13 +14,18 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
   },
   module: {
-    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }],
+    rules: [
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+  ],
   },
   plugins: [
     new CopyPlugin({
       patterns: [
         { from: "src/*.html", to: "[name][ext]" },
-        { from: "src/**/*.css", to: "[name][ext]" },
       ],
     }),
     new webpack.ProvidePlugin({
