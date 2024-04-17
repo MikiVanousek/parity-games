@@ -49,8 +49,6 @@ export class TraceManager {
     this.listElement = document.getElementById("colorLegend");
     this.listElement.parentElement.hidden = true;
     this.controlElement = document.getElementById("traceControls");
-    this.controlElement.hidden = true;
-    this.controlElement.style.display = "none";
 
     this.playStopButton = document.getElementById("playAction");
     this.playStopIcon = document.getElementById("playAction").children[0];

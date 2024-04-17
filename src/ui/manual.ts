@@ -1,6 +1,8 @@
+import './manual.css';
 import {
   all_keymaps,
-} from "./keymap";
+} from "../keymap/keymap";
+
 
 export function fillManual(): void {
   const manual = document.getElementById("manualKeybinds");

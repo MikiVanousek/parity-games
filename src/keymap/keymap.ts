@@ -5,7 +5,7 @@ import {
 } from "../events/graphEvents";
 import { showToast } from "../ui/toast";
 import { KeyMap, KeyMapping } from "./keymapTypes";
-import { closeManual, isManualOpen, toggleManual } from "./manual";
+import { closeManual, isManualOpen, toggleManual } from "../ui/manual";
 
 export const otherMappings = new KeyMap("Other mappings");
 otherMappings.push(

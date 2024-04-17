@@ -44,8 +44,8 @@ export function loadState() {
   console.log('layoutName', layoutName)
   setPGName(pgName);
 
-
-  window.cy.json({ elements }); // Restore elements
+  window.cy.elements().remove(); // Clear the current graph
+  window.cy.add(elements); // Add the new elements
   if (trace) {
     const t = new Trace((trace));
     window.traceManager.setTrace(t);

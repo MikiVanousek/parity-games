@@ -5,7 +5,7 @@ import { TraceManager } from "./io/TraceManager";
 import { setupCytoscape } from "./cytoscape/cytoscapeSetup";
 import { setupKeyboardEvents } from "./events/keyboardEvents";
 import { setupNodeEvents } from "./events/nodeEvents";
-import { fillManual as setupManual } from "./keymap/manual";
+import { fillManual as setupManual } from "./ui/manual";
 import { loadState, saveState } from "./io/autosave";
 import "./ui/pgNameEditing";
 import { setupPGNameEditing } from "./ui/pgNameEditing";
@@ -44,13 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
   setupImportExportUI();
   setupOtherUI();
 
-  loadState(); // Load saved state
   window.cy.fit(cy.elements(), 50);
 
-
-
-
-  // reset view button. so when this button is clicked, the graph will be reset to the original view and have the graph centered
-
+  loadState(); // Load saved state
   setInterval(saveState, 500);
 });
