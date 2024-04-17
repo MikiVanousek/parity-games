@@ -1,25 +1,13 @@
 import globals from "globals";
+import eslint from '@eslint/js';
 import tseslint from "typescript-eslint";
 import html from "@html-eslint/eslint-plugin";
 import parser from "@html-eslint/parser";
 
-import path from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-import pluginJs from "@eslint/js";
-
-// mimic CommonJS variables -- not needed if using CommonJS
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-// const compat = new FlatCompat({baseDirectory: __dirname, recommendedConfig: pluginJs.configs.recommended});
-
-export default [
-
+export default tseslint.config(
   html.configs["flat/recommended"],
-  { files: ["**/*.js"], languageOptions: { sourceType: "script" } },
   { languageOptions: { globals: globals.browser } },
   // ...compat.extends("standard-with-typescript"),
-  ...tseslint.configs.recommended,
   {
     files: ["**/*.html"],
     plugins: {
@@ -32,4 +20,14 @@ export default [
       "@html-eslint/indent": ["error", 2],
     },
   },
-];
+  {
+    files: ['**/*.ts'],
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+    ],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+);

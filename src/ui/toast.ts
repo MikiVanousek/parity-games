@@ -1,5 +1,7 @@
 // Taken from https://github.com/amolikvivian/ts-toast
 // License is missing, but intent clear
+import "./toast.css";
+
 type ToastOptions = {
   message: string;
   title?: string;

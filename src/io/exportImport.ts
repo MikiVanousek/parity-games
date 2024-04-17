@@ -4,7 +4,7 @@ import { showToast } from "../ui/toast";
 import { getPGName, setPGName } from "../ui/PGNameEditing";
 
 export function handleExportGame(cy, name = getPGName()) {
-  const cyState = cy.elements().jsons();
+  const cyState = window.cy.elements().jsons();
 
   const exportData = {
     cytoscapeState: cyState,
@@ -36,11 +36,9 @@ export function handleImportGame(event, cy, ur) {
         const fileContent = loadEvent.target.result as string;
         const importedData = JSON.parse(fileContent);
 
-        cy.elements().remove();
-        cy.add(importedData.cytoscapeState);
-        cy.fit(cy.elements(), 50);
-
-        var fileName = file.name.replace(/\.[^/.]+$/, "");
+        window.cy.elements().remove();
+        window.cy.add(importedData.cytoscapeState);
+        window.cy.fit(window.cy.elements(), 50);
         ur.reset();
       } catch (e) {
         console.error("Error loading game:", e);
@@ -57,7 +55,7 @@ export function handleImportGame(event, cy, ur) {
 }
 
 export function exportAsPng(cy, name = getPGName()) {
-  const png = cy.png({ full: true });
+  const png = window.cy.png({ full: true });
   const a = document.createElement("a");
   a.href = png;
   a.download = name + ".png";
@@ -112,7 +110,42 @@ export function saveOinkFile(cy, name = getPGName()) {
 
 export function resetBoardVisuals(cy, pg, layoutManager) {
   const elements = PGParser.pgToCy(pg);
-  cy.elements().remove(); // Clear the current graph
-  cy.add(elements); // Add the new elements
+  window.cy.elements().remove(); // Clear the current graph
+  window.cy.add(elements); // Add the new elements
   layoutManager.runOnce();
+}
+
+export function setupImportExportUI() {
+
+  (window as any).handleExportGame = function () {
+    handleExportGame(window.cy);
+  };
+
+  (window as any).handleImportGame = function (event) {
+    handleImportGame(event, window.cy, window.ur);
+  };
+
+  (window as any).handleOinkFileSelect = function (event) {
+    handleOinkFileSelect(event, window.cy, window.layoutManager, window.ur);
+  };
+  (window as any).saveOinkFile = function () {
+    saveOinkFile(window.cy);
+  };
+
+  (window as any).exportAsPng = function () {
+    exportAsPng(window.cy);
+  };
+
+  (window as any).changeLayout = function (e: any) {
+    window.layoutManager.changeLayout(e.target.value);
+    // decheck the layout on layout-on-drag
+    const toggle = document.getElementById("layout-on-drag") as HTMLInputElement;
+    toggle.checked = false;
+    window.layoutManager.setRunOnDrag(false);
+  };
+
+  (window as any).runLayout = function () {
+    window.ur.do("runLayout", { nodes: window.cy.nodes() });
+  };
+
 }

@@ -1,13 +1,9 @@
 import { showToast } from "../ui/toast";
 import { assert } from "../assert";
 import { Trace } from "../board/Trace";
-import { ParityGame } from "../board/ParityGame";
-import { examplePg, exampleTrace } from "../board/ExamplePG";
-import { deepEquals } from "./deepEquals";
 import { PGParser } from "../board/PGParser";
 import { resetBoardVisuals } from "./exportImport";
-import { colaLayout } from "../layout/colaLayout";
-import { refreshNodeLabels } from "..";
+import { refreshNodeLabels } from "../ui/other";
 
 export class TraceManager {
   cy: any;
@@ -67,6 +63,22 @@ export class TraceManager {
     this.stepSlider.addEventListener("input", (e) => {
       this.setStep(parseInt(this.stepSlider.value));
     });
+
+    document
+      .getElementById("nextStepAction")
+      .addEventListener("click", this.nextStep.bind(this));
+    document
+      .getElementById("lastStepAction")
+      .addEventListener("click", this.prevStep.bind(this));
+    document
+      .getElementById("skipToBeginningAction")
+      .addEventListener("click", this.goToFirstStep.bind(this));
+    document
+      .getElementById("skipToEndAction")
+      .addEventListener("click", this.goToLastStep.bind(this));
+    document
+      .getElementById("closeButton")
+      .addEventListener("click", this.removeTrace.bind(this));
   }
 
   handleTraceFileSelect(event) {
@@ -163,13 +175,13 @@ export class TraceManager {
 
     traceStep.node_sets.forEach((node_set, index) => {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       this.addListItem(this.listElement, node_set.name, color);
     });
 
     traceStep.link_sets.forEach((link_set, index) => {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       this.addListItem(this.listElement, link_set.name, color);
     });
     for (const n of this.cy.nodes()) {
@@ -195,18 +207,18 @@ export class TraceManager {
   refreshColor() {
     assert(this.trace !== undefined);
     this.resetColor();
-    for (let [i, node_set] of this.trace.steps[this.step].node_sets.entries()) {
+    for (const [i, node_set] of this.trace.steps[this.step].node_sets.entries()) {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(node_set.name)) {
         for (const nid of node_set.node_ids) {
           this.colorNode(nid, color);
         }
       }
     }
-    for (let [i, link_set] of this.trace.steps[this.step].link_sets.entries()) {
+    for (const [i, link_set] of this.trace.steps[this.step].link_sets.entries()) {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(link_set.name)) {
         for (const [source, target] of link_set.link_source_target_ids) {
           this.colorLink(source, target, color);
@@ -248,10 +260,10 @@ export class TraceManager {
   }
 
   resetColor() {
-    for (let n of this.cy.$("node")) {
+    for (const n of this.cy.$("node")) {
       delete n.data().background_color;
     }
-    for (let l of this.cy.$("edge")) {
+    for (const l of this.cy.$("edge")) {
       delete l.data().line_color;
     }
     this.cy.style().update();
