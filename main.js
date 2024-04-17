@@ -58954,10 +58954,19 @@ exports.setupNodeEvents = setupNodeEvents;
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.refreshNodeLabels = void 0;
 const layoutManager_1 = __webpack_require__(/*! ./layout/layoutManager */ "./src/layout/layoutManager.ts");
@@ -59070,34 +59079,36 @@ function refreshNodeLabels() {
 }
 exports.refreshNodeLabels = refreshNodeLabels;
 document.addEventListener("DOMContentLoaded", function () {
-    (0, autosave_1.loadState)(); // Load saved state
-    refreshNodeLabels();
-    window.cy.fit(cy.elements(), 50);
-    (0, PGNameEditing_1.setupPGNameEditing)();
-    document
-        .getElementById("nextStepAction")
-        .addEventListener("click", pgManager.nextStep.bind(pgManager));
-    document
-        .getElementById("lastStepAction")
-        .addEventListener("click", pgManager.prevStep.bind(pgManager));
-    document
-        .getElementById("skipToBeginningAction")
-        .addEventListener("click", pgManager.goToFirstStep.bind(pgManager));
-    document
-        .getElementById("skipToEndAction")
-        .addEventListener("click", pgManager.goToLastStep.bind(pgManager));
-    document
-        .getElementById("closeButton")
-        .addEventListener("click", pgManager.removeTrace.bind(pgManager));
-    document.getElementById("export-oink-btn").addEventListener("click", (e) => {
-        PGParser_1.PGParser.exportOinkFormat(PGParser_1.PGParser.cyToPg(cy));
+    return __awaiter(this, void 0, void 0, function* () {
+        yield (0, autosave_1.loadState)(); // Load saved state
+        refreshNodeLabels();
+        window.cy.fit(cy.elements(), 50);
+        (0, PGNameEditing_1.setupPGNameEditing)();
+        document
+            .getElementById("nextStepAction")
+            .addEventListener("click", pgManager.nextStep.bind(pgManager));
+        document
+            .getElementById("lastStepAction")
+            .addEventListener("click", pgManager.prevStep.bind(pgManager));
+        document
+            .getElementById("skipToBeginningAction")
+            .addEventListener("click", pgManager.goToFirstStep.bind(pgManager));
+        document
+            .getElementById("skipToEndAction")
+            .addEventListener("click", pgManager.goToLastStep.bind(pgManager));
+        document
+            .getElementById("closeButton")
+            .addEventListener("click", pgManager.removeTrace.bind(pgManager));
+        document.getElementById("export-oink-btn").addEventListener("click", (e) => {
+            PGParser_1.PGParser.exportOinkFormat(PGParser_1.PGParser.cyToPg(cy));
+        });
+        // reset view button. so when this button is clicked, the graph will be reset to the original view and have the graph centered
+        document.getElementById("resetView").addEventListener("click", (e) => {
+            cy.reset();
+            cy.centre();
+        });
+        setInterval(autosave_1.saveState, 500);
     });
-    // reset view button. so when this button is clicked, the graph will be reset to the original view and have the graph centered
-    document.getElementById("resetView").addEventListener("click", (e) => {
-        cy.reset();
-        cy.centre();
-    });
-    setInterval(autosave_1.saveState, 500);
 });
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
@@ -59451,22 +59462,34 @@ exports.TraceManager = TraceManager;
 /*!****************************!*\
   !*** ./src/io/autosave.ts ***!
   \****************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.loadState = exports.saveState = void 0;
 const ExamplePG_1 = __webpack_require__(/*! ../board/ExamplePG */ "./src/board/ExamplePG.ts");
 const Trace_1 = __webpack_require__(/*! ../board/Trace */ "./src/board/Trace.ts");
 const PGNameEditing_1 = __webpack_require__(/*! ../ui/PGNameEditing */ "./src/ui/PGNameEditing.ts");
 const exportImport_1 = __webpack_require__(/*! ./exportImport */ "./src/io/exportImport.ts");
+const idb_keyval_1 = __webpack_require__(/*! idb-keyval */ "./node_modules/idb-keyval/dist/index.js");
 function saveState() {
     if (!window.cy)
         return;
     const elements = window.cy.json().elements;
     const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
-    const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
+    const currentStepIndex = window.traceManager
+        ? window.traceManager.getStep()
+        : 0;
     const trace = window.traceManager ? window.traceManager.getTrace() : [];
     const pgName = (0, PGNameEditing_1.getPGName)();
     const zoom = window.cy.zoom();
@@ -59480,30 +59503,36 @@ function saveState() {
         pan,
         pgName,
     };
-    localStorage.setItem('graphState', JSON.stringify(state));
+    localStorage.setItem("graphState", JSON.stringify(state));
+    (0, idb_keyval_1.set)("graphState", JSON.stringify(state));
 }
 exports.saveState = saveState;
 function loadState() {
-    const savedState = localStorage.getItem('graphState');
-    if (!savedState) {
-        (0, exportImport_1.resetBoardVisuals)(window.cy, ExamplePG_1.examplePg, window.layoutManager);
-        return;
-    }
-    const { elements, layoutOptions, currentStepIndex, trace, zoom, pan, pgName } = JSON.parse(savedState);
-    window.cy.zoom(zoom);
-    window.cy.pan(pan);
-    // set the name of the parity game in the window object
-    (0, PGNameEditing_1.setPGName)(pgName);
-    if (window.cy) {
-        window.cy.json({ elements }); // Restore elements
-        if (trace) {
-            let t = new Trace_1.Trace((trace));
-            window.traceManager.setTrace(t);
+    return __awaiter(this, void 0, void 0, function* () {
+        let savedState = localStorage.getItem("graphState");
+        if (!savedState) {
+            savedState = yield (0, idb_keyval_1.get)("graphState");
         }
-        if (window.traceManager && currentStepIndex !== undefined) {
-            window.traceManager.setStep(currentStepIndex); // Restore the current step
+        if (!savedState) {
+            (0, exportImport_1.resetBoardVisuals)(window.cy, ExamplePG_1.examplePg, window.layoutManager);
+            return;
         }
-    }
+        const { elements, layoutOptions, currentStepIndex, trace, zoom, pan, pgName, } = JSON.parse(savedState);
+        window.cy.zoom(zoom);
+        window.cy.pan(pan);
+        // set the name of the parity game in the window object
+        (0, PGNameEditing_1.setPGName)(pgName);
+        if (window.cy) {
+            window.cy.json({ elements }); // Restore elements
+            if (trace) {
+                let t = new Trace_1.Trace(trace);
+                window.traceManager.setTrace(t);
+            }
+            if (window.traceManager && currentStepIndex !== undefined) {
+                window.traceManager.setStep(currentStepIndex); // Restore the current step
+            }
+        }
+    });
 }
 exports.loadState = loadState;
 
@@ -68333,6 +68362,217 @@ module.exports = function (cy, anchorPointUtilities, params) {
 };
 
 
+/***/ }),
+
+/***/ "./node_modules/idb-keyval/dist/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/idb-keyval/dist/index.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   clear: () => (/* binding */ clear),
+/* harmony export */   createStore: () => (/* binding */ createStore),
+/* harmony export */   del: () => (/* binding */ del),
+/* harmony export */   delMany: () => (/* binding */ delMany),
+/* harmony export */   entries: () => (/* binding */ entries),
+/* harmony export */   get: () => (/* binding */ get),
+/* harmony export */   getMany: () => (/* binding */ getMany),
+/* harmony export */   keys: () => (/* binding */ keys),
+/* harmony export */   promisifyRequest: () => (/* binding */ promisifyRequest),
+/* harmony export */   set: () => (/* binding */ set),
+/* harmony export */   setMany: () => (/* binding */ setMany),
+/* harmony export */   update: () => (/* binding */ update),
+/* harmony export */   values: () => (/* binding */ values)
+/* harmony export */ });
+function promisifyRequest(request) {
+    return new Promise((resolve, reject) => {
+        // @ts-ignore - file size hacks
+        request.oncomplete = request.onsuccess = () => resolve(request.result);
+        // @ts-ignore - file size hacks
+        request.onabort = request.onerror = () => reject(request.error);
+    });
+}
+function createStore(dbName, storeName) {
+    const request = indexedDB.open(dbName);
+    request.onupgradeneeded = () => request.result.createObjectStore(storeName);
+    const dbp = promisifyRequest(request);
+    return (txMode, callback) => dbp.then((db) => callback(db.transaction(storeName, txMode).objectStore(storeName)));
+}
+let defaultGetStoreFunc;
+function defaultGetStore() {
+    if (!defaultGetStoreFunc) {
+        defaultGetStoreFunc = createStore('keyval-store', 'keyval');
+    }
+    return defaultGetStoreFunc;
+}
+/**
+ * Get a value by its key.
+ *
+ * @param key
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function get(key, customStore = defaultGetStore()) {
+    return customStore('readonly', (store) => promisifyRequest(store.get(key)));
+}
+/**
+ * Set a value with a key.
+ *
+ * @param key
+ * @param value
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function set(key, value, customStore = defaultGetStore()) {
+    return customStore('readwrite', (store) => {
+        store.put(value, key);
+        return promisifyRequest(store.transaction);
+    });
+}
+/**
+ * Set multiple values at once. This is faster than calling set() multiple times.
+ * It's also atomic – if one of the pairs can't be added, none will be added.
+ *
+ * @param entries Array of entries, where each entry is an array of `[key, value]`.
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function setMany(entries, customStore = defaultGetStore()) {
+    return customStore('readwrite', (store) => {
+        entries.forEach((entry) => store.put(entry[1], entry[0]));
+        return promisifyRequest(store.transaction);
+    });
+}
+/**
+ * Get multiple values by their keys
+ *
+ * @param keys
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function getMany(keys, customStore = defaultGetStore()) {
+    return customStore('readonly', (store) => Promise.all(keys.map((key) => promisifyRequest(store.get(key)))));
+}
+/**
+ * Update a value. This lets you see the old value and update it as an atomic operation.
+ *
+ * @param key
+ * @param updater A callback that takes the old value and returns a new value.
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function update(key, updater, customStore = defaultGetStore()) {
+    return customStore('readwrite', (store) => 
+    // Need to create the promise manually.
+    // If I try to chain promises, the transaction closes in browsers
+    // that use a promise polyfill (IE10/11).
+    new Promise((resolve, reject) => {
+        store.get(key).onsuccess = function () {
+            try {
+                store.put(updater(this.result), key);
+                resolve(promisifyRequest(store.transaction));
+            }
+            catch (err) {
+                reject(err);
+            }
+        };
+    }));
+}
+/**
+ * Delete a particular key from the store.
+ *
+ * @param key
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function del(key, customStore = defaultGetStore()) {
+    return customStore('readwrite', (store) => {
+        store.delete(key);
+        return promisifyRequest(store.transaction);
+    });
+}
+/**
+ * Delete multiple keys at once.
+ *
+ * @param keys List of keys to delete.
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function delMany(keys, customStore = defaultGetStore()) {
+    return customStore('readwrite', (store) => {
+        keys.forEach((key) => store.delete(key));
+        return promisifyRequest(store.transaction);
+    });
+}
+/**
+ * Clear all values in the store.
+ *
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function clear(customStore = defaultGetStore()) {
+    return customStore('readwrite', (store) => {
+        store.clear();
+        return promisifyRequest(store.transaction);
+    });
+}
+function eachCursor(store, callback) {
+    store.openCursor().onsuccess = function () {
+        if (!this.result)
+            return;
+        callback(this.result);
+        this.result.continue();
+    };
+    return promisifyRequest(store.transaction);
+}
+/**
+ * Get all keys in the store.
+ *
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function keys(customStore = defaultGetStore()) {
+    return customStore('readonly', (store) => {
+        // Fast path for modern browsers
+        if (store.getAllKeys) {
+            return promisifyRequest(store.getAllKeys());
+        }
+        const items = [];
+        return eachCursor(store, (cursor) => items.push(cursor.key)).then(() => items);
+    });
+}
+/**
+ * Get all values in the store.
+ *
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function values(customStore = defaultGetStore()) {
+    return customStore('readonly', (store) => {
+        // Fast path for modern browsers
+        if (store.getAll) {
+            return promisifyRequest(store.getAll());
+        }
+        const items = [];
+        return eachCursor(store, (cursor) => items.push(cursor.value)).then(() => items);
+    });
+}
+/**
+ * Get all entries in the store. Each entry is an array of `[key, value]`.
+ *
+ * @param customStore Method to get a custom store. Use with caution (see the docs).
+ */
+function entries(customStore = defaultGetStore()) {
+    return customStore('readonly', (store) => {
+        // Fast path for modern browsers
+        // (although, hopefully we'll get a simpler path some day)
+        if (store.getAll && store.getAllKeys) {
+            return Promise.all([
+                promisifyRequest(store.getAllKeys()),
+                promisifyRequest(store.getAll()),
+            ]).then(([keys, values]) => keys.map((key, i) => [key, values[i]]));
+        }
+        const items = [];
+        return customStore('readonly', (store) => eachCursor(store, (cursor) => items.push([cursor.key, cursor.value])).then(() => items));
+    });
+}
+
+
+
+
 /***/ })
 
 /******/ 	});
@@ -68362,6 +68602,18 @@ module.exports = function (cy, anchorPointUtilities, params) {
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
@@ -68372,6 +68624,22 @@ module.exports = function (cy, anchorPointUtilities, params) {
 /******/ 				if (typeof window === 'object') return window;
 /******/ 			}
 /******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
 /******/ 	})();
 /******/ 	
 /************************************************************************/
