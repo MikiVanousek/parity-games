@@ -146,7 +146,9 @@ export class TraceManager {
     this.resetColor();
 
     for (const n of this.cy.nodes()) {
-      n.data("traceLabel", "");
+      if (!n.isParent()) {
+        n.data("traceLabel", "");
+      }
     }
     refreshNodeLabels();
   }
@@ -171,6 +173,9 @@ export class TraceManager {
       this.addListItem(this.listElement, link_set.name, color);
     });
     for (const n of this.cy.nodes()) {
+      if (n.isParent()) {
+        continue;
+      }
       const traceLabel = traceStep.node_labels[parseInt(n.id())];
       if (traceLabel) {
         n.data("traceLabel", traceStep.node_labels[parseInt(n.id())]);

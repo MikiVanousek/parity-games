@@ -141,7 +141,7 @@ pgEditingMappings.push(
     ["g"],
     "Group selected nodes - lock their relative positions and prevent them from being moved by automatic layout",
     ({ cy, ur }) => {
-      var selectedNodes = cy.$("node:selected");
+      const selectedNodes = cy.$("node:selected");
       let inGroup = false;
       if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
         ur.do("ungroup", { groupId: selectedNodes[0].id() });
