@@ -1,3 +1,5 @@
+import "./index.css"
+
 import LayoutManager from "./layout/layoutManager";
 import { TraceManager } from "./io/TraceManager";
 import { setupCytoscape } from "./cytoscape/cytoscapeSetup";

@@ -1,149 +1,170 @@
 <!doctype html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Graph Visualizer</title>
-  <script src="https://kit.fontawesome.com/a4ee9b505a.js" crossorigin="anonymous"></script>
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Visualizer</title>
+    <script src="https://kit.fontawesome.com/a4ee9b505a.js" crossorigin="anonymous"></script>
+  </head>
 
-<body>
-  <div id="cy"></div>
-  <div id="custom-context-menu" class="custom-context-menu">
-    <ul>
-      <li id="edit-priority">Edit Priority</li>
-    </ul>
-  </div>
-  <div class="card navbar">
-    <div class="pgname" id="pgnameDisplayGroup">
-      <span id="pgnameDisplaySpan"></span>
-      <i class="fa fa-pencil" id="pgnameEdit"></i>
+  <body>
+    <div id="cy"></div>
+    <div id="custom-context-menu" class="custom-context-menu">
+      <ul>
+        <li id="edit-priority">Edit Priority</li>
+      </ul>
     </div>
-    <div class="pgname" id="pgnameEditGroup">
-      <span id="editableContainer">
-        <textarea type="text" id="pgnameEditInput" class="pgname" aria-hidden="true"></textarea>
-        <div class="pgname-edit-icons">
-          <i class="fa fa-xmark" id="cancelPgnameEdit"></i>
-          <i class="fa fa-pen-to-square" id="confirmPgnameEdit"></i>
-        </div>
-      </span>
-    </div>
-    <div class="navbar-group">
-      <button id="resetView"><i class="fa fa-window-restore icon" aria-hidden="true" title="Reset view"
-          style="cursor: pointer"></i>Reset view</button>
-    </div>
-    <div class="navbar-group">
-      <div class="row">
-        <input type="file" accept=".pg" id="oink-file-input" hidden onchange="handleOinkFileSelect(event)" />
-        <label class="button" for="oink-file-input"><span class="icon"><i
-              class="fa-solid fa-upload"></span></i>Import</label>
-        <button class="button" id="export-oink-btn" onclick="saveOinkFile(event)"> <span class="icon"><i
-              class="fa-solid fa-download"></span></i>Export
+    <div class="card navbar">
+      <div class="pgname" id="pgnameDisplayGroup">
+        <span id="pgnameDisplaySpan"></span>
+        <i class="fa fa-pencil" id="pgnameEdit"></i>
+      </div>
+      <div class="pgname" id="pgnameEditGroup">
+        <span id="editableContainer">
+          <textarea type="text" id="pgnameEditInput" class="pgname" aria-hidden="true"></textarea>
+          <div class="pgname-edit-icons">
+            <i class="fa fa-xmark" id="cancelPgnameEdit"></i>
+            <i class="fa fa-pen-to-square" id="confirmPgnameEdit"></i>
+          </div>
+        </span>
+      </div>
+      <div class="navbar-group">
+        <button id="resetView">
+          <i class="fa fa-window-restore icon" aria-hidden="true" title="Reset view" style="cursor: pointer"></i>Reset view
         </button>
       </div>
-      <div class="row">
-        <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".cypg_json" />
-        <label class="button" for="board-file-input"><span class="icon"><i
-              class="fa-solid fa-file-import"></i></span>Load</label>
-        <button onclick="handleExportGame(event)"><span class="icon"><i
-              class="fa-solid fa-file-export"></i></span>Save</button>
+      <div class="navbar-group">
+        <div class="row">
+          <input type="file" accept=".pg" id="oink-file-input" hidden onchange="handleOinkFileSelect(event)">
+          <label class="button" for="oink-file-input">
+            <i class="icon fa-solid fa-upload"></i>
+            Import
+          </label>
+          <button class="button" id="export-oink-btn" onclick="saveOinkFile(event)">
+            <i class="icon fa-solid fa-download"></span></i>Export
+          </button>
+        </div>
+        <div class="row">
+          <input type="file" id="board-file-input" hidden onchange="handleImportGame(event)" accept=".cypg_json"></input>
+          <label class="button" for="board-file-input">
+            <i class="icon fa-solid fa-file-import"></i>
+            Load
+          </label>
+          <button onclick="handleExportGame(event)">
+            <i class="fa-solid fa-file-export"></i>
+            Save
+          </button>
+        </div>
+        <button id="export-png-button" onclick="exportAsPng()">
+          <i class="icon fa-solid fa-image"></i>
+          Export as PNG
+        </button>
       </div>
-      <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i
-            class="fa-solid fa-image"></i></span>Export as PNG</button>
+
+      <div class="navbar-group">
+        <div class="navbar-group-heading">Layouts Setting</div>
+        <div class="row">
+          <select class="button" id="layout-select" onchange="changeLayout(event)">
+          </select>
+          <button id="layout-run-button" onclick="runLayout()">
+            <i class="fa-solid fa-play"></i>
+          </button>
+        </div>
+        <div id="layout-on-drag-container" class="checkbox-wrapper">
+          <input id="layout-on-drag" type="checkbox" class="switch">
+          <label for="layout-on-drag">Layout on Drag</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="display-labels" type="checkbox" class="switch">
+          <label for="display-labels">Display labels</label>
+        </div>
+      </div>
+      <div class="navbar-group">
+        <div class="navbar-group-heading">Trace</div>
+        <div class="row">
+          <label for="fileInput" class="button">
+            <span class="icon">
+              <i class="fa-solid fa-file-import"></i>
+            </span>Import trace
+          </label>
+          <input type="file" id="fileInput" style="display: none;" accept=".pgtrace_json">
+        </div>
+      </div>
+      <div class="navbar-group">
+        <div class="navbar-group-heading">Algorithm Selection</div>
+        <div class="row">
+          <select class="button" id="algorithm-select">
+          </select>
+          <button class="button" id="start-algorithm-btn">Start</button>
+        </div>
+      </div>
+
     </div>
-    <div class="navbar-group">
-      <div class="navbar-group-heading">Layouts Setting</div>
-      <div class="row">
-        <select class="button" id="layout-select" onchange="changeLayout(event)">
-        </select>
-        <button id="layout-run-button" onclick="runLayout()"><i class="fa-solid fa-play"></i></button>
-      </div>
-      <div id="layout-on-drag-container" class="checkbox-wrapper">
-        <input id="layout-on-drag" type="checkbox" class="switch">
-        <label for="layout-on-drag">Layout on Drag</label>
-      </div>
-      <div class="checkbox-wrapper">
-        <input id="display-labels" type="checkbox" class="switch">
-        <label for="display-labels">Display labels</label>
-      </div>
     </div>
-    <div class="navbar-group">
-      <div class="navbar-group-heading">Trace</div>
-      <div class="row">
-        <label for="fileInput" class="button">
-          <span class="icon">
-            <i class="fa-solid fa-file-import"></i>
-          </span>Import trace
-        </label>
-        <input type="file" id="fileInput" style="display: none;" accept=".pgtrace_json" />
-      </div>
     </div>
-    <div class="navbar-group">
-      <div class="navbar-group-heading">Algorithm Selection</div>
-      <div class="row">
-        <select class="button" id="algorithm-select">
-        </select>
-        <button class="button" id="start-algorithm-btn">Start</button>
+
+    <div class="card bottom-bar" id="trace_controls">
+      <input id="traceSlider" class="trace-slider" type="range" min="0" max="0" step="1">
+      <div class="trace-play-controls">
+        <div class="cross-button-box"></div>
+        <button id="skipToBeginningAction">
+          <i class="fa-solid fa-backward-fast"></i>
+        </button>
+        <button id="lastStepAction">
+          <i class="fa-solid fa-backward-step"></i>
+        </button>
+        <div class="play-speed-container">
+          <button id="playAction">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <input class="textInput" id="speedInput" value="1.0" type="text">
+        </div>
+
+        <button id="nextStepAction">
+          <i class="fa-solid fa-forward-step"></i>
+        </button>
+        <button id="skipToEndAction">
+          <i class="fa-solid fa-forward-fast"></i>
+        </button>
+        <div class="cross-button-box">
+          <button id="closeButton" class="cross-button">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
       </div>
     </div>
 
-  </div>
-  </div>
-  </div>
-
-  <div class="card bottom-bar" id="trace_controls">
-    <input id="traceSlider" class="trace-slider" type="range" min="0" max="0" step="1">
-    <div class="trace-play-controls">
-      <div class="cross-button-box"></div>
-      <button id="skipToBeginningAction"><i class="fa-solid fa-backward-fast"></i></button>
-      <button id="lastStepAction"><i class="fa-solid fa-backward-step"></i></button>
-
-      <div class="play-speed-container">
-        <button id="playAction"><i class="fa-solid fa-play"></i></button>
-        <input class="textInput" id="speedInput" value="1.0" type="text">
-      </div>
-
-      <button id="nextStepAction"><i class="fa-solid fa-forward-step"></i></button>
-      <button id="skipToEndAction"><i class="fa-solid fa-forward-fast"></i></button>
-      <div class="cross-button-box">
-        <button id="closeButton" class="cross-button"><i class="fa fa-times"></i></button>
+    <div class="card top-left-panel">
+      <h3>Trace Sets</h3>
+      <div id="color-legend">
       </div>
     </div>
-  </div>
-
-  <div class="card top-left-panel">
-    <h3>Trace Sets</h3>
-    <div id="color-legend">
-    </div>
-  </div>
-  <div class="manual-overlay" id="manual-overlay" style="display: none">
-    <div class=" manual" id="manual">
-      <center>
+    <div class="manual-overlay" id="manual-overlay" style="display: none">
+      <div class=" manual" id="manual">
         <h1>ParityGames.io</h1>
-      </center>
-      <h2>Selecting</h2>
-      <div class="manual-txt-entry">
-        Click on a node or edge to select it. Click on the background to deselect. Hold <div class="manual-key">Shift
-        </div> to select multiple elements. You can drag selected nodes to move them.
+        <h2>Selecting</h2>
+        <div class="manual-txt-entry">
+          Click on a node or edge to select it. Click on the background to deselect. Hold <div class="manual-key">Shift
+          </div> to select multiple elements. You can drag selected nodes to move them.
+        </div>
+        <h2>Edges</h2>
+        <div class="manual-txt-entry">
+          To create an edge, select a source node (or multiple nodes) and right click on the target. Right
+          click on a selected edge to add bend point or Bezier control point.
+        </div>
+        <h2>Key Bindings</h2>
+        <div id="manual-keybinds"></div>
       </div>
-      <h2>Edges</h2>
-      <div class="manual-txt-entry">
-        To create an edge, select a source node (or multiple nodes) and right click on the target. Right
-        click on a selected edge to add bend point or Bezier control point.
-      </div>
-      <h2>Key Bindings</h2>
-      <div id="manual-keybinds"></div>
     </div>
-  </div>
 
-  <div class="manual-button" id="manual-open-button">
-    ?
-  </div>
-  <script src="main.js"></script>
+    <div class="manual-button" id="manual-open-button">
+      ?
+    </div>
+    <script src="main.js"></script>
 
-  <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="toast.css">
-</body>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="toast.css">
+  </body>
 
 </html>
