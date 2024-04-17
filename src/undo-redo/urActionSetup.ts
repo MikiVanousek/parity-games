@@ -1,3 +1,5 @@
+import { assert } from "../assert";
+
 export function setupUndoRedoActions(cy, ur, layoutManager) {
   ur.action(
     "runLayout",
@@ -75,27 +77,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
     }
   );
 
-  function renderLabelsAndPriorities(cy) {
-    const displayLabelsElement = document.getElementById(
-      "displayLabels"
-    ) as HTMLInputElement;
-    const showLabels = displayLabelsElement.checked; // Directly get the checked state
 
-    cy.nodes()
-      .filter((ele: any) => !ele.isParent())
-      .style({
-        label: showLabels
-          ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-          : "",
-        "text-wrap": "wrap",
-      });
-    cy.nodes()
-      .filter((ele: any) => ele.isParent())
-      .style({
-        label: showLabels ? (ele: any) => `${ele.data("label")}` : "",
-        "text-wrap": "wrap",
-      });
-  }
   ur.action(
     "editLabels",
     (args) => {
@@ -109,7 +91,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
       nodes.forEach(function (n) {
         n.data("label", label);
       });
-      renderLabelsAndPriorities(cy);
+      renderLabelsAndPriorities();
       return { nodes: nodes, oldLabels: oldLabels, cy: cy };
     },
     (args) => {
@@ -122,7 +104,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
         cy: cy,
       };
       oldLabels.forEach((item) => item.node.data("label", item.label));
-      renderLabelsAndPriorities(cy);
+      renderLabelsAndPriorities();
       return newArgs;
     }
   );
@@ -171,4 +153,35 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
       return { groupId: layoutManager.groupNodes(args.nodes) };
     }
   );
+}
+
+const displayLabelsInput = document.getElementById("displayLabels") as HTMLInputElement;
+displayLabelsInput.addEventListener("change", renderLabelsAndPriorities);
+export function renderLabelsAndPriorities() {
+  const displayNodeLabels = displayLabelsInput.checked;
+  function compositeLabel(ele): string {
+    // Parent nodes are the groups of nodes created with "g".
+    assert(!ele.isParent());
+    let res = ele.data("priority").toString();
+    if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) {
+      // Skip line if there is trace label, to make it clear the label is trace label
+      res += `\n${ele.data("label")}`;
+    }
+    if (ele.data("traceLabel")) {
+      res += `\n${ele.data("traceLabel")}`;
+    }
+    return res;
+  }
+
+  window.cy.nodes()
+    .filter((ele: any) => !ele.isParent())
+    .style({
+      label: compositeLabel,
+    });
+
+  window.cy.nodes()
+    .filter((ele: any) => ele.isParent())
+    .style({
+      label: displayLabelsInput ? (ele: any) => `${ele.data("label")}` : "",
+    });
 }

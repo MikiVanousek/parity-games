@@ -1,6 +1,7 @@
 import { examplePg } from "../board/exampleParityGame";
 import { Trace } from "../board/Trace";
 import { getPGName, setPGName } from "../ui/pgNameEditing";
+import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 import { resetBoardVisuals } from "./exportImport";
 
 export function saveState() {
@@ -44,15 +45,14 @@ export function loadState() {
   setPGName(pgName);
 
 
-  if (window.cy) {
-    window.cy.json({ elements }); // Restore elements
-    if (trace) {
-      const t = new Trace((trace));
-      window.traceManager.setTrace(t);
-    }
-
-    if (window.traceManager && currentStepIndex !== undefined) {
-      window.traceManager.setStep(currentStepIndex); // Restore the current step
-    }
+  window.cy.json({ elements }); // Restore elements
+  if (trace) {
+    const t = new Trace((trace));
+    window.traceManager.setTrace(t);
   }
+
+  if (window.traceManager && currentStepIndex !== undefined) {
+    window.traceManager.setStep(currentStepIndex); // Restore the current step
+  }
+  renderLabelsAndPriorities();
 }

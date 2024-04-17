@@ -4,15 +4,15 @@ import LayoutManager from "./layout/layoutManager";
 import { TraceManager } from "./io/TraceManager";
 import { setupCytoscape } from "./cytoscape/cytoscapeSetup";
 import { setupKeyboardEvents } from "./events/keyboardEvents";
-import { setupUndoRedoActions } from "./undo-redo/urActionSetup";
+import { renderLabelsAndPriorities, setupUndoRedoActions } from "./undo-redo/urActionSetup";
 import { setupNodeEvents } from "./events/nodeEvents";
 import { fillManual as setupManual } from "./keymap/manual";
 import { loadState, saveState } from "./io/autosave";
 import "./ui/pgNameEditing";
 import { setupPGNameEditing } from "./ui/pgNameEditing";
 import { setupImportExportUI } from "./io/exportImport";
-import { refreshNodeLabels, setupOtherUI } from "./ui/other";
 import { setupAlgorithmSelect } from "./ui/algorithmSelect";
+import { setupOtherUI } from "./ui/other";
 
 declare global {
   interface Window {
@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   setupImportExportUI();
   setupOtherUI();
-  refreshNodeLabels();
 
   loadState(); // Load saved state
   window.cy.fit(cy.elements(), 50);

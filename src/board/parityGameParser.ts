@@ -19,16 +19,16 @@ export function importOinkFormat(file_content: string): ParityGame {
       continue;
     }
     const components = l.split(" "); // i-1 to also remove the spacebefore
-    let node_label;
+    let nodeLabel;
     if (components.length > 4) {
       // There is a label. If the label contains space, there will be more than 5 components.
       const i = l.indexOf('"');
       const j = l.lastIndexOf('"');
       assert(l[j + 1] == ";");
-      node_label = l.slice(i + 1, j);
+      nodeLabel = l.slice(i + 1, j);
     } else {
       assert(components.length == 4);
-      node_label = "";
+      nodeLabel = "";
     }
 
     const id = parseInt(components[0]);
@@ -44,7 +44,7 @@ export function importOinkFormat(file_content: string): ParityGame {
       arc_id_pairs.push([id, t]);
     }
 
-    const n = Node.new(id, priority, player, node_label);
+    const n = Node.new(id, priority, player, nodeLabel);
     pg.addNode(n);
   }
   for (const [s, t] of arc_id_pairs) {

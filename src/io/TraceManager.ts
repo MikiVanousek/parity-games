@@ -2,8 +2,8 @@ import { showToast } from "../ui/toast";
 import { assert } from "../assert";
 import { Trace } from "../board/Trace";
 import { resetBoardVisuals } from "./exportImport";
-import { refreshNodeLabels } from "../ui/other";
 import { cyToPg } from "../board/parityGameParser";
+import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 
 export class TraceManager {
   cy: any;
@@ -177,7 +177,7 @@ export class TraceManager {
         n.data("traceLabel", "");
       }
     }
-    refreshNodeLabels();
+    renderLabelsAndPriorities();
   }
 
   setStep(i) {
@@ -210,8 +210,7 @@ export class TraceManager {
         n.data("traceLabel", "");
       }
     }
-    refreshNodeLabels();
-
+    renderLabelsAndPriorities();
     this.refreshColor();
   }
 
