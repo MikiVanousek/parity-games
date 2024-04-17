@@ -8,7 +8,8 @@
   "scripts": {
     "test": "jest",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "start": "webpack serve --open"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
@@ -29,7 +30,8 @@
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.6.0",
     "webpack": "^5.90.2",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",
