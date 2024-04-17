@@ -134,9 +134,9 @@ pgEditingMappings.push(
     if (input !== null) {
       const priority = parseInt(input);
       if (!isNaN(priority)) {
-        ur.do("changePriority", {
+        ur.do("editPriority", {
           nodes: selectedNodes,
-          value: priority,
+          priority: priority,
         });
         return
       }

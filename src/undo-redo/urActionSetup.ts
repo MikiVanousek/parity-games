@@ -65,6 +65,7 @@ export function setupUndoRedoActions() {
       nodes.forEach(function (n) {
         n.data("priority", priority);
       });
+      renderLabelsAndPriorities();
       return { nodes: nodes, oldPriorities: oldPriorities };
     },
     (args) => {
@@ -77,6 +78,7 @@ export function setupUndoRedoActions() {
       oldPriorities.forEach((item) =>
         item.node.data("priority", item.priority)
       );
+      renderLabelsAndPriorities();
       return newArgs;
     }
   );
