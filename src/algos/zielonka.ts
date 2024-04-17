@@ -19,16 +19,13 @@ export class ZielonkaAlgorithm {
   }
 
   solve(): ParityGameSolution & { trace: Trace } {
-    console.log("game shit: " + this.gameGraph.nodes);
     let trace: Trace = new Trace({
       parity_game: this.gameGraph,
       algorithm_name: "Zielonka's Algorithm",
       steps: [],
     });
-    console.log(trace);
     const result = this.zielonkaRecursive(this.gameGraph, trace);
-    console.log(trace);
-    console.log(result);
+    console.log("Result: " + result);
     return { ...result, trace };
   }
 
@@ -54,7 +51,12 @@ export class ZielonkaAlgorithm {
     const A = subgraph.attractorSet(Z, alpha); // attracted to highest priority
     this.attractors.push(
       new NodeSet({
-        name: "Attractor set " + this.attractors.length,
+        name:
+          "Attractor set " +
+          this.attractors.length +
+          "  (" +
+          (alpha === Player.Even ? "Even" : "Odd") +
+          ")",
         node_ids: A.map((node) => node.id),
       })
     );
@@ -65,6 +67,18 @@ export class ZielonkaAlgorithm {
       subgraph.removeNodes(A),
       trace
     );
+    let step2 = [
+      new NodeSet({
+        name:
+          "Attractor set " +
+          this.attractors.length +
+          "  (" +
+          (alpha === Player.Even ? "Even" : "Odd") +
+          ")",
+        node_ids: A.map((node) => node.id),
+      }),
+    ];
+    trace.addStep([...step2]);
     console.log("W_even: " + W_even);
     console.log("W_odd: " + W_odd);
 
@@ -74,13 +88,18 @@ export class ZielonkaAlgorithm {
       W_opponent,
       alpha === Player.Even ? Player.Odd : Player.Even
     );
-    this.attractors.push(
+    step2.push(
       new NodeSet({
-        name: "Opponent Attractor set " + this.attractors.length,
+        name:
+          "Opponent Attractor set " +
+          this.attractors.length +
+          " (" +
+          (alpha === Player.Even ? "Odd" : "Even") +
+          ")",
         node_ids: B.map((node) => node.id),
       })
     );
-    trace.addStep([...this.attractors]);
+    trace.addStep([...step2]);
     console.log("first " + W_opponent);
     console.log("second " + B);
     console.log(this.areNodeSetsEqual(B, W_opponent));
