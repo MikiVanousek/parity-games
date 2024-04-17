@@ -57599,16 +57599,24 @@ class ZielonkaAlgorithm {
         this.gameGraph = gameGraph;
     }
     solve() {
-        console.log("game shit: " + this.gameGraph.nodes);
         let trace = new Trace_1.Trace({
             parity_game: this.gameGraph,
             algorithm_name: "Zielonka's Algorithm",
             steps: [],
         });
-        console.log(trace);
         const result = this.zielonkaRecursive(this.gameGraph, trace);
-        console.log(trace);
-        console.log(result);
+        trace.addStep([
+            new Trace_1.NodeSet({
+                name: "Winning Even",
+                node_ids: result.even.map((node) => node.id),
+            }),
+            new Trace_1.NodeSet({
+                name: "Winning Odd",
+                node_ids: result.odd.map((node) => node.id),
+            }),
+        ]);
+        console.log("Result: " + result.even);
+        console.log("Result: " + result.odd);
         return Object.assign(Object.assign({}, result), { trace });
     }
     zielonkaRecursive(subgraph, trace) {
@@ -57628,27 +57636,68 @@ class ZielonkaAlgorithm {
         ]);
         const A = subgraph.attractorSet(Z, alpha); // attracted to highest priority
         this.attractors.push(new Trace_1.NodeSet({
-            name: "Attractor set " + this.attractors.length,
+            name: "Attractor set " +
+                this.attractors.length +
+                "  (" +
+                (alpha === Node_1.Player.Even ? "Even" : "Odd") +
+                ")",
             node_ids: A.map((node) => node.id),
         }));
         trace.addStep([...this.attractors]);
         // Recursive solution on the subgame excluding the attractor set A
-        const { even: W_even, odd: W_odd } = this.zielonkaRecursive(subgraph.removeNodes(A), trace);
-        console.log("W_even: " + W_even);
-        console.log("W_odd: " + W_odd);
+        let subgraphCopy = subgraph.deepCopy();
+        console.log("Hello: " + subgraphCopy.getNodes().length);
+        let subgraphRemoved = subgraph.deepCopy().removeNodes(A);
+        console.log("Hello 2: " + subgraphRemoved.getNodes().length);
+        const { even: W_even, odd: W_odd } = this.zielonkaRecursive(subgraphRemoved, trace);
+        let step2 = [
+            new Trace_1.NodeSet({
+                name: "Attractor set " +
+                    this.attractors.length +
+                    "  (" +
+                    (alpha === Node_1.Player.Even ? "Even" : "Odd") +
+                    ")",
+                node_ids: A.map((node) => node.id),
+            }),
+            new Trace_1.NodeSet({
+                name: "Subgraph Copy" +
+                    (subgraphCopy.getNodes().length === 0
+                        ? " - EMPTY"
+                        : " - " + subgraphCopy.getNodes().length + " nodes"),
+                node_ids: subgraphCopy.getNodes().map((node) => node.id),
+            }),
+            new Trace_1.NodeSet({
+                name: "Subgraph Removed" +
+                    (subgraphRemoved.getNodes().length === 0
+                        ? " - EMPTY"
+                        : " - " + subgraphRemoved.getNodes().length + " nodes"),
+                node_ids: subgraphRemoved.getNodes().map((node) => node.id),
+            }),
+            new Trace_1.NodeSet({
+                name: "Subgraph Winner (Even" + (W_even.length === 0 ? " - EMPTY)" : ")"),
+                node_ids: W_even.map((node) => node.id),
+            }),
+            new Trace_1.NodeSet({
+                name: "Subgraph Winner (Odd" + (W_odd.length === 0 ? " - EMPTY)" : ")"),
+                node_ids: W_odd.map((node) => node.id),
+            }),
+        ];
+        trace.addStep([...step2]);
         // Compute the attractor set for the opponent in the solution of the subgame
         const W_opponent = alpha === Node_1.Player.Even ? W_odd : W_even;
-        const B = subgraph.attractorSet(W_opponent, alpha === Node_1.Player.Even ? Node_1.Player.Odd : Node_1.Player.Even);
-        this.attractors.push(new Trace_1.NodeSet({
-            name: "Opponent Attractor set " + this.attractors.length,
+        const B = subgraphCopy.attractorSet(W_opponent, alpha === Node_1.Player.Even ? Node_1.Player.Odd : Node_1.Player.Even);
+        step2.push(new Trace_1.NodeSet({
+            name: "Opponent Attractor set " +
+                this.attractors.length +
+                " (" +
+                (alpha === Node_1.Player.Even ? "Odd" : "Even") +
+                (B.length === 0 ? " - EMPTY" : "") +
+                ")",
             node_ids: B.map((node) => node.id),
         }));
-        trace.addStep([...this.attractors]);
-        console.log("first " + W_opponent);
-        console.log("second " + B);
-        console.log(this.areNodeSetsEqual(B, W_opponent));
+        trace.addStep([...step2]);
         // Check if opponent attracts any nodes
-        if (this.areNodeSetsEqual(B, W_opponent)) {
+        if (B.length === W_opponent.length) {
             // If opponent cannot attract any more nodes beyond what they already have
             if (alpha === Node_1.Player.Even) {
                 return { even: W_even.concat(A), odd: W_odd }; // A is won by alpha
@@ -57659,7 +57708,8 @@ class ZielonkaAlgorithm {
         }
         else {
             // Recompute remainder if opponent can attract nodes
-            const { even: W_even_remainder, odd: W_odd_remainder } = this.zielonkaRecursive(subgraph.removeNodes(B), trace);
+            this.attractors = [];
+            const { even: W_even_remainder, odd: W_odd_remainder } = this.zielonkaRecursive(subgraphCopy.removeNodes(B), trace);
             if (alpha === Node_1.Player.Even) {
                 return { even: W_even_remainder, odd: W_odd_remainder.concat(B) }; // B is won by alpha hat (Player.Odd)
             }
@@ -58147,11 +58197,23 @@ class ParityGame extends ts_json_object_1.JSONObject {
         });
     }
     deepCopy() {
-        const newNodes = this.nodes.map((node) => node);
-        const newLinks = this.links.map((link) => link);
+        const newNodes = this.nodes.map((node) => new Node_1.Node(node));
+        const newLinks = this.links.map((link) => new Link_1.Link(link));
         const newAdjList = new Map();
         this.adjList.forEach((targets, source) => {
-            newAdjList.set(source, new Set(targets));
+            console.log("Targets: " + targets);
+            const newSource = newNodes.find((n) => n.id === source.id);
+            const newTargets = new Set();
+            targets.forEach((target) => {
+                // Find the corresponding new target node based on the original target node's id
+                const newTarget = newNodes.find((n) => n.id === target.id);
+                if (newTarget) {
+                    newTargets.add(newTarget);
+                }
+            });
+            if (newSource) {
+                newAdjList.set(newSource, newTargets);
+            }
         });
         return new ParityGame({
             nodes: newNodes,
@@ -58171,24 +58233,24 @@ class ParityGame extends ts_json_object_1.JSONObject {
     }
     attractorSet(targetNodes, player) {
         let attractor = new Set(targetNodes);
+        let attractorIds = Array.from(attractor).map((n) => n.id);
         let isNotEmpty = true;
         while (isNotEmpty) {
             let nodesToAdd = [];
             this.nodes.forEach((node) => {
-                if (attractor.has(node)) {
+                let successors = this.adjList.get(node);
+                if (attractorIds.includes(node.id)) {
                     return;
                 }
-                let successors = this.adjList.get(node);
-                console.log("Successors: " + Array.from(successors));
                 // if the node is owned by the player and there is an edge to attractor, we can add it to the attractor
                 if (node.player === player &&
-                    Array.from(successors).some((successor) => attractor.has(successor))) {
+                    Array.from(successors).some((successor) => attractorIds.includes(successor.id))) {
                     console.log("Adding to attractor: " + node);
                     nodesToAdd.push(node);
                 }
                 // if its owned by a different player but every edge is connected to the attractor, we can add it to the attractor
                 if (node.player !== player &&
-                    Array.from(successors).every((successor) => attractor.has(successor))) {
+                    Array.from(successors).every((successor) => attractorIds.includes(successor.id))) {
                     console.log("Adding to attractor: " + node);
                     nodesToAdd.push(node);
                 }
@@ -58198,22 +58260,28 @@ class ParityGame extends ts_json_object_1.JSONObject {
             }
             else {
                 nodesToAdd.forEach((node) => attractor.add(node));
+                nodesToAdd.forEach((node) => attractorIds.push(node.id));
             }
         }
         return Array.from(attractor);
     }
     removeNodes(nodesToRemove) {
-        this.nodes = this.nodes.filter((node) => !nodesToRemove.includes(node));
-        nodesToRemove.forEach((nodeToRemove) => {
-            this.adjList.delete(nodeToRemove);
+        // Convert nodesToRemove to a Set of ids for efficient lookup
+        console.log(nodesToRemove);
+        console.log(this.nodes);
+        const idsToRemove = new Set(nodesToRemove.map((node) => node.id));
+        // remove adjacency list
+        idsToRemove.forEach((idToRemove) => {
+            this.adjList.delete(this.find_node_by_id(idToRemove));
             this.adjList.forEach((targets, source) => {
-                if (targets.has(nodeToRemove)) {
-                    targets.delete(nodeToRemove);
+                if (targets.has(this.find_node_by_id(idToRemove))) {
+                    targets.delete(this.find_node_by_id(idToRemove));
                 }
             });
         });
+        this.nodes = this.nodes.filter((node) => !idsToRemove.has(node.id));
         // Also, remove any links associated with the removed nodes
-        this.links = this.links.filter((link) => !nodesToRemove.find((node) => node.id === link.source_id || node.id === link.target_id));
+        this.links = this.links.filter((link) => !idsToRemove.has(link.source_id) && !idsToRemove.has(link.target_id));
         return this; // Allow chaining
     }
     addLinkFromNodes(source, target) {
@@ -58297,6 +58365,9 @@ class ParityGame extends ts_json_object_1.JSONObject {
             return 0;
         }
         return Math.max(...this.nodes.map((n) => n.id)) + 1;
+    }
+    getNodes() {
+        return this.nodes;
     }
     // It checks if the underlying parity game is the same. Labels and order of nodes and links do not matter, but the ids of nodes do (isomorphism is not detected).
     sameAs(other) {
@@ -59028,6 +59099,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     setInterval(autosave_1.saveState, 500);
 });
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/serviceWorker.js").then((registration) => {
+            console.log("ServiceWorker registration successful with scope: ", registration.scope);
+        }, (err) => {
+            console.log("ServiceWorker registration failed: ", err);
+        });
+    });
+}
 
 
 /***/ }),
