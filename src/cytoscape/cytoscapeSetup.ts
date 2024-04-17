@@ -25,7 +25,12 @@ export function setupCytoscape(containerId: string) {
           "text-valign": "center",
           "text-halign": "center",
           color: "white",
+          "text-wrap": "wrap",
           "font-size": "10px",
+          "text-outline-color": "black",
+          "text-outline-width": ".05em",
+          "text-outline-opacity": ".75",
+          "text-opacity": "1",
         },
       },
       {
@@ -52,7 +57,6 @@ export function setupCytoscape(containerId: string) {
         selector: "node[background_color]",
         style: {
           "background-color": "data(background_color)",
-          "text-outline-color": "data(background_color)",
         },
       },
       {

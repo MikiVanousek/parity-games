@@ -1,8 +1,7 @@
-# ParityGames.io
+# ParityGames.io: GUI for Parity Game Research and Teaching
+Do you ever draw a parity game example on a whiteboard? Never again. ParityGames.io is a GUI that will meet your needs as a parity game researcher or educator. It allows you to import, create and modify parity games and their diagrams with ease. We provide quality-of-life features like undo & redo, automatic layout and locked vertex groups. For any parity game, with the press of a button, you can generate and see a trace of the steps a parity game solver took.
 
-ParityGames.io is a web application, which facilitates research and understanding of parity games. You can create diagrams of parity games and easily visualize the steps different algorithms take to solve them.
-
-[Try it!](https://mikivanousek.github.io/parity-games/)
+[Try it!](https://mikivanousek.github.io/parity-games/) You can open the manual by pressing the `?` button or the `?` key on your keyboard.
 
 ## Development
 Make sure `git` and `node` are installed on your system. Then clone this repository and install all libraries with:

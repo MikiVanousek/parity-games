@@ -10,6 +10,7 @@ export module PGParser {
     var lines = file_content.split("\n");
     let pg = ParityGame.emptyBoard();
 
+    // assert(lines[0] === `parity ${pg.nodes.length};`);
     assert(lines[0].startsWith("parity "));
 
     let arc_id_pairs: [number, number][] = [];
