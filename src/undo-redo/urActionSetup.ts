@@ -170,7 +170,13 @@ export function renderLabelsAndPriorities() {
   const displayNodeLabels = displayLabelsInput.checked;
   function compositeLabel(ele): string {
     // Parent nodes are the groups of nodes created with "g".
-    assert(!ele.isParent());
+    if (ele.isParent()) {
+      if (false) {
+        return ele.data("label");
+      } else {
+        return "";
+      }
+    }
     let res = ele.data("priority").toString();
     if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) {
       // Skip line if there is trace label, to make it clear the label is trace label
@@ -186,11 +192,5 @@ export function renderLabelsAndPriorities() {
     .filter((ele: any) => !ele.isParent())
     .style({
       label: compositeLabel,
-    });
-
-  window.cy.nodes()
-    .filter((ele: any) => ele.isParent())
-    .style({
-      label: displayLabelsInput ? (ele: any) => `${ele.data("label")}` : "",
     });
 }
