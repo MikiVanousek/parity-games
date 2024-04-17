@@ -4,7 +4,6 @@ import LayoutManager from "./layout/layoutManager";
 import { TraceManager } from "./io/TraceManager";
 import { setupCytoscape } from "./cytoscape/cytoscapeSetup";
 import { setupKeyboardEvents } from "./events/keyboardEvents";
-import { renderLabelsAndPriorities, setupUndoRedoActions } from "./undo-redo/urActionSetup";
 import { setupNodeEvents } from "./events/nodeEvents";
 import { fillManual as setupManual } from "./keymap/manual";
 import { loadState, saveState } from "./io/autosave";
@@ -13,6 +12,7 @@ import { setupPGNameEditing } from "./ui/pgNameEditing";
 import { setupImportExportUI } from "./io/exportImport";
 import { setupAlgorithmSelect } from "./ui/algorithmSelect";
 import { setupOtherUI } from "./ui/other";
+import { setupUndoRedoActions } from "./undo-redo/urActionSetup";
 
 declare global {
   interface Window {
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const layoutManager = new LayoutManager(cy);
   window.layoutManager = layoutManager;
-  setupUndoRedoActions(cy, ur, layoutManager);
+  setupUndoRedoActions();
   setupKeyboardEvents(cy, ur);
   setupNodeEvents(cy, ur, layoutManager);
 

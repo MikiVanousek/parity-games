@@ -1,6 +1,10 @@
 import { assert } from "../assert";
 
-export function setupUndoRedoActions(cy, ur, layoutManager) {
+export function setupUndoRedoActions() {
+  const ur = window.ur;
+  const cy = window.cy;
+  const layoutManager = window.layoutManager;
+
   ur.action(
     "runLayout",
     (args) => {
@@ -112,6 +116,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
   ur.action(
     "changePriority",
     (args) => {
+      console.log('changePriority', args)
       const nodes = args.nodes;
       const value = args.value;
       // The do action: updating the priority
@@ -122,6 +127,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
         const priority = n.data("priority") || 0;
         n.data("priority", Math.max(0, priority + value));
       });
+      renderLabelsAndPriorities();
       return { nodes: nodes, value: value, oldPriorities: oldPriorities };
     },
     (args) => {
@@ -132,6 +138,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
       oldPriorities.forEach((item) =>
         item.node.data("priority", item.priority)
       );
+      renderLabelsAndPriorities();
       return { nodes: nodes, value: value };
     }
   );

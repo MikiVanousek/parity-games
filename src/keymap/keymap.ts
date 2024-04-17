@@ -119,19 +119,32 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["p"], "Set priority for selected nodes", ({ cy, ur }) => {
+    const selectedNodes = cy
+      .$("node:selected")
+      .filter((node) => !node.isParent());
+
+    if (selectedNodes.length == 0) {
+      showToast({
+        message: "No nodes selected",
+        variant: "warning",
+      });
+      return;
+    }
     const input = prompt("Enter new priority", "");
-    const priority = Number(input);
-    if (input !== null && !isNaN(priority)) {
-      const selectedNodes = cy
-        .$("node:selected")
-        .filter((node) => !node.isParent());
-      if (selectedNodes.length > 0) {
-        ur.do("editPriority", {
+    if (input !== null) {
+      const priority = parseInt(input);
+      if (!isNaN(priority)) {
+        ur.do("changePriority", {
           nodes: selectedNodes,
-          priority: priority,
+          value: priority,
         });
+        return
       }
     }
+    showToast({
+      message: "Invalid priority value",
+      variant: "danger",
+    });
   })
 );
 
