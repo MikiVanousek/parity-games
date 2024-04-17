@@ -17,6 +17,8 @@ import { fillManual } from "./keymap/manual";
 import { loadState, saveState } from "./io/autosave";
 import "./ui/PGNameEditing";
 import { setupPGNameEditing } from "./ui/PGNameEditing";
+import { example_zielonka } from "./board/ExamplePG";
+import { algos } from "./algos";
 
 declare global {
   interface Window {
@@ -28,12 +30,13 @@ declare global {
     PGParser: any;
   }
 }
-window.PGParser = PGParser
+window.PGParser = PGParser;
 
 // Set up the cytoscape instance
 var [cy, ur] = setupCytoscape("cy");
 window.cy = cy;
 window.ur = ur;
+cy.add(PGParser.pgToCy(example_zielonka));
 
 fillManual();
 
@@ -52,6 +55,32 @@ fileInput.addEventListener("change", (e) => {
   
 });
 window.traceManager = pgManager;
+
+// populate the algorithm select options
+const algoSelect = document.getElementById("algorithm-select");
+Object.keys(algos).forEach((key) => {
+  const option = document.createElement("option");
+  option.value = key;
+  option.text = algos[key].name;
+  algoSelect.appendChild(option);
+});
+
+const algoStart = document.getElementById("start-algorithm-btn");
+algoStart.addEventListener("click", () => {
+  console.log("start algorithm");
+  // get the selected algorithm
+  const algoSelect = document.getElementById(
+    "algorithm-select"
+  ) as HTMLSelectElement;
+  const selectedAlgorithm = algoSelect.value;
+
+  const res = algos[selectedAlgorithm].run(PGParser.cyToPg(cy));
+
+  // Update the trace with the result from the algorithm
+  if (res.trace) {
+    window.traceManager.setTrace(res.trace);
+  }
+});
 
 const layoutManager = new LayoutManager(cy);
 window.layoutManager = layoutManager;
@@ -91,7 +120,9 @@ setupNodeEvents(cy, ur, layoutManager);
   ur.do("runLayout", { nodes: cy.nodes() });
 };
 
-const displayLabelsInput = document.getElementById("display-labels") as HTMLInputElement;
+const displayLabelsInput = document.getElementById(
+  "display-labels"
+) as HTMLInputElement;
 displayLabelsInput.addEventListener("change", refreshNodeLabels);
 
 export function refreshNodeLabels() {
@@ -99,30 +130,29 @@ export function refreshNodeLabels() {
   const displayNodeLabels = displayLabelsInput.checked;
 
   function compositeLabel(ele) {
-    // Parent nodes are the groups of nodes created with "g". 
+    // Parent nodes are the groups of nodes created with "g".
     if (ele.isParent()) {
       return ele.data("label");
     }
     let res = ele.data("priority").toString();
-    if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) { // Skip line if there is trace label, to make it clear the label is trace label
+    if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) {
+      // Skip line if there is trace label, to make it clear the label is trace label
       res += `\n${ele.data("label")}`;
     }
     if (ele.data("traceLabel")) {
       res += `\n${ele.data("traceLabel")}`;
     }
-    return res
+    return res;
   }
 
-  cy.nodes()
-    .style({
-      label: compositeLabel,
-
-    });
+  cy.nodes().style({
+    label: compositeLabel,
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   loadState(); // Load saved state
-  refreshNodeLabels()
+  refreshNodeLabels();
   window.cy.fit(cy.elements(), 50);
 
   setupPGNameEditing();

@@ -13,7 +13,32 @@ export class TraceManager {
   cy: any;
   private trace?: Trace;
   private step?: number;
-  private colors: string[] = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#000000", "#FFFFFF"]
+  private colors: string[] = [
+    "#FF0000",
+    "#00FF00",
+    "#0000FF",
+    "#FFFF00",
+    "#FF00FF",
+    "#00FFFF",
+    "#000000",
+    "#FFFFFF",
+    "#FFA07A",
+    "#20B2AA",
+    "#778899",
+    "#B0C4DE",
+    "#FFFFE0",
+    "#00FA9A",
+    "#6A5ACD",
+    "#FFD700",
+    "#1E90FF",
+    "#F08080",
+    "#32CD32",
+    "#8A2BE2",
+    "#FF4500",
+    "#2E8B57",
+    "#DAA520",
+    "#98FB98",
+  ];
   private listElement: HTMLElement;
   private controlElement: HTMLElement;
   private setsEnabled?: Map<string, boolean>;
@@ -25,18 +50,20 @@ export class TraceManager {
   constructor(cy: any) {
     this.cy = cy;
 
-    this.listElement = document.getElementById('color-legend');
+    this.listElement = document.getElementById("color-legend");
     this.listElement.parentElement.hidden = true;
-    this.controlElement = document.getElementById('trace_controls');
+    this.controlElement = document.getElementById("trace_controls");
     this.controlElement.hidden = true;
-    this.controlElement.style.display = 'none'
+    this.controlElement.style.display = "none";
 
     this.playStopButton = document.getElementById("playAction");
     this.playStopIcon = document.getElementById("playAction").children[0];
     this.playStopButton.dataset.playing = "false";
     this.playStopIcon.classList.add("fa-play");
     this.playStopButton.addEventListener("click", this.togglePlay.bind(this));
-    this.stepSlider = document.getElementById("traceSlider") as HTMLInputElement;
+    this.stepSlider = document.getElementById(
+      "traceSlider"
+    ) as HTMLInputElement;
     this.stepSlider.addEventListener("input", (e) => {
       this.setStep(parseInt(this.stepSlider.value));
     });
@@ -55,7 +82,7 @@ export class TraceManager {
     const fileContent = e.target.result;
     let t = undefined;
     try {
-      t = new Trace(JSON.parse(fileContent.toString()))
+      t = new Trace(JSON.parse(fileContent.toString()));
     } catch (error) {
       showToast({
         message: "This file does not contain a valid trace.",
@@ -71,10 +98,11 @@ export class TraceManager {
     console.log("Setting trace", t);
     if (!t.validate()) {
       showToast({
-        message: "This trace has internal discrepancies: Its steps do not fit its parity game. More detail in the console.",
+        message:
+          "This trace has internal discrepancies: Its steps do not fit its parity game. More detail in the console.",
         variant: "danger",
         duration: 4000,
-      })
+      });
       return;
     }
 
@@ -82,31 +110,35 @@ export class TraceManager {
     const pg = PGParser.cyToPg(this.cy);
     if (!t.parity_game.sameAs(pg)) {
       console.log("This trace does not fit the current parity game.");
-      const conf = window.confirm("The trace you are importing was not made for the parity game you are editing. Should we replace your parity game? Unsaved changes will be lost!");
+      const conf = window.confirm(
+        "The trace you are importing was not made for the parity game you are editing. Should we replace your parity game? Unsaved changes will be lost!"
+      );
       if (!conf) {
         return;
       }
       resetBoardVisuals(this.cy, t.parity_game, window.layoutManager);
-
     }
 
     this.trace = t;
-    this.setsEnabled = new Map<string, boolean>()
+    this.setsEnabled = new Map<string, boolean>();
     for (const setName of this.trace.uniqueSetNames()) {
       this.setsEnabled.set(setName, true);
     }
 
     this.listElement.parentElement.hidden = false;
     this.controlElement.hidden = false;
-    this.controlElement.style.display = 'flex'
-    this.stepSlider.setAttribute("max", (this.trace.steps.length - 1).toString());
+    this.controlElement.style.display = "flex";
+    this.stepSlider.setAttribute(
+      "max",
+      (this.trace.steps.length - 1).toString()
+    );
     this.setStep(0);
   }
 
   removeTrace() {
     this.listElement.parentElement.hidden = true;
     this.controlElement.hidden = true;
-    this.controlElement.style.display = 'none';
+    this.controlElement.style.display = "none";
 
     delete this.trace;
     delete this.step;
@@ -114,7 +146,7 @@ export class TraceManager {
     this.resetColor();
 
     for (const n of this.cy.nodes()) {
-      n.data('traceLabel', '')
+      n.data("traceLabel", "");
     }
     refreshNodeLabels();
   }
@@ -124,26 +156,26 @@ export class TraceManager {
 
     this.step = i;
     this.stepSlider.value = i.toString();
-    this.listElement.innerHTML = '';
+    this.listElement.innerHTML = "";
     const traceStep = this.trace.steps[i];
 
     traceStep.node_sets.forEach((node_set, index) => {
-      const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name)
-      let color = this.colors[setId % this.colors.length]
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
+      let color = this.colors[setId % this.colors.length];
       this.addListItem(this.listElement, node_set.name, color);
     });
 
     traceStep.link_sets.forEach((link_set, index) => {
-      const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name)
-      let color = this.colors[setId % this.colors.length]
-      this.addListItem(this.listElement, link_set.name, color,);
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
+      let color = this.colors[setId % this.colors.length];
+      this.addListItem(this.listElement, link_set.name, color);
     });
     for (const n of this.cy.nodes()) {
-      const traceLabel = traceStep.node_labels[parseInt(n.id())]
+      const traceLabel = traceStep.node_labels[parseInt(n.id())];
       if (traceLabel) {
-        n.data('traceLabel', traceStep.node_labels[parseInt(n.id())])
+        n.data("traceLabel", traceStep.node_labels[parseInt(n.id())]);
       } else {
-        n.data('traceLabel', '')
+        n.data("traceLabel", "");
       }
     }
     refreshNodeLabels();
@@ -156,76 +188,76 @@ export class TraceManager {
   }
 
   refreshColor() {
-    assert(this.trace !== undefined)
-    this.resetColor()
+    assert(this.trace !== undefined);
+    this.resetColor();
     for (let [i, node_set] of this.trace.steps[this.step].node_sets.entries()) {
-      const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name)
-      let color = this.colors[setId % this.colors.length]
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
+      let color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(node_set.name)) {
         for (const nid of node_set.node_ids) {
-          this.colorNode(nid, color)
+          this.colorNode(nid, color);
         }
       }
     }
     for (let [i, link_set] of this.trace.steps[this.step].link_sets.entries()) {
-      const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name)
-      let color = this.colors[setId % this.colors.length]
+      const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
+      let color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(link_set.name)) {
         for (const [source, target] of link_set.link_source_target_ids) {
-          this.colorLink(source, target, color)
+          this.colorLink(source, target, color);
         }
       }
     }
   }
 
   nextStep() {
-    assert(this.trace !== undefined)
+    assert(this.trace !== undefined);
     if (this.step < this.trace.steps.length - 1) {
       this.setStep(this.step + 1);
     } else {
       showToast({
         message: "This is the last step!",
-        variant: "warning"
-      })
+        variant: "warning",
+      });
     }
   }
 
   prevStep() {
-    assert(this.trace !== undefined)
+    assert(this.trace !== undefined);
     if (this.step > 0) {
       this.setStep(this.step - 1);
     } else {
       showToast({
         message: "This is the first step!",
-        variant: "warning"
-      })
+        variant: "warning",
+      });
     }
   }
 
   colorNode(nodeId: number, color: string) {
-    this.cy.getElementById(nodeId).data('background_color', color)
+    this.cy.getElementById(nodeId).data("background_color", color);
   }
 
   colorLink(source: number, target: number, color: string) {
-    this.cy.getElementById(source + "," + target).data('line_color', color)
+    this.cy.getElementById(source + "," + target).data("line_color", color);
   }
 
   resetColor() {
     for (let n of this.cy.$("node")) {
-      delete n.data().background_color
+      delete n.data().background_color;
     }
     for (let l of this.cy.$("edge")) {
-      delete l.data().line_color
+      delete l.data().line_color;
     }
     this.cy.style().update();
   }
 
   goToFirstStep() {
-    this.setStep(0)
+    this.setStep(0);
   }
 
   goToLastStep() {
-    this.setStep(this.trace.steps.length - 1)
+    this.setStep(this.trace.steps.length - 1);
   }
 
   isLastStep() {
@@ -238,7 +270,7 @@ export class TraceManager {
     this.playStopIcon.classList.add("fa-pause");
 
     // get the current factor
-    const factor = document.getElementById('speedInput') as HTMLSelectElement;
+    const factor = document.getElementById("speedInput") as HTMLSelectElement;
     const speedFactor = parseFloat(factor.value);
 
     // if speedFactor is 0, stop the play
@@ -253,27 +285,25 @@ export class TraceManager {
       }
       this.nextStep();
     }, interval);
-
   }
   togglePlay() {
     const isPlaying = this.playStopButton.dataset.playing === "true";
 
     if (!isPlaying) {
-
-      const factor = document.getElementById('speedInput') as HTMLSelectElement;
+      const factor = document.getElementById("speedInput") as HTMLSelectElement;
       const speedFactor = parseFloat(factor.value);
       // if speedFactor is 0, stop the play
       if (speedFactor === 0) {
         showToast({
           message: "Speed factor cannot be 0",
-          variant: "danger"
-        })
+          variant: "danger",
+        });
         return;
       }
       if (isNaN(speedFactor) || speedFactor < 0) {
         showToast({
           message: "Invalid speed factor",
-          variant: "danger"
+          variant: "danger",
         });
         return;
       }
@@ -296,39 +326,47 @@ export class TraceManager {
   }
 
   addListItem(listElement, text, initialColor) {
-    const listItem = document.createElement('li');
-    listItem.style.display = 'flex';
-    listItem.style.alignItems = 'center';
+    const listItem = document.createElement("li");
+    listItem.style.display = "flex";
+    listItem.style.alignItems = "center";
 
-    const colorLine = document.createElement('div');
-    colorLine.classList.add('color-line');
+    const colorLine = document.createElement("div");
+    colorLine.classList.add("color-line");
     colorLine.style.backgroundColor = initialColor; // Set initial color
     colorLine.style.borderColor = initialColor; // Set initial color
-    colorLine.setAttribute('data-initial-color', initialColor); // Store initial color
-    colorLine.style.backgroundColor = this.setsEnabled.get(text) ? initialColor : 'transparent';
+    colorLine.setAttribute("data-initial-color", initialColor); // Store initial color
+    colorLine.style.backgroundColor = this.setsEnabled.get(text)
+      ? initialColor
+      : "transparent";
 
     // Update color toggle functionality
-    colorLine.addEventListener('click', function () {
-      const isTransparent = colorLine.style.backgroundColor === 'transparent' || colorLine.style.backgroundColor === '';
+    colorLine.addEventListener(
+      "click",
+      function () {
+        const isTransparent =
+          colorLine.style.backgroundColor === "transparent" ||
+          colorLine.style.backgroundColor === "";
 
-      // Retrieve the initial color from the custom attribute
-      const storedColor = colorLine.getAttribute('data-initial-color');
-      colorLine.style.backgroundColor = isTransparent ? storedColor : 'transparent';
+        // Retrieve the initial color from the custom attribute
+        const storedColor = colorLine.getAttribute("data-initial-color");
+        colorLine.style.backgroundColor = isTransparent
+          ? storedColor
+          : "transparent";
 
-      if (!isTransparent) {
-        this.setsEnabled.set(text, false)
-      } else {
-        this.setsEnabled.set(text, true)
-      }
-      this.refreshColor()
-
-    }.bind(this))
+        if (!isTransparent) {
+          this.setsEnabled.set(text, false);
+        } else {
+          this.setsEnabled.set(text, true);
+        }
+        this.refreshColor();
+      }.bind(this)
+    );
 
     listItem.appendChild(colorLine);
 
-    const textSpan = document.createElement('span');
+    const textSpan = document.createElement("span");
     textSpan.textContent = text;
-    textSpan.style.marginLeft = '15px'; // Ensures padding between the color line and text
+    textSpan.style.marginLeft = "15px"; // Ensures padding between the color line and text
     listItem.appendChild(textSpan);
 
     listElement.appendChild(listItem);
