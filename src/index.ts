@@ -17,10 +17,8 @@ import { fillManual } from "./keymap/manual";
 import { loadState, saveState } from "./io/autosave";
 import "./ui/PGNameEditing";
 import { setupPGNameEditing } from "./ui/PGNameEditing";
-import { example_pg, example_zielonka } from "./board/ExamplePG";
-import { Trace } from "./board/Trace";
-import { keyMappings } from "./keymap/keymap";
-import { algos } from "./algos/index";
+import { example_zielonka } from "./board/ExamplePG";
+import { algos } from "./algos";
 
 declare global {
   interface Window {
@@ -114,53 +112,27 @@ setupNodeEvents(cy, ur, layoutManager);
   ur.do("runLayout", { nodes: cy.nodes() });
 };
 
-document
-  .getElementById("display-labels")
-  .addEventListener("change", function () {
-    const showLabels = (this as HTMLInputElement).checked;
-    cy.nodes().style({
-      label: showLabels
-        ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-        : "",
-      "text-wrap": "wrap",
-    });
-  });
+const displayLabelsInput = document.getElementById(
+  "display-labels"
+) as HTMLInputElement;
+displayLabelsInput.addEventListener("change", refreshNodeLabels);
 
-function serializeGraphState() {
-  if (!window.cy) return;
+export function refreshNodeLabels() {
+  // Label means two things in this function: node.data.label is the name of the node, and node.style.label is the text that is displayed on the node, which also incudes the priority or the label from trace if needed.
+  const displayNodeLabels = displayLabelsInput.checked;
 
-  const elements = window.cy.json().elements;
-  const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
-  const currentStepIndex = window.traceManager
-    ? window.traceManager.getStep()
-    : 0;
-  const trace = window.traceManager ? window.traceManager.getTrace() : [];
-
-  const state = {
-    elements,
-    layoutOptions,
-    currentStepIndex,
-    trace,
-  };
-
-  localStorage.setItem("graphState", JSON.stringify(state));
-}
-
-function deserializeGraphState() {
-  const savedState = localStorage.getItem("graphState");
-  if (!savedState) return;
-
-  const { elements, layoutOptions, currentStepIndex, trace } =
-    JSON.parse(savedState);
-
-  if (window.cy) {
-    window.cy.json({ elements }); // Restore elements
-    window.cy.layout(layoutOptions).run(); // Apply the saved layout
-
-    // Restore the trace
-    if (trace) {
-      let t = new Trace(trace);
-      window.traceManager.setTrace(t);
+  function compositeLabel(ele) {
+    // Parent nodes are the groups of nodes created with "g".
+    if (ele.isParent()) {
+      return ele.data("label");
+    }
+    let res = ele.data("priority").toString();
+    if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) {
+      // Skip line if there is trace label, to make it clear the label is trace label
+      res += `\n${ele.data("label")}`;
+    }
+    if (ele.data("traceLabel")) {
+      res += `\n${ele.data("traceLabel")}`;
     }
     return res;
   }

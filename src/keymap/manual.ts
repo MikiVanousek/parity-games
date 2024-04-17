@@ -1,11 +1,17 @@
-import { all_keymaps, cmdMappings, otherMappings, pgEditingMappings } from "./keymap";
+import {
+  all_keymaps,
+  cmdMappings,
+  otherMappings,
+  pgEditingMappings,
+} from "./keymap";
 import { KeyMapping } from "./keymapTypes";
 
 export function fillManual(): void {
   const manual = document.getElementById("manual-keybinds");
-  manual.innerHTML = '';
+  manual.innerHTML = "";
   for (const km of all_keymaps) {
-    manual.appendChild(document.createElement("h3")).textContent = km.manualDescription;
+    manual.appendChild(document.createElement("h3")).textContent =
+      km.manualDescription;
     for (const kb of km.keyMappings) {
       const entryDiv = document.createElement("div");
       entryDiv.className = "manual-entry";
@@ -29,7 +35,6 @@ const manual_button = document.getElementById("manual-open-button");
 export function openManual() {
   manual_overlay.style.display = "";
   manual_button.innerHTML = "✕";
-
 }
 export function closeManual() {
   manual_overlay.style.display = "none";
@@ -37,7 +42,7 @@ export function closeManual() {
 }
 
 export function isManualOpen() {
-  return manual_overlay.style.display !== "none"
+  return manual_overlay.style.display !== "none";
 }
 
 export function toggleManual() {
@@ -49,7 +54,3 @@ export function toggleManual() {
 }
 
 manual_button.addEventListener("click", toggleManual);
-
-
-
-

@@ -137,7 +137,8 @@ pgEditingMappings.push(
 );
 
 pgEditingMappings.push(
-  new KeyMapping(["g"],
+  new KeyMapping(
+    ["g"],
     "Group selected nodes - lock their relative positions and prevent them from being moved by automatic layout",
     ({ cy, ur }) => {
       var selectedNodes = cy.$("node:selected");
@@ -161,7 +162,8 @@ pgEditingMappings.push(
         // check each node if it is already in a group
         ur.do("group", { nodes: selectedNodes });
       }
-    })
+    }
+  )
 );
 
 pgEditingMappings.push(
