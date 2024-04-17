@@ -5,7 +5,7 @@ export function setupOtherUI() {
 }
 
 const displayLabelsInput = document.getElementById(
-  "display-labels"
+  "displayLabels"
 ) as HTMLInputElement;
 
 export function refreshNodeLabels() {
@@ -30,7 +30,7 @@ export function refreshNodeLabels() {
     label: compositeLabel
   });
 
-  document.getElementById("resetView").addEventListener("click", () => {
+  document.getElementById("resetViewBtn").addEventListener("click", () => {
     window.cy.reset();
     window.cy.centre();
   });

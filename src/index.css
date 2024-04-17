@@ -144,7 +144,7 @@ html {
     --bc: var(--border);
   }
 
-  .checkbox-wrapper input[type="checkbox"]:disabled + label {
+  .checkbox-wrapper input[type="checkbox"]:disabled+label {
     cursor: not-allowed;
   }
 
@@ -168,7 +168,7 @@ html {
     --o: 1;
   }
 
-  .checkbox-wrapper input[type="checkbox"] + label {
+  .checkbox-wrapper input[type="checkbox"]+label {
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
@@ -265,32 +265,6 @@ html {
   color: white;
   font-size: 12px;
   cursor: pointer;
-}
-
-.custom-context-menu {
-  position: absolute;
-  z-index: 1000;
-  width: 200px;
-  background: rgb(38, 38, 38);
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  display: none;
-}
-
-.custom-context-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.custom-context-menu ul li {
-  padding: 8px;
-  cursor: pointer;
-}
-
-.custom-context-menu ul li:hover {
-  background-color: #584d4d;
 }
 
 .bottom-bar {

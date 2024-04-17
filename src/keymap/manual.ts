@@ -3,7 +3,7 @@ import {
 } from "./keymap";
 
 export function fillManual(): void {
-  const manual = document.getElementById("manual-keybinds");
+  const manual = document.getElementById("manualKeybinds");
   manual.innerHTML = "";
   for (const km of all_keymaps) {
     manual.appendChild(document.createElement("h3")).textContent =
@@ -26,8 +26,8 @@ export function fillManual(): void {
   }
 }
 
-const manual_overlay = document.getElementById("manual-overlay");
-const manual_button = document.getElementById("manual-open-button");
+const manual_overlay = document.getElementById("manualOverlay");
+const manual_button = document.getElementById("manualOpenButton");
 export function openManual() {
   manual_overlay.style.display = "";
   manual_button.innerHTML = "✕";

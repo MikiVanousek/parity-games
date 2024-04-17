@@ -25,7 +25,17 @@ class Group {
 }
 
 
-const layoutSelect = document.getElementById("layout-select") as HTMLSelectElement;
+const layoutSelect = document.getElementById("layoutSelect") as HTMLSelectElement;
+layoutSelect.addEventListener('click', (e: any) => {
+  window.layoutManager.changeLayout(e.target.value);
+  // decheck the layout on layoutOnDragCheckbox
+  const toggle = document.getElementById("layoutOnDragCheckbox") as HTMLInputElement;
+  toggle.checked = false;
+  window.layoutManager.setRunOnDrag(false);
+});
+
+const layoutOnDragContainer = document.getElementById("layoutOnDragContainer")
+
 class LayoutManager {
   private cy: cytoscape.Core;
   private runOnDrag: boolean;
@@ -54,12 +64,16 @@ class LayoutManager {
     }
 
     document
-      .getElementById("layout-on-drag")
+      .getElementById("layoutOnDragCheckbox")
       .addEventListener("change", function (e) {
         this.setRunOnDrag(e.target.checked);
       }.bind(this));
+    document.getElementById("runLayoutBtn").addEventListener("click", () => window.ur.do("runLayout", { nodes: window.cy.nodes() }))
   }
 
+  public setDefaultLayout() {
+    this.currentLayout = colaLayout;
+  }
   public setRunOnDrag(bool: boolean) {
     this.runOnDrag = bool;
     this.onDrag();
@@ -159,10 +173,11 @@ class LayoutManager {
   }
 
   private hideLayoutOnDragElement() {
-    document.getElementById("layout-on-drag-container").style.display = "none";
+    layoutOnDragContainer.style.display = "none";
+    // layoutOn yle.isplay = "none";
   }
   private showLayoutOnDragElement() {
-    document.getElementById("layout-on-drag-container").style.display = "";
+    layoutOnDragContainer.style.display = "";
   }
 
   public groupNodes(nodes: cytoscape.NodeCollection) {

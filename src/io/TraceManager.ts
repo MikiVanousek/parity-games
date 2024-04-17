@@ -1,9 +1,9 @@
 import { showToast } from "../ui/toast";
 import { assert } from "../assert";
 import { Trace } from "../board/Trace";
-import { PGParser } from "../board/PGParser";
 import { resetBoardVisuals } from "./exportImport";
 import { refreshNodeLabels } from "../ui/other";
+import { cyToPg } from "../board/parityGameParser";
 
 export class TraceManager {
   cy: any;
@@ -46,9 +46,9 @@ export class TraceManager {
   constructor(cy: any) {
     this.cy = cy;
 
-    this.listElement = document.getElementById("color-legend");
+    this.listElement = document.getElementById("colorLegend");
     this.listElement.parentElement.hidden = true;
-    this.controlElement = document.getElementById("trace_controls");
+    this.controlElement = document.getElementById("traceControls");
     this.controlElement.hidden = true;
     this.controlElement.style.display = "none";
 
@@ -134,7 +134,7 @@ export class TraceManager {
     }
 
     // Compare just the nodes and links, nextNodeId is irrelevant
-    const pg = PGParser.cyToPg(this.cy);
+    const pg = cyToPg(this.cy);
     if (!t.parity_game.sameAs(pg)) {
       console.log("This trace does not fit the current parity game.");
       const conf = window.confirm(
@@ -143,7 +143,7 @@ export class TraceManager {
       if (!conf) {
         return;
       }
-      resetBoardVisuals(this.cy, t.parity_game, window.layoutManager);
+      resetBoardVisuals(t.parity_game)
     }
 
     this.trace = t;

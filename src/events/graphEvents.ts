@@ -1,6 +1,6 @@
 import * as cytoscape from "cytoscape";
 
-var copiedElements = [];
+let copiedElements = [];
 
 export function addNodeAtPosition(
   cy: cytoscape.Core,
@@ -44,7 +44,7 @@ export function pasteCopiedElements(cy: cytoscape.Core, ur) {
   if (copiedElements.length > 0) {
     cy.$(":selected").unselect();
     const offset = 10; // Offset for the pasted elements' position
-    let oldid_newid = {};
+    const oldid_newid = {};
     let maxId = getNewMaxId(cy);
 
     copiedElements.sort((a, b) => {
@@ -57,7 +57,7 @@ export function pasteCopiedElements(cy: cytoscape.Core, ur) {
       return 0;
     });
 
-    let newElements = [];
+    const newElements = [];
     copiedElements.map((ele) => {
       if (ele.group === "nodes") {
         oldid_newid[ele.data.id] = maxId;

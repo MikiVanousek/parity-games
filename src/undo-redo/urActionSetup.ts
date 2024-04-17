@@ -77,7 +77,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
 
   function renderLabelsAndPriorities(cy) {
     const displayLabelsElement = document.getElementById(
-      "display-labels"
+      "displayLabels"
     ) as HTMLInputElement;
     const showLabels = displayLabelsElement.checked; // Directly get the checked state
 

@@ -1,18 +1,18 @@
-var jquery = require("jquery");
+import jquery = require("jquery");
 window.$ = jquery;
-var cytoscape = require("cytoscape");
-var konva = require("konva");
-var edgeEditing = require("../cytoscape-edge-editing/src/index.js");
-var contextMenus = require("cytoscape-context-menus");
-var undoRedo = require("cytoscape-undo-redo");
-var cola = require("cytoscape-cola");
+import cytoscape = require("cytoscape");
+import konva = require("konva");
+import edgeEditing = require("../cytoscape-edge-editing/src/index.js");
+import contextMenus = require("cytoscape-context-menus");
+import undoRedo = require("cytoscape-undo-redo");
+import cola = require("cytoscape-cola");
 
 export function setupCytoscape(containerId: string) {
   const EVEN_COLOR = "#7A7A7A";
   const ODD_COLOR = "#ADADAD";
   const SELECTION_COLOR = "#0169D9";
   // Initialize Cytoscape with a configuration object
-  let cy = cytoscape({
+  const cy = cytoscape({
     container: document.getElementById(containerId),
     elements: [],
     style: [
@@ -29,8 +29,8 @@ export function setupCytoscape(containerId: string) {
           "font-size": "10px",
           "text-outline-color": "black",
           "text-outline-width": ".05em",
-          "text-outline-opacity": ".75",
-          "text-opacity": "1",
+          "text-outline-opacity": .85,
+          "text-opacity": 1,
         },
       },
       {
@@ -103,13 +103,13 @@ export function setupCytoscape(containerId: string) {
         },
       }
     ],
-  });
+  }) as any;
   undoRedo(cytoscape);
   contextMenus(cytoscape); // This line is crucial
   edgeEditing(cytoscape, jquery, konva);
   cytoscape.use(cola);
 
-  let ur = cy.undoRedo({
+  const ur = cy.undoRedo({
     isDebug: true,
   });
 

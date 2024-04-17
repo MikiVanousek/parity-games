@@ -1,6 +1,6 @@
-import { examplePg } from "../board/ExamplePG";
+import { examplePg } from "../board/exampleParityGame";
 import { Trace } from "../board/Trace";
-import { getPGName, setPGName } from "../ui/PGNameEditing";
+import { getPGName, setPGName } from "../ui/pgNameEditing";
 import { resetBoardVisuals } from "./exportImport";
 
 export function saveState() {
@@ -31,7 +31,7 @@ export function saveState() {
 export function loadState() {
   const savedState = localStorage.getItem('graphState');
   if (!savedState) {
-    resetBoardVisuals(window.cy, examplePg, window.layoutManager)
+    resetBoardVisuals(examplePg)
     return;
   }
 
