@@ -105,6 +105,7 @@
     "hasown": "^2.0.1",
     "html-escaper": "^2.0.2",
     "human-signals": "^2.1.0",
+    "idb-keyval": "^6.2.1",
     "import-local": "^3.1.0",
     "imurmurhash": "^0.1.4",
     "inflight": "^1.0.6",
