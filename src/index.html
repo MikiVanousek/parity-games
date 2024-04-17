@@ -49,12 +49,8 @@
         <button onclick="handleExportGame(event)"><span class="icon"><i
               class="fa-solid fa-file-export"></i></span>Save</button>
       </div>
-      <button id="export-png-button" onclick="exportAsPng()">
-        <span class="icon">
-          <i class="fa-solid fa-image"></i>
-        </span>
-        Export as PNG
-      </button>
+      <button id="export-png-button" onclick="exportAsPng()"><span class="icon"><i
+            class="fa-solid fa-image"></i></span>Export as PNG</button>
     </div>
     <div class="navbar-group">
       <div class="navbar-group-heading">Layouts Setting</div>
@@ -73,23 +69,24 @@
       </div>
     </div>
     <div class="navbar-group">
-      <div class="navbar-group-heading">Trace settings</div>
-      <label for="fileInput" class="button">
-        <span class="icon">
-          <i class="fa-solid fa-file-import"></i>
-        </span>Import trace
-      </label>
-      <input type="file" id="fileInput" style="display: none;" accept=".json" />
+      <div class="navbar-group-heading">Trace</div>
+      <div class="row">
+        <label for="fileInput" class="button">
+          <span class="icon">
+            <i class="fa-solid fa-file-import"></i>
+          </span>Import trace
+        </label>
+        <input type="file" id="fileInput" style="display: none;" accept=".pgtrace_json" />
+      </div>
     </div>
-
-  <div class="navbar-group">
-    <div class="navbar-group-heading">Algorithm Selection</div>
-    <div class="row">
-      <select class="button" id="algorithm-select">
-      </select>
-      <button class="button" id="start-algorithm-btn">Start</button>
+    <div class="navbar-group">
+      <div class="navbar-group-heading">Algorithm Selection</div>
+      <div class="row">
+        <select class="button" id="algorithm-select">
+        </select>
+        <button class="button" id="start-algorithm-btn">Start</button>
+      </div>
     </div>
-  </div>
 
   </div>
   </div>
