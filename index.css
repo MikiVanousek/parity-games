@@ -431,6 +431,7 @@ textarea:hover:not(:focus) {
 .manual {
   margin-inline: auto;
   width: fit-content;
+  max-width: 60%;
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
@@ -445,8 +446,11 @@ textarea:hover:not(:focus) {
   border-radius: 8px;
   display: flex;
   flex-direction: row;
+  gap: 2em;
   align-items: center;
   justify-content: space-between;
+  text-align: end;
+  text-wrap: balance;
   padding: 10px;
   margin-top: 10px;
 }
@@ -456,7 +460,7 @@ textarea:hover:not(:focus) {
   border-radius: 8px;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 20px 10px;
   margin-top: 10px;
   font-size: medium;
 }
