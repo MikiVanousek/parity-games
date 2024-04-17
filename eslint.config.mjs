@@ -29,8 +29,7 @@ export default [
       parser,
     },
     rules: {
-      "@html-eslint/indent": "error",
-      "@html-eslint/indent": 2,
+      "@html-eslint/indent": ["error", 2],
     },
   },
 ];
