@@ -35,12 +35,28 @@ export class ParityGame extends JSONObject {
   }
 
   deepCopy(): ParityGame {
-    const newNodes = this.nodes.map((node) => node);
-    const newLinks = this.links.map((link) => link);
+    const newNodes = this.nodes.map((node) => new Node(node));
+    const newLinks = this.links.map((link) => new Link(link));
     const newAdjList = new Map<Node, Set<Node>>();
     this.adjList.forEach((targets, source) => {
-      newAdjList.set(source, new Set<Node>(targets));
+      console.log("Targets: " + targets);
+
+      const newSource = newNodes.find((n) => n.id === source.id);
+      const newTargets = new Set<Node>();
+
+      targets.forEach((target) => {
+        // Find the corresponding new target node based on the original target node's id
+        const newTarget = newNodes.find((n) => n.id === target.id);
+        if (newTarget) {
+          newTargets.add(newTarget);
+        }
+      });
+
+      if (newSource) {
+        newAdjList.set(newSource, newTargets);
+      }
     });
+
     return new ParityGame({
       nodes: newNodes,
       links: newLinks,
@@ -63,21 +79,23 @@ export class ParityGame extends JSONObject {
 
   attractorSet(targetNodes: Node[], player: Player): Node[] {
     let attractor = new Set<Node>(targetNodes);
+    let attractorIds = Array.from(attractor).map((n) => n.id);
 
     let isNotEmpty = true;
     while (isNotEmpty) {
       let nodesToAdd: Node[] = [];
 
       this.nodes.forEach((node) => {
-        if (attractor.has(node)) {
+        let successors = this.adjList.get(node);
+        if (attractorIds.includes(node.id)) {
           return;
         }
-        let successors = this.adjList.get(node);
-        console.log("Successors: " + Array.from(successors));
         // if the node is owned by the player and there is an edge to attractor, we can add it to the attractor
         if (
           node.player === player &&
-          Array.from(successors).some((successor) => attractor.has(successor))
+          Array.from(successors).some((successor) =>
+            attractorIds.includes(successor.id)
+          )
         ) {
           console.log("Adding to attractor: " + node);
           nodesToAdd.push(node);
@@ -85,7 +103,9 @@ export class ParityGame extends JSONObject {
         // if its owned by a different player but every edge is connected to the attractor, we can add it to the attractor
         if (
           node.player !== player &&
-          Array.from(successors).every((successor) => attractor.has(successor))
+          Array.from(successors).every((successor) =>
+            attractorIds.includes(successor.id)
+          )
         ) {
           console.log("Adding to attractor: " + node);
           nodesToAdd.push(node);
@@ -96,6 +116,7 @@ export class ParityGame extends JSONObject {
         isNotEmpty = false;
       } else {
         nodesToAdd.forEach((node) => attractor.add(node));
+        nodesToAdd.forEach((node) => attractorIds.push(node.id));
       }
     }
 
@@ -103,22 +124,27 @@ export class ParityGame extends JSONObject {
   }
 
   removeNodes(nodesToRemove: Node[]): ParityGame {
-    this.nodes = this.nodes.filter((node) => !nodesToRemove.includes(node));
-    nodesToRemove.forEach((nodeToRemove) => {
-      this.adjList.delete(nodeToRemove);
+    // Convert nodesToRemove to a Set of ids for efficient lookup
+    console.log(nodesToRemove);
+    console.log(this.nodes);
+    const idsToRemove = new Set(nodesToRemove.map((node) => node.id));
+
+    // remove adjacency list
+    idsToRemove.forEach((idToRemove) => {
+      this.adjList.delete(this.find_node_by_id(idToRemove));
       this.adjList.forEach((targets, source) => {
-        if (targets.has(nodeToRemove)) {
-          targets.delete(nodeToRemove);
+        if (targets.has(this.find_node_by_id(idToRemove))) {
+          targets.delete(this.find_node_by_id(idToRemove));
         }
       });
     });
 
+    this.nodes = this.nodes.filter((node) => !idsToRemove.has(node.id));
+
     // Also, remove any links associated with the removed nodes
     this.links = this.links.filter(
       (link) =>
-        !nodesToRemove.find(
-          (node) => node.id === link.source_id || node.id === link.target_id
-        )
+        !idsToRemove.has(link.source_id) && !idsToRemove.has(link.target_id)
     );
 
     return this; // Allow chaining
@@ -226,6 +252,10 @@ export class ParityGame extends JSONObject {
       return 0;
     }
     return Math.max(...this.nodes.map((n) => n.id)) + 1;
+  }
+
+  getNodes(): Node[] {
+    return this.nodes;
   }
 
   // It checks if the underlying parity game is the same. Labels and order of nodes and links do not matter, but the ids of nodes do (isomorphism is not detected).

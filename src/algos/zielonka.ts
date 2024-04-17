@@ -25,7 +25,18 @@ export class ZielonkaAlgorithm {
       steps: [],
     });
     const result = this.zielonkaRecursive(this.gameGraph, trace);
-    console.log("Result: " + result);
+    trace.addStep([
+      new NodeSet({
+        name: "Winning Even",
+        node_ids: result.even.map((node) => node.id),
+      }),
+      new NodeSet({
+        name: "Winning Odd",
+        node_ids: result.odd.map((node) => node.id),
+      }),
+    ]);
+    console.log("Result: " + result.even);
+    console.log("Result: " + result.odd);
     return { ...result, trace };
   }
 
@@ -63,8 +74,12 @@ export class ZielonkaAlgorithm {
     trace.addStep([...this.attractors]);
 
     // Recursive solution on the subgame excluding the attractor set A
+    let subgraphCopy = subgraph.deepCopy();
+    console.log("Hello: " + subgraphCopy.getNodes().length);
+    let subgraphRemoved = subgraph.deepCopy().removeNodes(A);
+    console.log("Hello 2: " + subgraphRemoved.getNodes().length);
     const { even: W_even, odd: W_odd } = this.zielonkaRecursive(
-      subgraph.removeNodes(A),
+      subgraphRemoved,
       trace
     );
     let step2 = [
@@ -77,14 +92,37 @@ export class ZielonkaAlgorithm {
           ")",
         node_ids: A.map((node) => node.id),
       }),
+      new NodeSet({
+        name:
+          "Subgraph Copy" +
+          (subgraphCopy.getNodes().length === 0
+            ? " - EMPTY"
+            : " - " + subgraphCopy.getNodes().length + " nodes"),
+        node_ids: subgraphCopy.getNodes().map((node) => node.id),
+      }),
+      new NodeSet({
+        name:
+          "Subgraph Removed" +
+          (subgraphRemoved.getNodes().length === 0
+            ? " - EMPTY"
+            : " - " + subgraphRemoved.getNodes().length + " nodes"),
+        node_ids: subgraphRemoved.getNodes().map((node) => node.id),
+      }),
+      new NodeSet({
+        name:
+          "Subgraph Winner (Even" + (W_even.length === 0 ? " - EMPTY)" : ")"),
+        node_ids: W_even.map((node) => node.id),
+      }),
+      new NodeSet({
+        name: "Subgraph Winner (Odd" + (W_odd.length === 0 ? " - EMPTY)" : ")"),
+        node_ids: W_odd.map((node) => node.id),
+      }),
     ];
     trace.addStep([...step2]);
-    console.log("W_even: " + W_even);
-    console.log("W_odd: " + W_odd);
 
     // Compute the attractor set for the opponent in the solution of the subgame
     const W_opponent = alpha === Player.Even ? W_odd : W_even;
-    const B = subgraph.attractorSet(
+    const B = subgraphCopy.attractorSet(
       W_opponent,
       alpha === Player.Even ? Player.Odd : Player.Even
     );
@@ -95,17 +133,15 @@ export class ZielonkaAlgorithm {
           this.attractors.length +
           " (" +
           (alpha === Player.Even ? "Odd" : "Even") +
+          (B.length === 0 ? " - EMPTY" : "") +
           ")",
         node_ids: B.map((node) => node.id),
       })
     );
     trace.addStep([...step2]);
-    console.log("first " + W_opponent);
-    console.log("second " + B);
-    console.log(this.areNodeSetsEqual(B, W_opponent));
 
     // Check if opponent attracts any nodes
-    if (this.areNodeSetsEqual(B, W_opponent)) {
+    if (B.length === W_opponent.length) {
       // If opponent cannot attract any more nodes beyond what they already have
       if (alpha === Player.Even) {
         return { even: W_even.concat(A), odd: W_odd }; // A is won by alpha
@@ -114,8 +150,9 @@ export class ZielonkaAlgorithm {
       }
     } else {
       // Recompute remainder if opponent can attract nodes
+      this.attractors = [];
       const { even: W_even_remainder, odd: W_odd_remainder } =
-        this.zielonkaRecursive(subgraph.removeNodes(B), trace);
+        this.zielonkaRecursive(subgraphCopy.removeNodes(B), trace);
       if (alpha === Player.Even) {
         return { even: W_even_remainder, odd: W_odd_remainder.concat(B) }; // B is won by alpha hat (Player.Odd)
       } else {
