@@ -1,25 +1,6 @@
 import { assert } from "../assert";
-import { PGParser } from "../board/PGParser";
 
 export function setupOtherUI() {
-  document.getElementById("export-oink-btn").addEventListener("click", () => {
-    PGParser.exportOinkFormat(PGParser.cyToPg(window.cy));
-  });
-
-  const fileInput = document.getElementById("fileInput");
-  fileInput.addEventListener("change", (e) => {
-    console.log("fileInput changed");
-
-    const target = e.target as HTMLInputElement;
-    window.traceManager.handleTraceFileSelect(e);
-
-    // Reset the file input value
-    if (target && target.value) {
-      target.value = '';
-    }
-
-  });
-
   displayLabelsInput.addEventListener("change", refreshNodeLabels);
 }
 

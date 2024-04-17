@@ -1,10 +1,6 @@
 import {
   all_keymaps,
-  cmdMappings,
-  otherMappings,
-  pgEditingMappings,
 } from "./keymap";
-import { KeyMapping } from "./keymapTypes";
 
 export function fillManual(): void {
   const manual = document.getElementById("manual-keybinds");
@@ -17,7 +13,7 @@ export function fillManual(): void {
       entryDiv.className = "manual-entry";
       const keysDiv = document.createElement("div");
       keysDiv.className = "manual-keys";
-      for (let key of kb.keys) {
+      for (const key of kb.keys) {
         const keyDiv = document.createElement("div");
         keyDiv.className = "manual-key";
         keyDiv.textContent = km.key_to_string(key);

@@ -11,7 +11,7 @@ import { loadState, saveState } from "./io/autosave";
 import "./ui/PGNameEditing";
 import { setupPGNameEditing } from "./ui/PGNameEditing";
 import { setupImportExportUI } from "./io/exportImport";
-import { refreshNodeLabels } from "./ui/other";
+import { refreshNodeLabels, setupOtherUI } from "./ui/other";
 import { setupAlgorithmSelect } from "./ui/algorithmSelect";
 
 declare global {
@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
   setupPGNameEditing();
 
   setupImportExportUI();
+  setupOtherUI();
   refreshNodeLabels();
 
   loadState(); // Load saved state

@@ -31,42 +31,41 @@ class LayoutManager {
   private groups: Group[] = [];
   public currentLayout: any;
   private colaLayoutOptions: any = colaLayout;
-  public layouts = {
-    "Force directed": colaLayout,
-    "Grid layout": gridLayout,
-    "Breadth first": breadthfirstLayout,
-    "Random for fun": randomLayout,
-  };
+  // private layoutNames = {
+  //   "Force directed": colaLayout,
+  //   "Grid layout": gridLayout,
+  //   "Breadth first": breadthfirstLayout,
+  //   "Random for fun": randomLayout,
+  // };
+  private layouts = [
+    colaLayout,
+    gridLayout,
+    breadthfirstLayout,
+    randomLayout,
+  ];
 
-  constructor(cyInstance: any, defaultLayout?: string) {
+  constructor(cyInstance: any) {
     this.cy = cyInstance;
     this.runOnDrag = false;
-    this.currentLayout = this.layouts[defaultLayout] || colaLayout;
+    this.currentLayout = colaLayout;
 
-    let this1 = this;
-    document.addEventListener("DOMContentLoaded", function () {
-      const layoutSelect = document.getElementById(
-        "layout-select"
-      ) as HTMLSelectElement;
+    const layoutSelect = document.getElementById(
+      "layout-select"
+    ) as HTMLSelectElement;
 
-      // Dynamically populate the layout select dropdown
-      for (const layoutName in this1.layouts) {
-        if (this1.layouts.hasOwnProperty(layoutName)) {
-          const option = document.createElement("option");
-          option.value = layoutName;
-          option.textContent = layoutName;
-          layoutSelect.appendChild(option);
-        }
-      }
-      // This is ugly, but better than broken (Han)
-      layoutSelect.value = defaultLayout || "Force directed";
-    });
+    // Dynamically populate the layout select dropdown
+    for (const layout in this.layouts) {
+      const option = document.createElement("option");
+      option.value = layout.name;
+      option.textContent = layout.name;
+      layoutSelect.appendChild(option);
+    }
 
     document
       .getElementById("layout-on-drag")
-      .addEventListener("change", function () {
-        this1.setRunOnDrag((this as HTMLInputElement).checked);
-      });
+      .addEventListener("change", function (e) {
+        this.setRunOnDrag(e.target.checked);
+      }.bind(this));
   }
 
   public setRunOnDrag(bool: boolean) {
@@ -74,9 +73,14 @@ class LayoutManager {
     this.onDrag();
   }
 
-  public changeLayout(layout: string) {
-    this.currentLayout = this.layouts[layout] || this.colaLayoutOptions;
-    if (layout == "Force directed") {
+  public changeLayout(layoutName: string) {
+    const candidate = this.layouts.find((i) => i.name == layoutName)
+    if (!candidate) {
+      console.error(`Layout ${layoutName} not found`);
+      return
+    }
+    this.currentLayout = candidate
+    if (layoutName == "Force directed") {
       this.showLayoutOnDragElement();
     } else {
       this.hideLayoutOnDragElement();
@@ -130,10 +134,7 @@ class LayoutManager {
   }
 
   public runOnce() {
-    // this.cy.layout(this.currentLayout).run();
-    const boundingBoxConstraints = this.calculateBoundingBoxConstraints();
 
-    // lock the nodes in the groups to keep their positions
     this.groups.forEach((group) => {
       group.nodes.forEach((node) => {
         node.lock();
@@ -161,7 +162,7 @@ class LayoutManager {
   }
 
   public getCurrentLayoutOptions() {
-    return this.currentLayout;
+    return this.currentLayout.name;
   }
 
   private hideLayoutOnDragElement() {
@@ -195,7 +196,7 @@ class LayoutManager {
       .nodes()
       .filter((node) => node.parent() === groupNode)
       .grabify();
-    let children = groupNode.children();
+    const children = groupNode.children();
     children.move({ parent: null });
     groupNode.remove();
 

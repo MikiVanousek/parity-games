@@ -79,6 +79,21 @@ export class TraceManager {
     document
       .getElementById("closeButton")
       .addEventListener("click", this.removeTrace.bind(this));
+
+    const fileInput = document.getElementById("fileInput");
+    fileInput.addEventListener("change", (e) => {
+      console.log("fileInput changed");
+
+      const target = e.target as HTMLInputElement;
+      window.traceManager.handleTraceFileSelect(e);
+
+      // Reset the file input value
+      if (target && target.value) {
+        target.value = '';
+      }
+
+    });
+
   }
 
   handleTraceFileSelect(event) {
@@ -207,7 +222,7 @@ export class TraceManager {
   refreshColor() {
     assert(this.trace !== undefined);
     this.resetColor();
-    for (const [i, node_set] of this.trace.steps[this.step].node_sets.entries()) {
+    for (const node_set of this.trace.steps[this.step].node_sets) {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
       const color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(node_set.name)) {
@@ -216,7 +231,7 @@ export class TraceManager {
         }
       }
     }
-    for (const [i, link_set] of this.trace.steps[this.step].link_sets.entries()) {
+    for (const link_set of this.trace.steps[this.step].link_sets) {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
       const color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(link_set.name)) {
