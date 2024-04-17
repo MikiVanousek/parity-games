@@ -137,29 +137,31 @@ pgEditingMappings.push(
 );
 
 pgEditingMappings.push(
-  new KeyMapping(["g"], "Group selected nodes", ({ cy, ur }) => {
-    var selectedNodes = cy.$("node:selected");
-    let inGroup = false;
-    if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
-      ur.do("ungroup", { groupId: selectedNodes[0].id() });
-      return;
-    }
-
-    selectedNodes.forEach((node) => {
-      if (node.isParent() || !node.isOrphan()) {
-        inGroup = true;
-        showToast({
-          message: "Can not group nodes that are already in a group.",
-          variant: "danger",
-        });
+  new KeyMapping(["g"],
+    "Group selected nodes - lock their relative positions and prevent them from being moved by automatic layout",
+    ({ cy, ur }) => {
+      var selectedNodes = cy.$("node:selected");
+      let inGroup = false;
+      if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
+        ur.do("ungroup", { groupId: selectedNodes[0].id() });
         return;
       }
-    });
-    if (selectedNodes.length > 0 && !inGroup) {
-      // check each node if it is already in a group
-      ur.do("group", { nodes: selectedNodes });
-    }
-  })
+
+      selectedNodes.forEach((node) => {
+        if (node.isParent() || !node.isOrphan()) {
+          inGroup = true;
+          showToast({
+            message: "Can not group nodes that are already in a group.",
+            variant: "danger",
+          });
+          return;
+        }
+      });
+      if (selectedNodes.length > 0 && !inGroup) {
+        // check each node if it is already in a group
+        ur.do("group", { nodes: selectedNodes });
+      }
+    })
 );
 
 pgEditingMappings.push(
