@@ -6,7 +6,6 @@ export function setupNodeEvents(cy, ur, layoutManager) {
   });
 
   cy.on("click", "node", (event) => {
-    const node = event.target;
     const isAltPressed = event.originalEvent.altKey;
     const isShiftCmdPressed =
       event.originalEvent.shiftKey && event.originalEvent.metaKey;
