@@ -1,5 +1,6 @@
 export const gridLayout: any = {
   name: "grid",
+  displayName: "Grid layout",
 
   fit: true, // whether to fit the viewport to the graph
   padding: 30, // padding used on fit

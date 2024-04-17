@@ -1,5 +1,6 @@
 export const randomLayout = {
   name: "random",
+  displayName: "Random",
 
   fit: true, // whether to fit to viewport
   padding: 30, // fit padding

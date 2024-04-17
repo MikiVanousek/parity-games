@@ -40,6 +40,7 @@ export function loadState() {
   window.cy.pan(pan);
 
   window.layoutManager.changeLayout(layoutName)
+  console.log('layoutName', layoutName)
   setPGName(pgName);
 
 

@@ -1,5 +1,6 @@
-export const breadthfirstLayout = {
+export const breadthFirstLayout = {
   name: "breadthfirst",
+  displayName: "Breadth first",
 
   fit: true, // whether to fit the viewport to the graph
   directed: false, // whether the tree is directed downwards (or edges can point in any direction if false)

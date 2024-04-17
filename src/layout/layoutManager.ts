@@ -1,7 +1,7 @@
 import { colaLayout } from "./colaLayout";
 import { randomLayout } from "./randomLayout";
 import { gridLayout } from "./gridLayout";
-import { breadthfirstLayout } from "./breadthfirstLayout";
+import { breadthFirstLayout } from "./breadthfirstLayout";
 
 // a class representing a group (subgraoh) of nodes, to manage its state and behavior
 class Group {
@@ -24,23 +24,18 @@ class Group {
   }
 }
 
+
+const layoutSelect = document.getElementById("layout-select") as HTMLSelectElement;
 class LayoutManager {
   private cy: cytoscape.Core;
   private runOnDrag: boolean;
   private lockedGroups: Array<{ leaves: string[] }> = [];
   private groups: Group[] = [];
   public currentLayout: any;
-  private colaLayoutOptions: any = colaLayout;
-  // private layoutNames = {
-  //   "Force directed": colaLayout,
-  //   "Grid layout": gridLayout,
-  //   "Breadth first": breadthfirstLayout,
-  //   "Random for fun": randomLayout,
-  // };
   private layouts = [
     colaLayout,
     gridLayout,
-    breadthfirstLayout,
+    breadthFirstLayout,
     randomLayout,
   ];
 
@@ -49,15 +44,12 @@ class LayoutManager {
     this.runOnDrag = false;
     this.currentLayout = colaLayout;
 
-    const layoutSelect = document.getElementById(
-      "layout-select"
-    ) as HTMLSelectElement;
 
     // Dynamically populate the layout select dropdown
-    for (const layout in this.layouts) {
+    for (const lo of this.layouts) {
       const option = document.createElement("option");
-      option.value = layout.name;
-      option.textContent = layout.name;
+      option.value = lo.name;
+      option.textContent = lo.displayName;
       layoutSelect.appendChild(option);
     }
 
@@ -80,6 +72,7 @@ class LayoutManager {
       return
     }
     this.currentLayout = candidate
+    layoutSelect.value = layoutName;
     if (layoutName == "Force directed") {
       this.showLayoutOnDragElement();
     } else {
