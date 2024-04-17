@@ -150,8 +150,8 @@ export function refreshNodeLabels() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  loadState(); // Load saved state
+document.addEventListener("DOMContentLoaded", async function () {
+  await loadState(); // Load saved state
   refreshNodeLabels();
   window.cy.fit(cy.elements(), 50);
 
