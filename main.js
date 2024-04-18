@@ -1,6 +1,775 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/index.css":
+/*!*************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/index.css ***!
+  \*************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #1d1d1d;
+  color: white;
+  font-size: 14px;
+}
+
+.card {
+  background-color: #333;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+  padding: 1.7rem;
+  color: white;
+}
+
+.icon {
+  margin-right: 0.5rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+#cy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #1d1d1d;
+}
+
+.navbar {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  /* Start at the middle of the page */
+  transform: translateY(-50%) translateX(0px);
+  /* Move it up by half its own height */
+  width: 245px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.pgname {
+  overflow: warp;
+  word-wrap: break-word;
+  width: 100%;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+/* .navbar-pgname-input-group {
+  display: gird;
+} */
+
+.navbar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  justify-content: space-around;
+  height: 100%;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.navbar-group-heading {
+  font-size: 1.4rem;
+  color: white;
+  text-align: center;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  .checkbox-wrapper input[type="checkbox"] {
+    --active: #808080;
+    --active-inner: #fff;
+    --focus: 2px rgba(39, 94, 254, 0.3);
+    --border: white;
+    --border-hover: white;
+    --background: #333;
+    --disabled: #1d1d1d;
+    --disabled-inner: #333;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 15px;
+    outline: none;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid var(--bc, var(--border));
+    background: var(--b, var(--background));
+    transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:after {
+    content: "";
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease),
+      opacity var(--d-o, 0.2s);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:checked {
+    --b: var(--active);
+    --bc: var(--active);
+    --d-o: 0.3s;
+    --d-t: 0.6s;
+    --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:disabled {
+    --b: var(--disabled);
+    cursor: not-allowed;
+    opacity: 0.9;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:disabled:checked {
+    --b: var(--disabled-inner);
+    --bc: var(--border);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:disabled+label {
+    cursor: not-allowed;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:hover:not(:checked):not(:disabled) {
+    --bc: var(--border-hover);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 var(--focus);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch) {
+    width: 21px;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):after {
+    opacity: var(--o, 0);
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):checked {
+    --o: 1;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]+label {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-left: 4px;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch) {
+    border-radius: 7px;
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):after {
+    width: 5px;
+    height: 9px;
+    border: 2px solid var(--active-inner);
+    border-top: 0;
+    border-left: 0;
+    left: 7px;
+    top: 4px;
+    transform: rotate(var(--r, 20deg));
+  }
+
+  .checkbox-wrapper input[type="checkbox"]:not(.switch):checked {
+    --r: 43deg;
+  }
+
+  .checkbox-wrapper input[type="checkbox"].switch {
+    width: 30px;
+    border-radius: 11px;
+  }
+
+  .checkbox-wrapper input[type="checkbox"].switch:after {
+    left: 2px;
+    top: 2.1px;
+    border-radius: 50%;
+    width: 11px;
+    height: 11px;
+    background: var(--ab, var(--border));
+    transform: translateX(var(--x, 0));
+  }
+
+  .checkbox-wrapper input[type="checkbox"].switch:checked {
+    --ab: var(--active-inner);
+    --x: 14px;
+  }
+
+  .checkbox-wrapper input[type="checkbox"].switch:disabled:not(:checked):after {
+    opacity: 0.6;
+  }
+}
+
+.checkbox-wrapper * {
+  box-sizing: inherit;
+}
+
+.checkbox-wrapper *:before,
+.checkbox-wrapper *:after {
+  box-sizing: inherit;
+}
+
+.navbar-group button,
+.navbar-group .button {
+  text-align: center;
+  background-color: #1d1d1d;
+  border-radius: 10px;
+  color: white;
+  padding: 0.7rem 1rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  width: 100%;
+  font-size: 12px;
+}
+
+.button-square {
+  width: 3rem !important;
+}
+
+.navbar-group button:hover,
+.navbar-group .button:hover {
+  opacity: 0.8;
+}
+
+#file-name-display {
+  font-size: 12px;
+  color: white;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#layout-select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  border: none;
+  background-color: #1d1d1d;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.bottom-bar {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  left: 50%;
+  transform: translateY(0) translateX(-50%);
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 0;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: baseline;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.trace-play-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.trace-slider {
+  width: 100%;
+}
+
+.cross-button-box {
+  display: block;
+  width: 6rem;
+  text-align: right;
+}
+
+.bottom-bar button {
+  background-color: #1d1d1d;
+  width: 3.5rem;
+  height: 3.5rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  font-size: 1.5rem;
+}
+
+.bottom-bar button:hover {
+  opacity: 0.7;
+}
+
+.play-speed-container {
+  display: flex;
+  width: 3.5rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-left-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 0;
+  border-bottom-right-radius: 20px;
+  font-size: larger;
+}
+
+.top-left-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-left-panel li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.color-line {
+  width: 0.8em;
+  height: 0.8em;
+  background-color: transparent;
+  border: 0.3em solid #aaa;
+  border-radius: 0.2em;
+  transition: background-color 0.3s ease;
+  /* add hand mouse */
+  cursor: pointer;
+}
+
+.trace-step-display {
+  color: #fff;
+  /* Example: setting text color */
+}
+
+input[type="text"],
+textarea {
+  color: white;
+  /* Color of the text */
+  background-color: #1d1d1d;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+input[type="checkbox"]:focus {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(255, 255, 255, 0.3) !important;
+}
+
+i input[type="text"]:hover:not(:focus),
+textarea:hover:not(:focus) {
+  opacity: 0.7;
+  /* Border color on hover */
+}
+
+.textInput {
+  width: 3rem;
+  line-height: 1.5;
+  margin: 10px;
+  /* Adjust the line height for better readability */
+}
+
+
+.pgname i {
+  cursor: pointer;
+  /* make it smaller */
+  font-size: 1rem;
+}
+
+.pgname-edit-icons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 0.2rem;
+}
+
+.manual-button {
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background-color: #444;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+  font-weight: bold;
+  font-size: larger;
+  color: white;
+  cursor: pointer;
+}
+
+.manual-button:hover {
+  background-color: #666;
+}`, "",{"version":3,"sources":["webpack://./src/index.css"],"names":[],"mappings":"AAAA;;EAEE,SAAS;EACT,UAAU;EACV,WAAW;EACX,YAAY;EACZ,8BAA8B;EAC9B,yBAAyB;EACzB,YAAY;EACZ,eAAe;AACjB;;AAEA;EACE,sBAAsB;EACtB,yCAAyC;EACzC,eAAe;EACf,YAAY;AACd;;AAEA;EACE,oBAAoB;AACtB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,8BAA8B;EAC9B,SAAS;EACT,WAAW;AACb;;AAEA;EACE,kBAAkB;EAClB,OAAO;EACP,MAAM;EACN,WAAW;EACX,YAAY;EACZ,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,QAAQ;EACR,QAAQ;EACR,oCAAoC;EACpC,2CAA2C;EAC3C,sCAAsC;EACtC,YAAY;EACZ,sBAAsB;EACtB,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,4BAA4B;EAC5B,+BAA+B;AACjC;;AAEA;EACE,cAAc;EACd,qBAAqB;EACrB,WAAW;EACX,eAAe;EACf,iBAAiB;EACjB,YAAY;EACZ,kBAAkB;AACpB;;AAEA;;GAEG;;AAEH;EACE,aAAa;EACb,sBAAsB;EACtB,WAAW;EACX,6BAA6B;EAC7B,YAAY;EACZ,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,iBAAiB;EACjB,YAAY;EACZ,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE;IACE,iBAAiB;IACjB,oBAAoB;IACpB,mCAAmC;IACnC,eAAe;IACf,qBAAqB;IACrB,kBAAkB;IAClB,mBAAmB;IACnB,sBAAsB;IACtB,wBAAwB;IACxB,qBAAqB;IACrB,YAAY;IACZ,aAAa;IACb,qBAAqB;IACrB,mBAAmB;IACnB,kBAAkB;IAClB,SAAS;IACT,eAAe;IACf,0CAA0C;IAC1C,uCAAuC;IACvC,+DAA+D;EACjE;;EAEA;IACE,WAAW;IACX,cAAc;IACd,OAAO;IACP,MAAM;IACN,kBAAkB;IAClB;8BAC0B;EAC5B;;EAEA;IACE,kBAAkB;IAClB,mBAAmB;IACnB,WAAW;IACX,WAAW;IACX,2CAA2C;EAC7C;;EAEA;IACE,oBAAoB;IACpB,mBAAmB;IACnB,YAAY;EACd;;EAEA;IACE,0BAA0B;IAC1B,mBAAmB;EACrB;;EAEA;IACE,mBAAmB;EACrB;;EAEA;IACE,yBAAyB;EAC3B;;EAEA;IACE,8BAA8B;EAChC;;EAEA;IACE,WAAW;EACb;;EAEA;IACE,oBAAoB;EACtB;;EAEA;IACE,MAAM;EACR;;EAEA;IACE,qBAAqB;IACrB,sBAAsB;IACtB,eAAe;IACf,gBAAgB;EAClB;;EAEA;IACE,kBAAkB;EACpB;;EAEA;IACE,UAAU;IACV,WAAW;IACX,qCAAqC;IACrC,aAAa;IACb,cAAc;IACd,SAAS;IACT,QAAQ;IACR,kCAAkC;EACpC;;EAEA;IACE,UAAU;EACZ;;EAEA;IACE,WAAW;IACX,mBAAmB;EACrB;;EAEA;IACE,SAAS;IACT,UAAU;IACV,kBAAkB;IAClB,WAAW;IACX,YAAY;IACZ,oCAAoC;IACpC,kCAAkC;EACpC;;EAEA;IACE,yBAAyB;IACzB,SAAS;EACX;;EAEA;IACE,YAAY;EACd;AACF;;AAEA;EACE,mBAAmB;AACrB;;AAEA;;EAEE,mBAAmB;AACrB;;AAEA;;EAEE,kBAAkB;EAClB,yBAAyB;EACzB,mBAAmB;EACnB,YAAY;EACZ,oBAAoB;EACpB,YAAY;EACZ,eAAe;EACf,2CAA2C;EAC3C,WAAW;EACX,eAAe;AACjB;;AAEA;EACE,sBAAsB;AACxB;;AAEA;;EAEE,YAAY;AACd;;AAEA;EACE,eAAe;EACf,YAAY;EACZ,uBAAuB;EACvB,gBAAgB;EAChB,mBAAmB;AACrB;;AAEA;EACE,WAAW;EACX,oBAAoB;EACpB,mBAAmB;EACnB,kBAAkB;EAClB,YAAY;EACZ,yBAAyB;EACzB,YAAY;EACZ,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,kBAAkB;EAClB,aAAa;EACb,sBAAsB;EACtB,SAAS;EACT,SAAS;EACT,yCAAyC;EACzC,cAAc;EACd,iBAAiB;EACjB,iBAAiB;EACjB,WAAW;EACX,sBAAsB;EACtB,uBAAuB;EACvB,qBAAqB;EACrB,4BAA4B;EAC5B,6BAA6B;AAC/B;;AAEA;EACE,aAAa;EACb,SAAS;AACX;;AAEA;EACE,WAAW;AACb;;AAEA;EACE,cAAc;EACd,WAAW;EACX,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;EACzB,aAAa;EACb,cAAc;EACd,kBAAkB;EAClB,uBAAuB;EACvB,mBAAmB;EACnB,mBAAmB;EACnB,YAAY;EACZ,YAAY;EACZ,eAAe;EACf,2CAA2C;EAC3C,iBAAiB;AACnB;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,aAAa;EACb,aAAa;EACb,sBAAsB;EACtB,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,MAAM;EACN,OAAO;EACP,cAAc;EACd,gCAAgC;EAChC,iBAAiB;AACnB;;AAEA;EACE,gBAAgB;EAChB,UAAU;EACV,SAAS;AACX;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,mBAAmB;AACrB;;AAEA;EACE,YAAY;EACZ,aAAa;EACb,6BAA6B;EAC7B,wBAAwB;EACxB,oBAAoB;EACpB,sCAAsC;EACtC,mBAAmB;EACnB,eAAe;AACjB;;AAEA;EACE,WAAW;EACX,gCAAgC;AAClC;;AAEA;;EAEE,YAAY;EACZ,sBAAsB;EACtB,yBAAyB;EACzB,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;AACpB;;AAEA;;EAEE,UAAU;EACV;oCACkC;AACpC;;AAEA;EACE;+CAC6C;AAC/C;;AAEA;;EAEE,YAAY;EACZ,0BAA0B;AAC5B;;AAEA;EACE,WAAW;EACX,gBAAgB;EAChB,YAAY;EACZ,kDAAkD;AACpD;;;AAGA;EACE,eAAe;EACf,oBAAoB;EACpB,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,yBAAyB;EACzB,WAAW;AACb;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,iBAAiB;EACjB,kBAAkB;EAClB,qBAAqB;EACrB,sBAAsB;EACtB,eAAe;EACf,SAAS;EACT,WAAW;EACX,sBAAsB;EACtB,kBAAkB;EAClB,sBAAsB;EACtB,yCAAyC;EACzC,iBAAiB;EACjB,iBAAiB;EACjB,YAAY;EACZ,eAAe;AACjB;;AAEA;EACE,sBAAsB;AACxB","sourcesContent":["body,\nhtml {\n  margin: 0;\n  padding: 0;\n  width: 100%;\n  height: 100%;\n  font-family: Arial, sans-serif;\n  background-color: #1d1d1d;\n  color: white;\n  font-size: 14px;\n}\n\n.card {\n  background-color: #333;\n  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);\n  padding: 1.7rem;\n  color: white;\n}\n\n.icon {\n  margin-right: 0.5rem;\n}\n\n.row {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  gap: 10px;\n  width: 100%;\n}\n\n#cy {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 100%;\n  height: 100%;\n  background: #1d1d1d;\n}\n\n.navbar {\n  position: absolute;\n  right: 0;\n  top: 50%;\n  /* Start at the middle of the page */\n  transform: translateY(-50%) translateX(0px);\n  /* Move it up by half its own height */\n  width: 245px;\n  box-sizing: border-box;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  border-top-left-radius: 20px;\n  border-bottom-left-radius: 20px;\n}\n\n.pgname {\n  overflow: warp;\n  word-wrap: break-word;\n  width: 100%;\n  font-size: 2rem;\n  font-weight: bold;\n  color: white;\n  text-align: center;\n}\n\n/* .navbar-pgname-input-group {\n  display: gird;\n} */\n\n.navbar-group {\n  display: flex;\n  flex-direction: column;\n  gap: 0.7rem;\n  justify-content: space-around;\n  height: 100%;\n  width: 100%;\n  margin-top: 20px;\n}\n\n.navbar-group-heading {\n  font-size: 1.4rem;\n  color: white;\n  text-align: center;\n}\n\n.checkbox-wrapper {\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n  margin-top: 1rem;\n}\n\n@supports (-webkit-appearance: none) or (-moz-appearance: none) {\n  .checkbox-wrapper input[type=\"checkbox\"] {\n    --active: #808080;\n    --active-inner: #fff;\n    --focus: 2px rgba(39, 94, 254, 0.3);\n    --border: white;\n    --border-hover: white;\n    --background: #333;\n    --disabled: #1d1d1d;\n    --disabled-inner: #333;\n    -webkit-appearance: none;\n    -moz-appearance: none;\n    height: 15px;\n    outline: none;\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    margin: 0;\n    cursor: pointer;\n    border: 1px solid var(--bc, var(--border));\n    background: var(--b, var(--background));\n    transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:after {\n    content: \"\";\n    display: block;\n    left: 0;\n    top: 0;\n    position: absolute;\n    transition: transform var(--d-t, 0.3s) var(--d-t-e, ease),\n      opacity var(--d-o, 0.2s);\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:checked {\n    --b: var(--active);\n    --bc: var(--active);\n    --d-o: 0.3s;\n    --d-t: 0.6s;\n    --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:disabled {\n    --b: var(--disabled);\n    cursor: not-allowed;\n    opacity: 0.9;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:disabled:checked {\n    --b: var(--disabled-inner);\n    --bc: var(--border);\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:disabled+label {\n    cursor: not-allowed;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:hover:not(:checked):not(:disabled) {\n    --bc: var(--border-hover);\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:focus {\n    box-shadow: 0 0 0 var(--focus);\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:not(.switch) {\n    width: 21px;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:not(.switch):after {\n    opacity: var(--o, 0);\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:not(.switch):checked {\n    --o: 1;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]+label {\n    display: inline-block;\n    vertical-align: middle;\n    cursor: pointer;\n    margin-left: 4px;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:not(.switch) {\n    border-radius: 7px;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:not(.switch):after {\n    width: 5px;\n    height: 9px;\n    border: 2px solid var(--active-inner);\n    border-top: 0;\n    border-left: 0;\n    left: 7px;\n    top: 4px;\n    transform: rotate(var(--r, 20deg));\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"]:not(.switch):checked {\n    --r: 43deg;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"].switch {\n    width: 30px;\n    border-radius: 11px;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"].switch:after {\n    left: 2px;\n    top: 2.1px;\n    border-radius: 50%;\n    width: 11px;\n    height: 11px;\n    background: var(--ab, var(--border));\n    transform: translateX(var(--x, 0));\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"].switch:checked {\n    --ab: var(--active-inner);\n    --x: 14px;\n  }\n\n  .checkbox-wrapper input[type=\"checkbox\"].switch:disabled:not(:checked):after {\n    opacity: 0.6;\n  }\n}\n\n.checkbox-wrapper * {\n  box-sizing: inherit;\n}\n\n.checkbox-wrapper *:before,\n.checkbox-wrapper *:after {\n  box-sizing: inherit;\n}\n\n.navbar-group button,\n.navbar-group .button {\n  text-align: center;\n  background-color: #1d1d1d;\n  border-radius: 10px;\n  color: white;\n  padding: 0.7rem 1rem;\n  border: none;\n  cursor: pointer;\n  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;\n  width: 100%;\n  font-size: 12px;\n}\n\n.button-square {\n  width: 3rem !important;\n}\n\n.navbar-group button:hover,\n.navbar-group .button:hover {\n  opacity: 0.8;\n}\n\n#file-name-display {\n  font-size: 12px;\n  color: white;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  white-space: nowrap;\n}\n\n#layout-select {\n  width: 100%;\n  padding: 0.7rem 1rem;\n  border-radius: 10px;\n  text-align: center;\n  border: none;\n  background-color: #1d1d1d;\n  color: white;\n  font-size: 12px;\n  cursor: pointer;\n}\n\n.bottom-bar {\n  position: absolute;\n  display: flex;\n  flex-direction: column;\n  bottom: 0;\n  left: 50%;\n  transform: translateY(0) translateX(-50%);\n  margin: 0 auto;\n  padding-top: 1rem;\n  padding-bottom: 0;\n  gap: 0.5rem;\n  box-sizing: border-box;\n  justify-content: center;\n  align-items: baseline;\n  border-top-left-radius: 20px;\n  border-top-right-radius: 20px;\n}\n\n.trace-play-controls {\n  display: flex;\n  gap: 10px;\n}\n\n.trace-slider {\n  width: 100%;\n}\n\n.cross-button-box {\n  display: block;\n  width: 6rem;\n  text-align: right;\n}\n\n.bottom-bar button {\n  background-color: #1d1d1d;\n  width: 3.5rem;\n  height: 3.5rem;\n  text-align: center;\n  justify-content: center;\n  align-items: center;\n  border-radius: 10px;\n  color: white;\n  border: none;\n  cursor: pointer;\n  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;\n  font-size: 1.5rem;\n}\n\n.bottom-bar button:hover {\n  opacity: 0.7;\n}\n\n.play-speed-container {\n  display: flex;\n  width: 3.5rem;\n  flex-direction: column;\n  align-items: center;\n}\n\n.top-left-panel {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding-top: 0;\n  border-bottom-right-radius: 20px;\n  font-size: larger;\n}\n\n.top-left-panel ul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n\n.top-left-panel li {\n  display: flex;\n  align-items: center;\n  margin-bottom: 12px;\n}\n\n.color-line {\n  width: 0.8em;\n  height: 0.8em;\n  background-color: transparent;\n  border: 0.3em solid #aaa;\n  border-radius: 0.2em;\n  transition: background-color 0.3s ease;\n  /* add hand mouse */\n  cursor: pointer;\n}\n\n.trace-step-display {\n  color: #fff;\n  /* Example: setting text color */\n}\n\ninput[type=\"text\"],\ntextarea {\n  color: white;\n  /* Color of the text */\n  background-color: #1d1d1d;\n  border: none;\n  border-radius: 5px;\n  text-align: center;\n}\n\ninput[type=\"text\"]:focus,\ntextarea:focus {\n  outline: 0;\n  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),\n    0 0 8px rgba(255, 255, 255, 0.3);\n}\n\ninput[type=\"checkbox\"]:focus {\n  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),\n    0 0 8px rgba(255, 255, 255, 0.3) !important;\n}\n\ni input[type=\"text\"]:hover:not(:focus),\ntextarea:hover:not(:focus) {\n  opacity: 0.7;\n  /* Border color on hover */\n}\n\n.textInput {\n  width: 3rem;\n  line-height: 1.5;\n  margin: 10px;\n  /* Adjust the line height for better readability */\n}\n\n\n.pgname i {\n  cursor: pointer;\n  /* make it smaller */\n  font-size: 1rem;\n}\n\n.pgname-edit-icons {\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  gap: 0.2rem;\n}\n\n.manual-button {\n  width: 50px;\n  height: 50px;\n  line-height: 50px;\n  text-align: center;\n  display: inline-block;\n  vertical-align: middle;\n  position: fixed;\n  top: 20px;\n  right: 20px;\n  box-sizing: border-box;\n  border-radius: 50%;\n  background-color: #444;\n  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);\n  font-weight: bold;\n  font-size: larger;\n  color: white;\n  cursor: pointer;\n}\n\n.manual-button:hover {\n  background-color: #666;\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/ui/manual.css":
+/*!*****************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/ui/manual.css ***!
+  \*****************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `.manual-overlay {
+  backdrop-filter: blur(5px);
+  height: 100vh;
+  width: 100vw;
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.manual {
+  margin-inline: auto;
+  width: fit-content;
+  max-width: 60%;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: start;
+  background-color: #333;
+}
+
+.manual-entry {
+  background-color: #1d1d1d;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  align-items: center;
+  justify-content: space-between;
+  text-align: end;
+  text-wrap: balance;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.manual-txt-entry {
+  background-color: #1d1d1d;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 10px;
+  margin-top: 10px;
+  font-size: medium;
+}
+
+.manual-key {
+  display: inline grid;
+  font-size: medium;
+  text-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 3rem;
+  min-width: 3rem;
+  max-width: 240px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-weight: bold;
+  background-color: #555;
+  border-radius: 8px;
+}
+
+.manual-keys {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}`, "",{"version":3,"sources":["webpack://./src/ui/manual.css"],"names":[],"mappings":"AAAA;EACE,0BAA0B;EAC1B,aAAa;EACb,YAAY;EACZ,aAAa;EACb,gBAAgB;EAChB,sBAAsB;AACxB;;AAEA;EACE,mBAAmB;EACnB,kBAAkB;EAClB,cAAc;EACd,aAAa;EACb,mBAAmB;EACnB,yCAAyC;EACzC,gBAAgB;EAChB,mBAAmB;EACnB,iBAAiB;EACjB,sBAAsB;AACxB;;AAEA;EACE,yBAAyB;EACzB,kBAAkB;EAClB,aAAa;EACb,mBAAmB;EACnB,QAAQ;EACR,mBAAmB;EACnB,8BAA8B;EAC9B,eAAe;EACf,kBAAkB;EAClB,aAAa;EACb,gBAAgB;AAClB;;AAEA;EACE,yBAAyB;EACzB,kBAAkB;EAClB,mBAAmB;EACnB,8BAA8B;EAC9B,kBAAkB;EAClB,gBAAgB;EAChB,iBAAiB;AACnB;;AAEA;EACE,oBAAoB;EACpB,iBAAiB;EACjB,kBAAkB;EAClB,mBAAmB;EACnB,sBAAsB;EACtB,gBAAgB;EAChB,eAAe;EACf,gBAAgB;EAChB,kBAAkB;EAClB,mBAAmB;EACnB,iBAAiB;EACjB,sBAAsB;EACtB,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,SAAS;AACX","sourcesContent":[".manual-overlay {\n  backdrop-filter: blur(5px);\n  height: 100vh;\n  width: 100vw;\n  padding: 20px;\n  overflow-y: auto;\n  box-sizing: border-box;\n}\n\n.manual {\n  margin-inline: auto;\n  width: fit-content;\n  max-width: 60%;\n  padding: 20px;\n  border-radius: 20px;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);\n  margin-top: 20px;\n  margin-bottom: 20px;\n  text-align: start;\n  background-color: #333;\n}\n\n.manual-entry {\n  background-color: #1d1d1d;\n  border-radius: 8px;\n  display: flex;\n  flex-direction: row;\n  gap: 2em;\n  align-items: center;\n  justify-content: space-between;\n  text-align: end;\n  text-wrap: balance;\n  padding: 10px;\n  margin-top: 10px;\n}\n\n.manual-txt-entry {\n  background-color: #1d1d1d;\n  border-radius: 8px;\n  align-items: center;\n  justify-content: space-between;\n  padding: 20px 10px;\n  margin-top: 10px;\n  font-size: medium;\n}\n\n.manual-key {\n  display: inline grid;\n  font-size: medium;\n  text-align: center;\n  align-items: center;\n  box-sizing: border-box;\n  min-height: 3rem;\n  min-width: 3rem;\n  max-width: 240px;\n  padding-left: 1rem;\n  padding-right: 1rem;\n  font-weight: bold;\n  background-color: #555;\n  border-radius: 8px;\n}\n\n.manual-keys {\n  display: flex;\n  flex-direction: row;\n  gap: 10px;\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/ui/toast.css":
+/*!****************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/ui/toast.css ***!
+  \****************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* Taken from https://github.com/amolikvivian/ts-toast/blob/main/index.css */
+/*
+- Import this stylesheet to your app, or add these classes to your existing stylesheets.
+- Toast is placed at bottom right, change bottom and right properties to fix position accordingly.
+- Tinker around with styles to suit your use case.
+- Would highly recommend TailwindCSS to reduce the lines of CSS.
+*/
+
+.toast {
+  width: 18.75rem;
+  font-size: 14px;
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  padding: 16px 20px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border-radius: 0.375rem;
+  background: white;
+  color: white;
+  opacity: 0.8;
+  animation: slideRight 0.25s ease-in-out;
+}
+
+/* Toast title */
+.toast-title {
+  font-size: large;
+  font-weight: 600;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Green */
+.toast--success {
+  background: #16a34a;
+}
+
+/* Red */
+.toast--danger {
+  background: #dc2626;
+}
+
+/* Yellow */
+.toast--warning {
+  background: #ca8a04;
+}
+
+/* Blue */
+.toast--info {
+  background: #2563eb;
+}
+
+/* Animation to slide in from right */
+@keyframes slideRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}`, "",{"version":3,"sources":["webpack://./src/ui/toast.css"],"names":[],"mappings":"AAAA,4EAA4E;AAC5E;;;;;CAKC;;AAED;EACE,eAAe;EACf,eAAe;EACf,eAAe;EACf,eAAe;EACf,cAAc;EACd,kBAAkB;EAClB,4EAA4E;EAC5E,uBAAuB;EACvB,iBAAiB;EACjB,YAAY;EACZ,YAAY;EACZ,uCAAuC;AACzC;;AAEA,gBAAgB;AAChB;EACE,gBAAgB;EAChB,gBAAgB;EAChB,mBAAmB;EACnB,mBAAmB;EACnB,iDAAiD;AACnD;;AAEA,UAAU;AACV;EACE,mBAAmB;AACrB;;AAEA,QAAQ;AACR;EACE,mBAAmB;AACrB;;AAEA,WAAW;AACX;EACE,mBAAmB;AACrB;;AAEA,SAAS;AACT;EACE,mBAAmB;AACrB;;AAEA,qCAAqC;AACrC;EACE;IACE,2BAA2B;EAC7B;;EAEA;IACE,wBAAwB;EAC1B;AACF","sourcesContent":["/* Taken from https://github.com/amolikvivian/ts-toast/blob/main/index.css */\n/*\n- Import this stylesheet to your app, or add these classes to your existing stylesheets.\n- Toast is placed at bottom right, change bottom and right properties to fix position accordingly.\n- Tinker around with styles to suit your use case.\n- Would highly recommend TailwindCSS to reduce the lines of CSS.\n*/\n\n.toast {\n  width: 18.75rem;\n  font-size: 14px;\n  position: fixed;\n  bottom: 1.25rem;\n  right: 1.25rem;\n  padding: 16px 20px;\n  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);\n  border-radius: 0.375rem;\n  background: white;\n  color: white;\n  opacity: 0.8;\n  animation: slideRight 0.25s ease-in-out;\n}\n\n/* Toast title */\n.toast-title {\n  font-size: large;\n  font-weight: 600;\n  padding-bottom: 5px;\n  margin-bottom: 10px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.5);\n}\n\n/* Green */\n.toast--success {\n  background: #16a34a;\n}\n\n/* Red */\n.toast--danger {\n  background: #dc2626;\n}\n\n/* Yellow */\n.toast--warning {\n  background: #ca8a04;\n}\n\n/* Blue */\n.toast--info {\n  background: #2563eb;\n}\n\n/* Animation to slide in from right */\n@keyframes slideRight {\n  from {\n    transform: translateX(100%);\n  }\n\n  to {\n    transform: translateX(0);\n  }\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+  \*****************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+module.exports = function (cssWithMappingToString) {
+  var list = [];
+
+  // return the list of modules as css string
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = "";
+      var needLayer = typeof item[5] !== "undefined";
+      if (item[4]) {
+        content += "@supports (".concat(item[4], ") {");
+      }
+      if (item[2]) {
+        content += "@media ".concat(item[2], " {");
+      }
+      if (needLayer) {
+        content += "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {");
+      }
+      content += cssWithMappingToString(item);
+      if (needLayer) {
+        content += "}";
+      }
+      if (item[2]) {
+        content += "}";
+      }
+      if (item[4]) {
+        content += "}";
+      }
+      return content;
+    }).join("");
+  };
+
+  // import a list of modules into the list
+  list.i = function i(modules, media, dedupe, supports, layer) {
+    if (typeof modules === "string") {
+      modules = [[null, modules, undefined]];
+    }
+    var alreadyImportedModules = {};
+    if (dedupe) {
+      for (var k = 0; k < this.length; k++) {
+        var id = this[k][0];
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+    for (var _k = 0; _k < modules.length; _k++) {
+      var item = [].concat(modules[_k]);
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        continue;
+      }
+      if (typeof layer !== "undefined") {
+        if (typeof item[5] === "undefined") {
+          item[5] = layer;
+        } else {
+          item[1] = "@layer".concat(item[5].length > 0 ? " ".concat(item[5]) : "", " {").concat(item[1], "}");
+          item[5] = layer;
+        }
+      }
+      if (media) {
+        if (!item[2]) {
+          item[2] = media;
+        } else {
+          item[1] = "@media ".concat(item[2], " {").concat(item[1], "}");
+          item[2] = media;
+        }
+      }
+      if (supports) {
+        if (!item[4]) {
+          item[4] = "".concat(supports);
+        } else {
+          item[1] = "@supports (".concat(item[4], ") {").concat(item[1], "}");
+          item[4] = supports;
+        }
+      }
+      list.push(item);
+    }
+  };
+  return list;
+};
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/sourceMaps.js":
+/*!************************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/sourceMaps.js ***!
+  \************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function (item) {
+  var content = item[1];
+  var cssMapping = item[3];
+  if (!cssMapping) {
+    return content;
+  }
+  if (typeof btoa === "function") {
+    var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(cssMapping))));
+    var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+    var sourceMapping = "/*# ".concat(data, " */");
+    return [content].concat([sourceMapping]).join("\n");
+  }
+  return [content].join("\n");
+};
+
+/***/ }),
+
 /***/ "./node_modules/cytoscape-cola/cytoscape-cola.js":
 /*!*******************************************************!*\
   !*** ./node_modules/cytoscape-cola/cytoscape-cola.js ***!
@@ -57091,6 +57860,438 @@ var Reflect;
 
 /***/ }),
 
+/***/ "./src/index.css":
+/*!***********************!*\
+  !*** ./src/index.css ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_index_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../node_modules/css-loader/dist/cjs.js!./index.css */ "./node_modules/css-loader/dist/cjs.js!./src/index.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_index_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_index_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_index_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_index_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/ui/manual.css":
+/*!***************************!*\
+  !*** ./src/ui/manual.css ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_manual_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./manual.css */ "./node_modules/css-loader/dist/cjs.js!./src/ui/manual.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_manual_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_manual_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_manual_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_manual_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./src/ui/toast.css":
+/*!**************************!*\
+  !*** ./src/ui/toast.css ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_toast_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./toast.css */ "./node_modules/css-loader/dist/cjs.js!./src/ui/toast.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_toast_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_toast_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_toast_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_toast_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+  \****************************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+var stylesInDOM = [];
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+  for (var i = 0; i < stylesInDOM.length; i++) {
+    if (stylesInDOM[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+  return result;
+}
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var indexByIdentifier = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3],
+      supports: item[4],
+      layer: item[5]
+    };
+    if (indexByIdentifier !== -1) {
+      stylesInDOM[indexByIdentifier].references++;
+      stylesInDOM[indexByIdentifier].updater(obj);
+    } else {
+      var updater = addElementStyle(obj, options);
+      options.byIndex = i;
+      stylesInDOM.splice(i, 0, {
+        identifier: identifier,
+        updater: updater,
+        references: 1
+      });
+    }
+    identifiers.push(identifier);
+  }
+  return identifiers;
+}
+function addElementStyle(obj, options) {
+  var api = options.domAPI(options);
+  api.update(obj);
+  var updater = function updater(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap && newObj.supports === obj.supports && newObj.layer === obj.layer) {
+        return;
+      }
+      api.update(obj = newObj);
+    } else {
+      api.remove();
+    }
+  };
+  return updater;
+}
+module.exports = function (list, options) {
+  options = options || {};
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDOM[index].references--;
+    }
+    var newLastIdentifiers = modulesToDom(newList, options);
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+      var _index = getIndexByIdentifier(_identifier);
+      if (stylesInDOM[_index].references === 0) {
+        stylesInDOM[_index].updater();
+        stylesInDOM.splice(_index, 1);
+      }
+    }
+    lastIdentifiers = newLastIdentifiers;
+  };
+};
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/insertBySelector.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/insertBySelector.js ***!
+  \********************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+var memo = {};
+
+/* istanbul ignore next  */
+function getTarget(target) {
+  if (typeof memo[target] === "undefined") {
+    var styleTarget = document.querySelector(target);
+
+    // Special case to return head of iframe instead of iframe itself
+    if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+      try {
+        // This will throw an exception if access to iframe is blocked
+        // due to cross-origin restrictions
+        styleTarget = styleTarget.contentDocument.head;
+      } catch (e) {
+        // istanbul ignore next
+        styleTarget = null;
+      }
+    }
+    memo[target] = styleTarget;
+  }
+  return memo[target];
+}
+
+/* istanbul ignore next  */
+function insertBySelector(insert, style) {
+  var target = getTarget(insert);
+  if (!target) {
+    throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+  }
+  target.appendChild(style);
+}
+module.exports = insertBySelector;
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/insertStyleElement.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/insertStyleElement.js ***!
+  \**********************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/* istanbul ignore next  */
+function insertStyleElement(options) {
+  var element = document.createElement("style");
+  options.setAttributes(element, options.attributes);
+  options.insert(element, options.options);
+  return element;
+}
+module.exports = insertStyleElement;
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js ***!
+  \**********************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+/* istanbul ignore next  */
+function setAttributesWithoutAttributes(styleElement) {
+  var nonce =  true ? __webpack_require__.nc : 0;
+  if (nonce) {
+    styleElement.setAttribute("nonce", nonce);
+  }
+}
+module.exports = setAttributesWithoutAttributes;
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/styleDomAPI.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/styleDomAPI.js ***!
+  \***************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/* istanbul ignore next  */
+function apply(styleElement, options, obj) {
+  var css = "";
+  if (obj.supports) {
+    css += "@supports (".concat(obj.supports, ") {");
+  }
+  if (obj.media) {
+    css += "@media ".concat(obj.media, " {");
+  }
+  var needLayer = typeof obj.layer !== "undefined";
+  if (needLayer) {
+    css += "@layer".concat(obj.layer.length > 0 ? " ".concat(obj.layer) : "", " {");
+  }
+  css += obj.css;
+  if (needLayer) {
+    css += "}";
+  }
+  if (obj.media) {
+    css += "}";
+  }
+  if (obj.supports) {
+    css += "}";
+  }
+  var sourceMap = obj.sourceMap;
+  if (sourceMap && typeof btoa !== "undefined") {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  }
+
+  // For old IE
+  /* istanbul ignore if  */
+  options.styleTagTransform(css, styleElement, options.options);
+}
+function removeStyleElement(styleElement) {
+  // istanbul ignore if
+  if (styleElement.parentNode === null) {
+    return false;
+  }
+  styleElement.parentNode.removeChild(styleElement);
+}
+
+/* istanbul ignore next  */
+function domAPI(options) {
+  if (typeof document === "undefined") {
+    return {
+      update: function update() {},
+      remove: function remove() {}
+    };
+  }
+  var styleElement = options.insertStyleElement(options);
+  return {
+    update: function update(obj) {
+      apply(styleElement, options, obj);
+    },
+    remove: function remove() {
+      removeStyleElement(styleElement);
+    }
+  };
+}
+module.exports = domAPI;
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/styleTagTransform.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/styleTagTransform.js ***!
+  \*********************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/* istanbul ignore next  */
+function styleTagTransform(css, styleElement) {
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css;
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild);
+    }
+    styleElement.appendChild(document.createTextNode(css));
+  }
+}
+module.exports = styleTagTransform;
+
+/***/ }),
+
 /***/ "./node_modules/ts-json-object/dist/src/index.js":
 /*!*******************************************************!*\
   !*** ./node_modules/ts-json-object/dist/src/index.js ***!
@@ -57751,188 +58952,6 @@ exports.assert = assert;
 
 /***/ }),
 
-/***/ "./src/board/ExamplePG.ts":
-/*!********************************!*\
-  !*** ./src/board/ExamplePG.ts ***!
-  \********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.exampleTrace = exports.examplePg = exports.example_zielonka = void 0;
-const Node_1 = __webpack_require__(/*! ./Node */ "./src/board/Node.ts");
-const ParityGame_1 = __webpack_require__(/*! ./ParityGame */ "./src/board/ParityGame.ts");
-const Trace_1 = __webpack_require__(/*! ./Trace */ "./src/board/Trace.ts");
-exports.example_zielonka = ParityGame_1.ParityGame.emptyBoard();
-// Add nodes with their respective players
-exports.example_zielonka.addNodeWith(0, Node_1.Player.Even);
-exports.example_zielonka.addNodeWith(2, Node_1.Player.Odd);
-exports.example_zielonka.addNodeWith(7, Node_1.Player.Even);
-exports.example_zielonka.addNodeWith(1, Node_1.Player.Odd);
-exports.example_zielonka.addNodeWith(5, Node_1.Player.Even);
-exports.example_zielonka.addNodeWith(8, Node_1.Player.Even);
-exports.example_zielonka.addNodeWith(6, Node_1.Player.Even);
-exports.example_zielonka.addNodeWith(2, Node_1.Player.Even);
-exports.example_zielonka.addNodeWith(3, Node_1.Player.Even);
-// // Add links between nodes
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[0], exports.example_zielonka.nodes[1]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[1], exports.example_zielonka.nodes[0]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[2], exports.example_zielonka.nodes[1]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[3], exports.example_zielonka.nodes[2]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[3], exports.example_zielonka.nodes[4]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[4], exports.example_zielonka.nodes[3]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[1], exports.example_zielonka.nodes[5]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[2], exports.example_zielonka.nodes[6]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[7], exports.example_zielonka.nodes[3]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[8], exports.example_zielonka.nodes[4]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[4], exports.example_zielonka.nodes[8]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[5], exports.example_zielonka.nodes[6]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[6], exports.example_zielonka.nodes[7]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[8], exports.example_zielonka.nodes[7]);
-exports.example_zielonka.addLinkFromNodes(exports.example_zielonka.nodes[7], exports.example_zielonka.nodes[8]);
-// Tests depend on the values of these two examples!
-exports.examplePg = ParityGame_1.ParityGame.emptyBoard();
-exports.examplePg.addNodeWith(1, Node_1.Player.Even);
-exports.examplePg.addNodeWith(8, Node_1.Player.Odd);
-exports.examplePg.addNodeWith(9, Node_1.Player.Even);
-exports.examplePg.addNodeWith(10, Node_1.Player.Odd);
-exports.examplePg.addNodeWith(7, Node_1.Player.Even);
-exports.examplePg.addNodeWith(3, Node_1.Player.Odd);
-exports.examplePg.addNodeWith(6, Node_1.Player.Even);
-exports.examplePg.addNodeWith(4, Node_1.Player.Odd);
-exports.examplePg.addNodeWith(0, Node_1.Player.Even);
-exports.examplePg.addNodeWith(2, Node_1.Player.Odd);
-// Adding links between nodes
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[0], exports.examplePg.nodes[8]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[1], exports.examplePg.nodes[9]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[2], exports.examplePg.nodes[9]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[3], exports.examplePg.nodes[2]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[4], exports.examplePg.nodes[7]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[5], exports.examplePg.nodes[8]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[6], exports.examplePg.nodes[9]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[7], exports.examplePg.nodes[6]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[8], exports.examplePg.nodes[2]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[9], exports.examplePg.nodes[0]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[3], exports.examplePg.nodes[9]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[2], exports.examplePg.nodes[1]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[4], exports.examplePg.nodes[0]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[8], exports.examplePg.nodes[4]);
-exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[8], exports.examplePg.nodes[3]);
-exports.exampleTrace = new Trace_1.Trace({
-    parity_game: exports.examplePg,
-    algorithm_name: "Zmrd",
-    steps: [
-        new Trace_1.TraceStep({
-            node_sets: [
-                new Trace_1.NodeSet({
-                    name: "current",
-                    node_ids: [0, 1],
-                }),
-                new Trace_1.NodeSet({
-                    name: "next",
-                    node_ids: [2, 3],
-                }),
-            ],
-            link_sets: [
-                new Trace_1.LinkSet({
-                    name: "pretty",
-                    link_source_target_ids: [
-                        [0, 8],
-                        [1, 9],
-                    ],
-                }),
-                new Trace_1.LinkSet({
-                    name: "ugly",
-                    link_source_target_ids: [[2, 9]],
-                }),
-            ],
-            node_labels: { 0: "special", 1: "ordinary" },
-        }),
-        new Trace_1.TraceStep({
-            node_sets: [
-                new Trace_1.NodeSet({
-                    name: "current",
-                    node_ids: [4, 5],
-                }),
-                new Trace_1.NodeSet({
-                    name: "other",
-                    node_ids: [6],
-                }),
-            ],
-            link_sets: [
-                new Trace_1.LinkSet({
-                    name: "pretty",
-                    link_source_target_ids: [
-                        [3, 2],
-                        [4, 7],
-                    ],
-                }),
-                new Trace_1.LinkSet({
-                    name: "wierd",
-                    link_source_target_ids: [[8, 4]],
-                }),
-            ],
-            node_labels: { 2: "special", 3: "ordinary" },
-        }),
-        new Trace_1.TraceStep({
-            node_sets: [
-                new Trace_1.NodeSet({
-                    name: "current",
-                    node_ids: [0, 1],
-                }),
-                new Trace_1.NodeSet({
-                    name: "next",
-                    node_ids: [2, 3],
-                }),
-            ],
-            link_sets: [
-                new Trace_1.LinkSet({
-                    name: "pretty",
-                    link_source_target_ids: [
-                        [0, 8],
-                        [1, 9],
-                    ],
-                }),
-                new Trace_1.LinkSet({
-                    name: "ugly",
-                    link_source_target_ids: [[2, 9]],
-                }),
-            ],
-            node_labels: { 4: "special", 5: "ordinary" },
-        }),
-        new Trace_1.TraceStep({
-            node_sets: [
-                new Trace_1.NodeSet({
-                    name: "current",
-                    node_ids: [4, 5],
-                }),
-                new Trace_1.NodeSet({
-                    name: "other",
-                    node_ids: [6],
-                }),
-            ],
-            link_sets: [
-                new Trace_1.LinkSet({
-                    name: "pretty",
-                    link_source_target_ids: [
-                        [3, 2],
-                        [4, 7],
-                    ],
-                }),
-                new Trace_1.LinkSet({
-                    name: "wierd",
-                    link_source_target_ids: [[8, 4]],
-                }),
-            ],
-            node_labels: { 6: "special", 7: "ordinary" },
-        }),
-    ],
-});
-
-
-/***/ }),
-
 /***/ "./src/board/Link.ts":
 /*!***************************!*\
   !*** ./src/board/Link.ts ***!
@@ -58035,134 +59054,6 @@ __decorate([
 
 /***/ }),
 
-/***/ "./src/board/PGParser.ts":
-/*!*******************************!*\
-  !*** ./src/board/PGParser.ts ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.PGParser = void 0;
-const ParityGame_1 = __webpack_require__(/*! ./ParityGame */ "./src/board/ParityGame.ts");
-const Node_1 = __webpack_require__(/*! ./Node */ "./src/board/Node.ts");
-const Link_1 = __webpack_require__(/*! ./Link */ "./src/board/Link.ts");
-const assert_1 = __webpack_require__(/*! ../assert */ "./src/assert.ts");
-var PGParser;
-(function (PGParser) {
-    function importOinkFormat(file_content) {
-        // create a list of lines
-        // var lines = file_content.split("/\r\n|\r|\n/");
-        var lines = file_content.split("\n");
-        let pg = ParityGame_1.ParityGame.emptyBoard();
-        // assert(lines[0] === `parity ${pg.nodes.length};`);
-        (0, assert_1.assert)(lines[0].startsWith("parity "));
-        let arc_id_pairs = [];
-        for (let l of lines.slice(1)) {
-            if (l.length == 0) {
-                // Empty line at the end of the file? If not, the assert on number of vertices will fail.
-                continue;
-            }
-            var components = l.split(" "); // i-1 to also remove the spacebefore
-            var node_label;
-            if (components.length > 4) {
-                // There is a label. If the label contains space, there will be more than 5 components.
-                let i = l.indexOf('"');
-                let j = l.lastIndexOf('"');
-                (0, assert_1.assert)(l[j + 1] == ";");
-                node_label = l.slice(i + 1, j);
-            }
-            else {
-                (0, assert_1.assert)(components.length == 4);
-                node_label = "";
-            }
-            var id = parseInt(components[0]);
-            var priority = parseInt(components[1]);
-            var player_str = components[2];
-            (0, assert_1.assert)(player_str == "1" || player_str == "0");
-            var player = player_str === "1" ? Node_1.Player.Odd : Node_1.Player.Even;
-            var arcs_str = components[3];
-            var targets = arcs_str.split(",").map((i) => parseInt(i));
-            for (let t of targets) {
-                arc_id_pairs.push([id, t]);
-            }
-            let n = Node_1.Node.new(id, priority, player, node_label);
-            pg.addNode(n);
-        }
-        for (let [s, t] of arc_id_pairs) {
-            let source_id = pg.find_node_by_id(s);
-            let target_id = pg.find_node_by_id(t);
-            if (source_id && target_id) {
-                pg.addLink(Link_1.Link.new(source_id.id, target_id.id));
-            }
-        }
-        return pg;
-    }
-    PGParser.importOinkFormat = importOinkFormat;
-    function exportOinkFormat(pg) {
-        // This is an evil hack, which assures you get the same output when importing and export .pg file with no labels.
-        const skipLabels = pg.nodes.every((n) => n.label === "");
-        var res = `parity ${pg.nodes.length};\n`;
-        for (let n of pg.nodes) {
-            let arc_str = pg
-                .target_neighbors(n)
-                .map((x) => x.id)
-                .join(",");
-            if (skipLabels) {
-                res += `${n.id} ${n.priority} ${n.player} ${arc_str};\n`;
-            }
-            else {
-                res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`;
-            }
-        }
-        return res;
-    }
-    PGParser.exportOinkFormat = exportOinkFormat;
-    function nodeToCy(node) {
-        return {
-            data: {
-                id: `${node.id}`,
-                priority: node.priority,
-                isEven: node.player === Node_1.Player.Even ? "true" : "false",
-                label: node.label,
-            },
-        };
-    }
-    function linkToCy(link) {
-        return {
-            group: "edges",
-            data: {
-                id: `${link.source_id + "," + link.target_id}`,
-                source: `${link.source_id}`,
-                target: `${link.target_id}`,
-            },
-        };
-    }
-    function pgToCy(pg) {
-        const nodes = pg.nodes.map((node) => nodeToCy(node));
-        const links = pg.links.map((link) => linkToCy(link));
-        return [...nodes, ...links];
-    }
-    PGParser.pgToCy = pgToCy;
-    function cyToPg(cy) {
-        const pg = ParityGame_1.ParityGame.emptyBoard();
-        for (const n of cy.$("node")) {
-            if (!n.isParent()) {
-                pg.addNode(Node_1.Node.new(parseInt(n.id()), parseInt(n.data("priority")), n.data("isEven") === "true" ? Node_1.Player.Even : Node_1.Player.Odd, n.data("label")));
-            }
-        }
-        for (const l of cy.$("edge")) {
-            pg.addLink(Link_1.Link.new(parseInt(l.data("source")), parseInt(l.data("target"))));
-        }
-        return pg;
-    }
-    PGParser.cyToPg = cyToPg;
-})(PGParser || (exports.PGParser = PGParser = {}));
-
-
-/***/ }),
-
 /***/ "./src/board/ParityGame.ts":
 /*!*********************************!*\
   !*** ./src/board/ParityGame.ts ***!
@@ -58186,7 +59077,7 @@ const Node_1 = __webpack_require__(/*! ./Node */ "./src/board/Node.ts");
 const Link_1 = __webpack_require__(/*! ./Link */ "./src/board/Link.ts");
 const ts_json_object_1 = __webpack_require__(/*! ts-json-object */ "./node_modules/ts-json-object/dist/src/index.js");
 const assert_1 = __webpack_require__(/*! ../assert */ "./src/assert.ts");
-const deepEquals_1 = __webpack_require__(/*! ../io/deepEquals */ "./src/io/deepEquals.ts");
+const deepEquals_1 = __webpack_require__(/*! ./deepEquals */ "./src/board/deepEquals.ts");
 class ParityGame extends ts_json_object_1.JSONObject {
     static emptyBoard() {
         return new ParityGame({
@@ -58232,13 +59123,13 @@ class ParityGame extends ts_json_object_1.JSONObject {
         return this.nodes.filter((node) => node.priority === priority);
     }
     attractorSet(targetNodes, player) {
-        let attractor = new Set(targetNodes);
-        let attractorIds = Array.from(attractor).map((n) => n.id);
+        const attractor = new Set(targetNodes);
+        const attractorIds = Array.from(attractor).map((n) => n.id);
         let isNotEmpty = true;
         while (isNotEmpty) {
-            let nodesToAdd = [];
+            const nodesToAdd = [];
             this.nodes.forEach((node) => {
-                let successors = this.adjList.get(node);
+                const successors = this.adjList.get(node);
                 if (attractorIds.includes(node.id)) {
                     return;
                 }
@@ -58293,7 +59184,7 @@ class ParityGame extends ts_json_object_1.JSONObject {
     addLink(link) {
         this.links.push(link);
         const source_node = this.find_node_by_id(link.source_id);
-        let s = this.adjList.get(source_node);
+        const s = this.adjList.get(source_node);
         s.add(this.find_node_by_id(link.target_id));
     }
     addNodeWith(priority, player, id, label) {
@@ -58356,7 +59247,7 @@ class ParityGame extends ts_json_object_1.JSONObject {
             .map((id) => this.find_node_by_id(id));
     }
     find_node_by_id(id) {
-        let res = this.nodes.find((n) => n.id === id);
+        const res = this.nodes.find((n) => n.id === id);
         (0, assert_1.assert)(res !== undefined);
         return res;
     }
@@ -58401,7 +59292,7 @@ __decorate([
 ], ParityGame.prototype, "links", void 0);
 __decorate([
     ts_json_object_1.JSONObject.custom((pg, key, value) => {
-        let res = new Map();
+        const res = new Map();
         pg.nodes.forEach((n) => res.set(n, new Set()));
         pg.links.forEach((l) => {
             res
@@ -58567,6 +59458,350 @@ __decorate([
 
 /***/ }),
 
+/***/ "./src/board/deepEquals.ts":
+/*!*********************************!*\
+  !*** ./src/board/deepEquals.ts ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.deepEquals = void 0;
+function deepEquals(a, b) {
+    if (a === null || b === null) {
+        throw new Error("deepEquals does not support null values");
+    }
+    if (a === b) {
+        return true;
+    }
+    if (typeof a !== 'object' || typeof b !== 'object') {
+        return false;
+    }
+    if (Object.keys(a).length !== Object.keys(b).length) {
+        return false;
+    }
+    for (const key in a) {
+        if (!deepEquals(a[key], b[key])) {
+            return false;
+        }
+    }
+    return true;
+}
+exports.deepEquals = deepEquals;
+
+
+/***/ }),
+
+/***/ "./src/board/exampleParityGame.ts":
+/*!****************************************!*\
+  !*** ./src/board/exampleParityGame.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.exampleTrace = exports.examplePg = exports.exampleZielonka = void 0;
+const Node_1 = __webpack_require__(/*! ./Node */ "./src/board/Node.ts");
+const ParityGame_1 = __webpack_require__(/*! ./ParityGame */ "./src/board/ParityGame.ts");
+const Trace_1 = __webpack_require__(/*! ./Trace */ "./src/board/Trace.ts");
+exports.exampleZielonka = ParityGame_1.ParityGame.emptyBoard();
+// Add nodes with their respective players
+exports.exampleZielonka.addNodeWith(0, Node_1.Player.Even);
+exports.exampleZielonka.addNodeWith(2, Node_1.Player.Odd);
+exports.exampleZielonka.addNodeWith(7, Node_1.Player.Even);
+exports.exampleZielonka.addNodeWith(1, Node_1.Player.Odd);
+exports.exampleZielonka.addNodeWith(5, Node_1.Player.Even);
+exports.exampleZielonka.addNodeWith(8, Node_1.Player.Even);
+exports.exampleZielonka.addNodeWith(6, Node_1.Player.Even);
+exports.exampleZielonka.addNodeWith(2, Node_1.Player.Even);
+exports.exampleZielonka.addNodeWith(3, Node_1.Player.Even);
+// // Add links between nodes
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[0], exports.exampleZielonka.nodes[1]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[1], exports.exampleZielonka.nodes[0]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[2], exports.exampleZielonka.nodes[1]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[3], exports.exampleZielonka.nodes[2]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[3], exports.exampleZielonka.nodes[4]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[4], exports.exampleZielonka.nodes[3]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[1], exports.exampleZielonka.nodes[5]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[2], exports.exampleZielonka.nodes[6]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[7], exports.exampleZielonka.nodes[3]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[8], exports.exampleZielonka.nodes[4]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[4], exports.exampleZielonka.nodes[8]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[5], exports.exampleZielonka.nodes[6]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[6], exports.exampleZielonka.nodes[7]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[8], exports.exampleZielonka.nodes[7]);
+exports.exampleZielonka.addLinkFromNodes(exports.exampleZielonka.nodes[7], exports.exampleZielonka.nodes[8]);
+// Tests depend on the values of these two examples!
+exports.examplePg = ParityGame_1.ParityGame.emptyBoard();
+exports.examplePg.addNodeWith(1, Node_1.Player.Even);
+exports.examplePg.addNodeWith(8, Node_1.Player.Odd);
+exports.examplePg.addNodeWith(9, Node_1.Player.Even);
+exports.examplePg.addNodeWith(10, Node_1.Player.Odd);
+exports.examplePg.addNodeWith(7, Node_1.Player.Even);
+exports.examplePg.addNodeWith(3, Node_1.Player.Odd);
+exports.examplePg.addNodeWith(6, Node_1.Player.Even);
+exports.examplePg.addNodeWith(4, Node_1.Player.Odd);
+exports.examplePg.addNodeWith(0, Node_1.Player.Even);
+exports.examplePg.addNodeWith(2, Node_1.Player.Odd);
+// Adding links between nodes
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[0], exports.examplePg.nodes[8]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[1], exports.examplePg.nodes[9]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[2], exports.examplePg.nodes[9]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[3], exports.examplePg.nodes[2]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[4], exports.examplePg.nodes[7]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[5], exports.examplePg.nodes[8]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[6], exports.examplePg.nodes[9]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[7], exports.examplePg.nodes[6]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[8], exports.examplePg.nodes[2]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[9], exports.examplePg.nodes[0]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[3], exports.examplePg.nodes[9]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[2], exports.examplePg.nodes[1]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[4], exports.examplePg.nodes[0]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[8], exports.examplePg.nodes[4]);
+exports.examplePg.addLinkFromNodes(exports.examplePg.nodes[8], exports.examplePg.nodes[3]);
+exports.exampleTrace = new Trace_1.Trace({
+    parity_game: exports.examplePg,
+    algorithm_name: "Zmrd",
+    steps: [
+        new Trace_1.TraceStep({
+            node_sets: [
+                new Trace_1.NodeSet({
+                    name: "current",
+                    node_ids: [0, 1],
+                }),
+                new Trace_1.NodeSet({
+                    name: "next",
+                    node_ids: [2, 3],
+                }),
+            ],
+            link_sets: [
+                new Trace_1.LinkSet({
+                    name: "pretty",
+                    link_source_target_ids: [
+                        [0, 8],
+                        [1, 9],
+                    ],
+                }),
+                new Trace_1.LinkSet({
+                    name: "ugly",
+                    link_source_target_ids: [[2, 9]],
+                }),
+            ],
+            node_labels: { 0: "special", 1: "ordinary" },
+        }),
+        new Trace_1.TraceStep({
+            node_sets: [
+                new Trace_1.NodeSet({
+                    name: "current",
+                    node_ids: [4, 5],
+                }),
+                new Trace_1.NodeSet({
+                    name: "other",
+                    node_ids: [6],
+                }),
+            ],
+            link_sets: [
+                new Trace_1.LinkSet({
+                    name: "pretty",
+                    link_source_target_ids: [
+                        [3, 2],
+                        [4, 7],
+                    ],
+                }),
+                new Trace_1.LinkSet({
+                    name: "wierd",
+                    link_source_target_ids: [[8, 4]],
+                }),
+            ],
+            node_labels: { 2: "special", 3: "ordinary" },
+        }),
+        new Trace_1.TraceStep({
+            node_sets: [
+                new Trace_1.NodeSet({
+                    name: "current",
+                    node_ids: [0, 1],
+                }),
+                new Trace_1.NodeSet({
+                    name: "next",
+                    node_ids: [2, 3],
+                }),
+            ],
+            link_sets: [
+                new Trace_1.LinkSet({
+                    name: "pretty",
+                    link_source_target_ids: [
+                        [0, 8],
+                        [1, 9],
+                    ],
+                }),
+                new Trace_1.LinkSet({
+                    name: "ugly",
+                    link_source_target_ids: [[2, 9]],
+                }),
+            ],
+            node_labels: { 4: "special", 5: "ordinary" },
+        }),
+        new Trace_1.TraceStep({
+            node_sets: [
+                new Trace_1.NodeSet({
+                    name: "current",
+                    node_ids: [4, 5],
+                }),
+                new Trace_1.NodeSet({
+                    name: "other",
+                    node_ids: [6],
+                }),
+            ],
+            link_sets: [
+                new Trace_1.LinkSet({
+                    name: "pretty",
+                    link_source_target_ids: [
+                        [3, 2],
+                        [4, 7],
+                    ],
+                }),
+                new Trace_1.LinkSet({
+                    name: "wierd",
+                    link_source_target_ids: [[8, 4]],
+                }),
+            ],
+            node_labels: { 6: "special", 7: "ordinary" },
+        }),
+    ],
+});
+
+
+/***/ }),
+
+/***/ "./src/board/parityGameParser.ts":
+/*!***************************************!*\
+  !*** ./src/board/parityGameParser.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.cyToPg = exports.pgToCy = exports.linkToCy = exports.nodeToCy = exports.exportOinkFormat = exports.importOinkFormat = void 0;
+const ParityGame_1 = __webpack_require__(/*! ./ParityGame */ "./src/board/ParityGame.ts");
+const Node_1 = __webpack_require__(/*! ./Node */ "./src/board/Node.ts");
+const Link_1 = __webpack_require__(/*! ./Link */ "./src/board/Link.ts");
+const assert_1 = __webpack_require__(/*! ../assert */ "./src/assert.ts");
+function importOinkFormat(file_content) {
+    // create a list of lines
+    // var lines = file_content.split("/\r\n|\r|\n/");
+    const lines = file_content.split("\n");
+    const pg = ParityGame_1.ParityGame.emptyBoard();
+    // assert(lines[0] === `parity ${pg.nodes.length};`);
+    (0, assert_1.assert)(lines[0].startsWith("parity "));
+    const arc_id_pairs = [];
+    for (const l of lines.slice(1)) {
+        if (l.length == 0) {
+            // Empty line at the end of the file? If not, the assert on number of vertices will fail.
+            continue;
+        }
+        const components = l.split(" "); // i-1 to also remove the spacebefore
+        let nodeLabel;
+        if (components.length > 4) {
+            // There is a label. If the label contains space, there will be more than 5 components.
+            const i = l.indexOf('"');
+            const j = l.lastIndexOf('"');
+            (0, assert_1.assert)(l[j + 1] == ";");
+            nodeLabel = l.slice(i + 1, j);
+        }
+        else {
+            (0, assert_1.assert)(components.length == 4);
+            nodeLabel = "";
+        }
+        const id = parseInt(components[0]);
+        const priority = parseInt(components[1]);
+        const player_str = components[2];
+        (0, assert_1.assert)(player_str == "1" || player_str == "0");
+        const player = player_str === "1" ? Node_1.Player.Odd : Node_1.Player.Even;
+        const arcs_str = components[3];
+        const targets = arcs_str.split(",").map((i) => parseInt(i));
+        for (const t of targets) {
+            arc_id_pairs.push([id, t]);
+        }
+        const n = Node_1.Node.new(id, priority, player, nodeLabel);
+        pg.addNode(n);
+    }
+    for (const [s, t] of arc_id_pairs) {
+        const source_id = pg.find_node_by_id(s);
+        const target_id = pg.find_node_by_id(t);
+        if (source_id && target_id) {
+            pg.addLink(Link_1.Link.new(source_id.id, target_id.id));
+        }
+    }
+    return pg;
+}
+exports.importOinkFormat = importOinkFormat;
+function exportOinkFormat(pg) {
+    // This is an evil hack, which assures you get the same output when importing and export .pg file with no labels.
+    const skipLabels = pg.nodes.every((n) => n.label === "");
+    let res = `parity ${pg.nodes.length};\n`;
+    for (const n of pg.nodes) {
+        const arc_str = pg
+            .target_neighbors(n)
+            .map((x) => x.id)
+            .join(",");
+        if (skipLabels) {
+            res += `${n.id} ${n.priority} ${n.player} ${arc_str};\n`;
+        }
+        else {
+            res += `${n.id} ${n.priority} ${n.player} ${arc_str} "${n.label}";\n`;
+        }
+    }
+    return res;
+}
+exports.exportOinkFormat = exportOinkFormat;
+function nodeToCy(node) {
+    return {
+        data: {
+            id: `${node.id}`,
+            priority: node.priority,
+            isEven: node.player === Node_1.Player.Even ? "true" : "false",
+            label: node.label,
+        },
+    };
+}
+exports.nodeToCy = nodeToCy;
+function linkToCy(link) {
+    return {
+        group: "edges",
+        data: {
+            id: `${link.source_id + "," + link.target_id}`,
+            source: `${link.source_id}`,
+            target: `${link.target_id}`,
+        },
+    };
+}
+exports.linkToCy = linkToCy;
+function pgToCy(pg) {
+    const nodes = pg.nodes.map((node) => nodeToCy(node));
+    const links = pg.links.map((link) => linkToCy(link));
+    return [...nodes, ...links];
+}
+exports.pgToCy = pgToCy;
+function cyToPg(cy) {
+    const pg = ParityGame_1.ParityGame.emptyBoard();
+    for (const n of cy.$("node")) {
+        if (!n.isParent()) {
+            pg.addNode(Node_1.Node.new(parseInt(n.id()), parseInt(n.data("priority")), n.data("isEven") === "true" ? Node_1.Player.Even : Node_1.Player.Odd, n.data("label")));
+        }
+    }
+    for (const l of cy.$("edge")) {
+        pg.addLink(Link_1.Link.new(parseInt(l.data("source")), parseInt(l.data("target"))));
+    }
+    return pg;
+}
+exports.cyToPg = cyToPg;
+
+
+/***/ }),
+
 /***/ "./src/cytoscape/cytoscapeSetup.ts":
 /*!*****************************************!*\
   !*** ./src/cytoscape/cytoscapeSetup.ts ***!
@@ -58577,20 +59812,20 @@ __decorate([
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.setupCytoscape = void 0;
-var jquery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+const jquery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 window.$ = jquery;
-var cytoscape = __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js");
-var konva = __webpack_require__(/*! konva */ "./node_modules/konva/lib/index.js");
-var edgeEditing = __webpack_require__(/*! ../cytoscape-edge-editing/src/index.js */ "./src/cytoscape-edge-editing/src/index.js");
-var contextMenus = __webpack_require__(/*! cytoscape-context-menus */ "./node_modules/cytoscape-context-menus/cytoscape-context-menus.js");
-var undoRedo = __webpack_require__(/*! cytoscape-undo-redo */ "./node_modules/cytoscape-undo-redo/cytoscape-undo-redo.js");
-var cola = __webpack_require__(/*! cytoscape-cola */ "./node_modules/cytoscape-cola/cytoscape-cola.js");
+const cytoscape = __webpack_require__(/*! cytoscape */ "./node_modules/cytoscape/dist/cytoscape.cjs.js");
+const konva = __webpack_require__(/*! konva */ "./node_modules/konva/lib/index.js");
+const edgeEditing = __webpack_require__(/*! ../cytoscape-edge-editing/src/index.js */ "./src/cytoscape-edge-editing/src/index.js");
+const contextMenus = __webpack_require__(/*! cytoscape-context-menus */ "./node_modules/cytoscape-context-menus/cytoscape-context-menus.js");
+const undoRedo = __webpack_require__(/*! cytoscape-undo-redo */ "./node_modules/cytoscape-undo-redo/cytoscape-undo-redo.js");
+const cola = __webpack_require__(/*! cytoscape-cola */ "./node_modules/cytoscape-cola/cytoscape-cola.js");
 function setupCytoscape(containerId) {
     const EVEN_COLOR = "#7A7A7A";
     const ODD_COLOR = "#ADADAD";
     const SELECTION_COLOR = "#0169D9";
     // Initialize Cytoscape with a configuration object
-    let cy = cytoscape({
+    const cy = cytoscape({
         container: document.getElementById(containerId),
         elements: [],
         style: [
@@ -58607,8 +59842,8 @@ function setupCytoscape(containerId) {
                     "font-size": "10px",
                     "text-outline-color": "black",
                     "text-outline-width": ".05em",
-                    "text-outline-opacity": ".75",
-                    "text-opacity": "1",
+                    "text-outline-opacity": .85,
+                    "text-opacity": 1,
                 },
             },
             {
@@ -58686,7 +59921,7 @@ function setupCytoscape(containerId) {
     contextMenus(cytoscape); // This line is crucial
     edgeEditing(cytoscape, jquery, konva);
     cytoscape.use(cola);
-    let ur = cy.undoRedo({
+    const ur = cy.undoRedo({
         isDebug: true,
     });
     cy.edgeEditing({
@@ -58720,7 +59955,7 @@ exports.setupCytoscape = setupCytoscape;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.pasteCopiedElements = exports.copySelectedElements = exports.addNodeAtPosition = void 0;
-var copiedElements = [];
+let copiedElements = [];
 function addNodeAtPosition(cy, ur, x, y, isEven) {
     ur.do("add", {
         group: "nodes",
@@ -58755,7 +59990,7 @@ function pasteCopiedElements(cy, ur) {
     if (copiedElements.length > 0) {
         cy.$(":selected").unselect();
         const offset = 10; // Offset for the pasted elements' position
-        let oldid_newid = {};
+        const oldid_newid = {};
         let maxId = getNewMaxId(cy);
         copiedElements.sort((a, b) => {
             if (a.group === "nodes" && b.group === "edges") {
@@ -58766,7 +60001,7 @@ function pasteCopiedElements(cy, ur) {
             }
             return 0;
         });
-        let newElements = [];
+        const newElements = [];
         copiedElements.map((ele) => {
             if (ele.group === "nodes") {
                 oldid_newid[ele.data.id] = maxId;
@@ -58834,8 +60069,8 @@ function setupKeyboardEvents(cy, ur) {
         const modelX = (mouseX - pan.x) / zoom;
         const modelY = (mouseY - pan.y) / zoom;
         // skip the keybinds from KeyBoardEvents if the user is typing in an input field
-        var nothingIsFocused = document.activeElement === document.body;
-        if (!nothingIsFocused)
+        const isTyping = (document.activeElement.tagName.toLowerCase() == "input" && document.activeElement.type == "text") || document.activeElement.tagName.toLowerCase() == "textarea";
+        if (isTyping)
             return;
         let km;
         if (km = keymap_1.otherMappings.keyMap.get(event.key)) {
@@ -58901,7 +60136,6 @@ function setupNodeEvents(cy, ur, layoutManager) {
         layoutManager.onDrag();
     });
     cy.on("click", "node", (event) => {
-        const node = event.target;
         const isAltPressed = event.originalEvent.altKey;
         const isShiftCmdPressed = event.originalEvent.shiftKey && event.originalEvent.metaKey;
         if (!isAltPressed && !isShiftCmdPressed)
@@ -58968,145 +60202,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.refreshNodeLabels = void 0;
+__webpack_require__(/*! ./index.css */ "./src/index.css");
 const layoutManager_1 = __webpack_require__(/*! ./layout/layoutManager */ "./src/layout/layoutManager.ts");
 const TraceManager_1 = __webpack_require__(/*! ./io/TraceManager */ "./src/io/TraceManager.ts");
 const cytoscapeSetup_1 = __webpack_require__(/*! ./cytoscape/cytoscapeSetup */ "./src/cytoscape/cytoscapeSetup.ts");
 const keyboardEvents_1 = __webpack_require__(/*! ./events/keyboardEvents */ "./src/events/keyboardEvents.ts");
-const exportImport_1 = __webpack_require__(/*! ./io/exportImport */ "./src/io/exportImport.ts");
-const urActionSetup_1 = __webpack_require__(/*! ./undo-redo/urActionSetup */ "./src/undo-redo/urActionSetup.ts");
 const nodeEvents_1 = __webpack_require__(/*! ./events/nodeEvents */ "./src/events/nodeEvents.ts");
-const PGParser_1 = __webpack_require__(/*! ./board/PGParser */ "./src/board/PGParser.ts");
-const manual_1 = __webpack_require__(/*! ./keymap/manual */ "./src/keymap/manual.ts");
+const manual_1 = __webpack_require__(/*! ./ui/manual */ "./src/ui/manual.ts");
 const autosave_1 = __webpack_require__(/*! ./io/autosave */ "./src/io/autosave.ts");
-__webpack_require__(/*! ./ui/PGNameEditing */ "./src/ui/PGNameEditing.ts");
-const PGNameEditing_1 = __webpack_require__(/*! ./ui/PGNameEditing */ "./src/ui/PGNameEditing.ts");
-const ExamplePG_1 = __webpack_require__(/*! ./board/ExamplePG */ "./src/board/ExamplePG.ts");
-const algos_1 = __webpack_require__(/*! ./algos */ "./src/algos/index.ts");
-window.PGParser = PGParser_1.PGParser;
-// Set up the cytoscape instance
-var [cy, ur] = (0, cytoscapeSetup_1.setupCytoscape)("cy");
-window.cy = cy;
-window.ur = ur;
-cy.add(PGParser_1.PGParser.pgToCy(ExamplePG_1.example_zielonka));
-(0, manual_1.fillManual)();
-const fileInput = document.getElementById("fileInput");
-var pgManager = new TraceManager_1.TraceManager(cy);
-fileInput.addEventListener("change", (e) => {
-    console.log("fileInput changed");
-    const target = e.target;
-    pgManager.handleTraceFileSelect(e);
-    // Reset the file input value
-    if (target && target.value) {
-        target.value = '';
-    }
-});
-window.traceManager = pgManager;
-// populate the algorithm select options
-const algoSelect = document.getElementById("algorithm-select");
-Object.keys(algos_1.algos).forEach((key) => {
-    const option = document.createElement("option");
-    option.value = key;
-    option.text = algos_1.algos[key].name;
-    algoSelect.appendChild(option);
-});
-const algoStart = document.getElementById("start-algorithm-btn");
-algoStart.addEventListener("click", () => {
-    console.log("start algorithm");
-    // get the selected algorithm
-    const algoSelect = document.getElementById("algorithm-select");
-    const selectedAlgorithm = algoSelect.value;
-    const res = algos_1.algos[selectedAlgorithm].run(PGParser_1.PGParser.cyToPg(cy));
-    // Update the trace with the result from the algorithm
-    if (res.trace) {
-        window.traceManager.setTrace(res.trace);
-    }
-});
-const layoutManager = new layoutManager_1.default(cy);
-window.layoutManager = layoutManager;
-(0, urActionSetup_1.setupUndoRedoActions)(cy, ur, layoutManager);
-(0, keyboardEvents_1.setupKeyboardEvents)(cy, ur);
-(0, nodeEvents_1.setupNodeEvents)(cy, ur, layoutManager);
-// Window shits
-window.handleExportGame = function () {
-    (0, exportImport_1.handleExportGame)(cy);
-};
-window.handleImportGame = function (event) {
-    (0, exportImport_1.handleImportGame)(event, cy, ur);
-};
-window.handleOinkFileSelect = function (event) {
-    (0, exportImport_1.handleOinkFileSelect)(event, cy, layoutManager, ur);
-};
-window.saveOinkFile = function (event) {
-    (0, exportImport_1.saveOinkFile)(cy);
-};
-window.exportAsPng = function () {
-    (0, exportImport_1.exportAsPng)(cy);
-};
-window.changeLayout = function (e) {
-    layoutManager.changeLayout(e.target.value);
-    // decheck the layout on layout-on-drag
-    const toggle = document.getElementById("layout-on-drag");
-    toggle.checked = false;
-    layoutManager.setRunOnDrag(false);
-};
-window.runLayout = function () {
-    ur.do("runLayout", { nodes: cy.nodes() });
-};
-const displayLabelsInput = document.getElementById("display-labels");
-displayLabelsInput.addEventListener("change", refreshNodeLabels);
-function refreshNodeLabels() {
-    // Label means two things in this function: node.data.label is the name of the node, and node.style.label is the text that is displayed on the node, which also incudes the priority or the label from trace if needed.
-    const displayNodeLabels = displayLabelsInput.checked;
-    function compositeLabel(ele) {
-        // Parent nodes are the groups of nodes created with "g".
-        if (ele.isParent()) {
-            return ele.data("label");
-        }
-        let res = ele.data("priority").toString();
-        if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) {
-            // Skip line if there is trace label, to make it clear the label is trace label
-            res += `\n${ele.data("label")}`;
-        }
-        if (ele.data("traceLabel")) {
-            res += `\n${ele.data("traceLabel")}`;
-        }
-        return res;
-    }
-    cy.nodes().style({
-        label: compositeLabel,
-    });
-}
-exports.refreshNodeLabels = refreshNodeLabels;
+__webpack_require__(/*! ./ui/pgNameEditing */ "./src/ui/pgNameEditing.ts");
+const pgNameEditing_1 = __webpack_require__(/*! ./ui/pgNameEditing */ "./src/ui/pgNameEditing.ts");
+const exportImport_1 = __webpack_require__(/*! ./io/exportImport */ "./src/io/exportImport.ts");
+const algorithmSelect_1 = __webpack_require__(/*! ./ui/algorithmSelect */ "./src/ui/algorithmSelect.ts");
+const other_1 = __webpack_require__(/*! ./ui/other */ "./src/ui/other.ts");
+const urActionSetup_1 = __webpack_require__(/*! ./undo-redo/urActionSetup */ "./src/undo-redo/urActionSetup.ts");
 document.addEventListener("DOMContentLoaded", function () {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, autosave_1.loadState)(); // Load saved state
-        refreshNodeLabels();
+        const [cy, ur] = (0, cytoscapeSetup_1.setupCytoscape)("cy");
+        window.cy = cy;
+        window.ur = ur;
+        const traceManager = new TraceManager_1.TraceManager(cy);
+        window.traceManager = traceManager;
+        const layoutManager = new layoutManager_1.default(cy);
+        window.layoutManager = layoutManager;
+        (0, urActionSetup_1.setupUndoRedoActions)();
+        (0, keyboardEvents_1.setupKeyboardEvents)(cy, ur);
+        (0, nodeEvents_1.setupNodeEvents)(cy, ur, layoutManager);
+        (0, manual_1.fillManual)();
+        (0, algorithmSelect_1.setupAlgorithmSelect)();
+        (0, pgNameEditing_1.setupPGNameEditing)();
+        (0, exportImport_1.setupImportExportUI)();
+        (0, other_1.setupOtherUI)();
         window.cy.fit(cy.elements(), 50);
-        (0, PGNameEditing_1.setupPGNameEditing)();
-        document
-            .getElementById("nextStepAction")
-            .addEventListener("click", pgManager.nextStep.bind(pgManager));
-        document
-            .getElementById("lastStepAction")
-            .addEventListener("click", pgManager.prevStep.bind(pgManager));
-        document
-            .getElementById("skipToBeginningAction")
-            .addEventListener("click", pgManager.goToFirstStep.bind(pgManager));
-        document
-            .getElementById("skipToEndAction")
-            .addEventListener("click", pgManager.goToLastStep.bind(pgManager));
-        document
-            .getElementById("closeButton")
-            .addEventListener("click", pgManager.removeTrace.bind(pgManager));
-        document.getElementById("export-oink-btn").addEventListener("click", (e) => {
-            PGParser_1.PGParser.exportOinkFormat(PGParser_1.PGParser.cyToPg(cy));
-        });
-        // reset view button. so when this button is clicked, the graph will be reset to the original view and have the graph centered
-        document.getElementById("resetView").addEventListener("click", (e) => {
-            cy.reset();
-            cy.centre();
-        });
+        yield (0, autosave_1.loadState)(); // Load saved state
         setInterval(autosave_1.saveState, 500);
     });
 });
@@ -59136,9 +60264,9 @@ exports.TraceManager = void 0;
 const toast_1 = __webpack_require__(/*! ../ui/toast */ "./src/ui/toast.ts");
 const assert_1 = __webpack_require__(/*! ../assert */ "./src/assert.ts");
 const Trace_1 = __webpack_require__(/*! ../board/Trace */ "./src/board/Trace.ts");
-const PGParser_1 = __webpack_require__(/*! ../board/PGParser */ "./src/board/PGParser.ts");
 const exportImport_1 = __webpack_require__(/*! ./exportImport */ "./src/io/exportImport.ts");
-const __1 = __webpack_require__(/*! .. */ "./src/index.ts");
+const parityGameParser_1 = __webpack_require__(/*! ../board/parityGameParser */ "./src/board/parityGameParser.ts");
+const urActionSetup_1 = __webpack_require__(/*! ../undo-redo/urActionSetup */ "./src/undo-redo/urActionSetup.ts");
 class TraceManager {
     constructor(cy) {
         this.colors = [
@@ -59169,11 +60297,9 @@ class TraceManager {
         ];
         this.intervalID = null;
         this.cy = cy;
-        this.listElement = document.getElementById("color-legend");
+        this.listElement = document.getElementById("colorLegend");
         this.listElement.parentElement.hidden = true;
-        this.controlElement = document.getElementById("trace_controls");
-        this.controlElement.hidden = true;
-        this.controlElement.style.display = "none";
+        this.controlElement = document.getElementById("traceControls");
         this.playStopButton = document.getElementById("playAction");
         this.playStopIcon = document.getElementById("playAction").children[0];
         this.playStopButton.dataset.playing = "false";
@@ -59182,6 +60308,31 @@ class TraceManager {
         this.stepSlider = document.getElementById("traceSlider");
         this.stepSlider.addEventListener("input", (e) => {
             this.setStep(parseInt(this.stepSlider.value));
+        });
+        document
+            .getElementById("nextStepAction")
+            .addEventListener("click", this.nextStep.bind(this));
+        document
+            .getElementById("lastStepAction")
+            .addEventListener("click", this.prevStep.bind(this));
+        document
+            .getElementById("skipToBeginningAction")
+            .addEventListener("click", this.goToFirstStep.bind(this));
+        document
+            .getElementById("skipToEndAction")
+            .addEventListener("click", this.goToLastStep.bind(this));
+        document
+            .getElementById("closeButton")
+            .addEventListener("click", this.removeTrace.bind(this));
+        const fileInput = document.getElementById("fileInput");
+        fileInput.addEventListener("change", (e) => {
+            console.log("fileInput changed");
+            const target = e.target;
+            window.traceManager.handleTraceFileSelect(e);
+            // Reset the file input value
+            if (target && target.value) {
+                target.value = '';
+            }
         });
     }
     handleTraceFileSelect(event) {
@@ -59219,14 +60370,14 @@ class TraceManager {
             return;
         }
         // Compare just the nodes and links, nextNodeId is irrelevant
-        const pg = PGParser_1.PGParser.cyToPg(this.cy);
+        const pg = (0, parityGameParser_1.cyToPg)(this.cy);
         if (!t.parity_game.sameAs(pg)) {
             console.log("This trace does not fit the current parity game.");
             const conf = window.confirm("The trace you are importing was not made for the parity game you are editing. Should we replace your parity game? Unsaved changes will be lost!");
             if (!conf) {
                 return;
             }
-            (0, exportImport_1.resetBoardVisuals)(this.cy, t.parity_game, window.layoutManager);
+            (0, exportImport_1.resetBoardVisuals)(t.parity_game);
         }
         this.trace = t;
         this.setsEnabled = new Map();
@@ -59248,9 +60399,11 @@ class TraceManager {
         delete this.setsEnabled;
         this.resetColor();
         for (const n of this.cy.nodes()) {
-            n.data("traceLabel", "");
+            if (!n.isParent()) {
+                n.data("traceLabel", "");
+            }
         }
-        (0, __1.refreshNodeLabels)();
+        (0, urActionSetup_1.renderLabelsAndPriorities)();
     }
     setStep(i) {
         (0, assert_1.assert)(this.trace != undefined);
@@ -59260,15 +60413,18 @@ class TraceManager {
         const traceStep = this.trace.steps[i];
         traceStep.node_sets.forEach((node_set, index) => {
             const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
-            let color = this.colors[setId % this.colors.length];
+            const color = this.colors[setId % this.colors.length];
             this.addListItem(this.listElement, node_set.name, color);
         });
         traceStep.link_sets.forEach((link_set, index) => {
             const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
-            let color = this.colors[setId % this.colors.length];
+            const color = this.colors[setId % this.colors.length];
             this.addListItem(this.listElement, link_set.name, color);
         });
         for (const n of this.cy.nodes()) {
+            if (n.isParent()) {
+                continue;
+            }
             const traceLabel = traceStep.node_labels[parseInt(n.id())];
             if (traceLabel) {
                 n.data("traceLabel", traceStep.node_labels[parseInt(n.id())]);
@@ -59277,7 +60433,7 @@ class TraceManager {
                 n.data("traceLabel", "");
             }
         }
-        (0, __1.refreshNodeLabels)();
+        (0, urActionSetup_1.renderLabelsAndPriorities)();
         this.refreshColor();
     }
     getStep() {
@@ -59286,18 +60442,18 @@ class TraceManager {
     refreshColor() {
         (0, assert_1.assert)(this.trace !== undefined);
         this.resetColor();
-        for (let [i, node_set] of this.trace.steps[this.step].node_sets.entries()) {
+        for (const node_set of this.trace.steps[this.step].node_sets) {
             const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
-            let color = this.colors[setId % this.colors.length];
+            const color = this.colors[setId % this.colors.length];
             if (this.setsEnabled.get(node_set.name)) {
                 for (const nid of node_set.node_ids) {
                     this.colorNode(nid, color);
                 }
             }
         }
-        for (let [i, link_set] of this.trace.steps[this.step].link_sets.entries()) {
+        for (const link_set of this.trace.steps[this.step].link_sets) {
             const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
-            let color = this.colors[setId % this.colors.length];
+            const color = this.colors[setId % this.colors.length];
             if (this.setsEnabled.get(link_set.name)) {
                 for (const [source, target] of link_set.link_source_target_ids) {
                     this.colorLink(source, target, color);
@@ -59336,10 +60492,10 @@ class TraceManager {
         this.cy.getElementById(source + "," + target).data("line_color", color);
     }
     resetColor() {
-        for (let n of this.cy.$("node")) {
+        for (const n of this.cy.$("node")) {
             delete n.data().background_color;
         }
-        for (let l of this.cy.$("edge")) {
+        for (const l of this.cy.$("edge")) {
             delete l.data().line_color;
         }
         this.cy.style().update();
@@ -59477,26 +60633,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.loadState = exports.saveState = void 0;
-const ExamplePG_1 = __webpack_require__(/*! ../board/ExamplePG */ "./src/board/ExamplePG.ts");
+const exampleParityGame_1 = __webpack_require__(/*! ../board/exampleParityGame */ "./src/board/exampleParityGame.ts");
 const Trace_1 = __webpack_require__(/*! ../board/Trace */ "./src/board/Trace.ts");
-const PGNameEditing_1 = __webpack_require__(/*! ../ui/PGNameEditing */ "./src/ui/PGNameEditing.ts");
+const pgNameEditing_1 = __webpack_require__(/*! ../ui/pgNameEditing */ "./src/ui/pgNameEditing.ts");
+const urActionSetup_1 = __webpack_require__(/*! ../undo-redo/urActionSetup */ "./src/undo-redo/urActionSetup.ts");
 const exportImport_1 = __webpack_require__(/*! ./exportImport */ "./src/io/exportImport.ts");
 const idb_keyval_1 = __webpack_require__(/*! idb-keyval */ "./node_modules/idb-keyval/dist/index.js");
 function saveState() {
     if (!window.cy)
         return;
     const elements = window.cy.json().elements;
-    const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
-    const currentStepIndex = window.traceManager
-        ? window.traceManager.getStep()
-        : 0;
+    const layoutName = window.layoutManager.getCurrentLayoutOptions();
+    const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
     const trace = window.traceManager ? window.traceManager.getTrace() : [];
-    const pgName = (0, PGNameEditing_1.getPGName)();
+    const pgName = (0, pgNameEditing_1.getPGName)();
     const zoom = window.cy.zoom();
     const pan = window.cy.pan();
-    let state = {
+    const state = {
         elements,
-        layoutOptions,
+        layoutName,
         currentStepIndex,
         trace,
         zoom,
@@ -59514,62 +60669,28 @@ function loadState() {
             savedState = yield (0, idb_keyval_1.get)("graphState");
         }
         if (!savedState) {
-            (0, exportImport_1.resetBoardVisuals)(window.cy, ExamplePG_1.examplePg, window.layoutManager);
+            (0, exportImport_1.resetBoardVisuals)(exampleParityGame_1.examplePg);
             return;
         }
-        const { elements, layoutOptions, currentStepIndex, trace, zoom, pan, pgName, } = JSON.parse(savedState);
+        const { elements, layoutName, currentStepIndex, trace, zoom, pan, pgName, } = JSON.parse(savedState);
         window.cy.zoom(zoom);
         window.cy.pan(pan);
-        // set the name of the parity game in the window object
-        (0, PGNameEditing_1.setPGName)(pgName);
-        if (window.cy) {
-            window.cy.json({ elements }); // Restore elements
-            if (trace) {
-                let t = new Trace_1.Trace(trace);
-                window.traceManager.setTrace(t);
-            }
-            if (window.traceManager && currentStepIndex !== undefined) {
-                window.traceManager.setStep(currentStepIndex); // Restore the current step
-            }
+        window.layoutManager.changeLayout(layoutName);
+        console.log('layoutName', layoutName);
+        (0, pgNameEditing_1.setPGName)(pgName);
+        window.cy.elements().remove(); // Clear the current graph
+        window.cy.add(elements); // Add the new elements
+        if (trace) {
+            const t = new Trace_1.Trace(trace);
+            window.traceManager.setTrace(t);
         }
+        if (window.traceManager && currentStepIndex !== undefined) {
+            window.traceManager.setStep(currentStepIndex); // Restore the current step
+        }
+        (0, urActionSetup_1.renderLabelsAndPriorities)();
     });
 }
 exports.loadState = loadState;
-
-
-/***/ }),
-
-/***/ "./src/io/deepEquals.ts":
-/*!******************************!*\
-  !*** ./src/io/deepEquals.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.deepEquals = void 0;
-function deepEquals(a, b) {
-    if (a === null || b === null) {
-        throw new Error("deepEquals does not support null values");
-    }
-    if (a === b) {
-        return true;
-    }
-    if (typeof a !== 'object' || typeof b !== 'object') {
-        return false;
-    }
-    if (Object.keys(a).length !== Object.keys(b).length) {
-        return false;
-    }
-    for (const key in a) {
-        if (!deepEquals(a[key], b[key])) {
-            return false;
-        }
-    }
-    return true;
-}
-exports.deepEquals = deepEquals;
 
 
 /***/ }),
@@ -59583,13 +60704,13 @@ exports.deepEquals = deepEquals;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.resetBoardVisuals = exports.saveOinkFile = exports.handleOinkFileSelect = exports.exportAsPng = exports.handleImportGame = exports.handleExportGame = void 0;
+exports.setupImportExportUI = exports.resetBoardVisuals = exports.saveOinkFile = exports.handleOinkFileSelect = exports.exportAsPng = exports.handleImportGame = exports.saveGame = void 0;
 const utils_1 = __webpack_require__(/*! ../ui/utils */ "./src/ui/utils.ts");
-const PGParser_1 = __webpack_require__(/*! ../board/PGParser */ "./src/board/PGParser.ts");
 const toast_1 = __webpack_require__(/*! ../ui/toast */ "./src/ui/toast.ts");
-const PGNameEditing_1 = __webpack_require__(/*! ../ui/PGNameEditing */ "./src/ui/PGNameEditing.ts");
-function handleExportGame(cy, name = (0, PGNameEditing_1.getPGName)()) {
-    const cyState = cy.elements().jsons();
+const pgNameEditing_1 = __webpack_require__(/*! ../ui/pgNameEditing */ "./src/ui/pgNameEditing.ts");
+const parityGameParser_1 = __webpack_require__(/*! ../board/parityGameParser */ "./src/board/parityGameParser.ts");
+function saveGame(cy, name = (0, pgNameEditing_1.getPGName)()) {
+    const cyState = window.cy.elements().jsons();
     const exportData = {
         cytoscapeState: cyState,
     };
@@ -59600,23 +60721,22 @@ function handleExportGame(cy, name = (0, PGNameEditing_1.getPGName)()) {
     a.download = name + ".cypg_json";
     a.click();
 }
-exports.handleExportGame = handleExportGame;
-function handleImportGame(event, cy, ur) {
+exports.saveGame = saveGame;
+function handleImportGame(event) {
     const file = event.target.files[0];
     if (file) {
         (0, utils_1.updateGraphFileName)(file.name);
         // remove the file extension
-        (0, PGNameEditing_1.setPGName)(file.name.replace(/\.[^/.]+$/, ""));
+        (0, pgNameEditing_1.setPGName)(file.name.replace(/\.[^/.]+$/, ""));
         const reader = new FileReader();
         reader.onload = function (loadEvent) {
             try {
                 const fileContent = loadEvent.target.result;
                 const importedData = JSON.parse(fileContent);
-                cy.elements().remove();
-                cy.add(importedData.cytoscapeState);
-                cy.fit(cy.elements(), 50);
-                var fileName = file.name.replace(/\.[^/.]+$/, "");
-                ur.reset();
+                window.cy.elements().remove();
+                window.cy.add(importedData.cytoscapeState);
+                window.cy.fit(window.cy.elements(), 50);
+                window.ur.reset();
             }
             catch (e) {
                 console.error("Error loading game:", e);
@@ -59631,27 +60751,27 @@ function handleImportGame(event, cy, ur) {
     }
 }
 exports.handleImportGame = handleImportGame;
-function exportAsPng(cy, name = (0, PGNameEditing_1.getPGName)()) {
-    const png = cy.png({ full: true });
+function exportAsPng() {
+    const png = window.cy.png({ full: true });
     const a = document.createElement("a");
     a.href = png;
-    a.download = name + ".png";
+    a.download = (0, pgNameEditing_1.getPGName)() + ".png";
     a.click();
 }
 exports.exportAsPng = exportAsPng;
-function handleOinkFileSelect(event, cy, layoutManager, ur) {
+function handleOinkFileSelect(event) {
     const file = event.target.files[0];
     if (file) {
         (0, utils_1.updateGraphFileName)(file.name);
         // remove the file extension
-        (0, PGNameEditing_1.setPGName)(file.name.replace(/\.[^/.]+$/, ""));
+        (0, pgNameEditing_1.setPGName)(file.name.replace(/\.[^/.]+$/, ""));
         const reader = new FileReader();
         reader.onload = function (loadEvent) {
             const fileContent = loadEvent.target.result;
             let pg;
             try {
-                pg = PGParser_1.PGParser.importOinkFormat(fileContent);
-                ur.reset();
+                pg = (0, parityGameParser_1.importOinkFormat)(fileContent);
+                window.ur.reset();
             }
             catch (e) {
                 console.error("Error importing game:", e);
@@ -59662,29 +60782,41 @@ function handleOinkFileSelect(event, cy, layoutManager, ur) {
                 });
                 return;
             }
-            resetBoardVisuals(cy, pg, layoutManager);
+            resetBoardVisuals(pg);
         };
         reader.readAsText(file);
     }
 }
 exports.handleOinkFileSelect = handleOinkFileSelect;
-function saveOinkFile(cy, name = (0, PGNameEditing_1.getPGName)()) {
-    const pg = PGParser_1.PGParser.cyToPg(cy);
-    const exportString = PGParser_1.PGParser.exportOinkFormat(pg);
+function saveOinkFile() {
+    const pg = (0, parityGameParser_1.cyToPg)(window.cy);
+    const exportString = (0, parityGameParser_1.exportOinkFormat)(pg);
     const file = new Blob([exportString], { type: "text/plain" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(file);
-    a.download = name + ".pg";
+    a.download = (0, pgNameEditing_1.getPGName)() + ".pg";
     a.click();
 }
 exports.saveOinkFile = saveOinkFile;
-function resetBoardVisuals(cy, pg, layoutManager) {
-    const elements = PGParser_1.PGParser.pgToCy(pg);
-    cy.elements().remove(); // Clear the current graph
-    cy.add(elements); // Add the new elements
-    layoutManager.runOnce();
+function resetBoardVisuals(pg) {
+    if (window.traceManager.hasTrace()) {
+        window.traceManager.removeTrace();
+    }
+    const elements = (0, parityGameParser_1.pgToCy)(pg);
+    window.cy.elements().remove(); // Clear the current graph
+    window.cy.add(elements); // Add the new elements
+    window.layoutManager.setDefaultLayout();
+    window.layoutManager.runOnce();
 }
 exports.resetBoardVisuals = resetBoardVisuals;
+function setupImportExportUI() {
+    document.getElementById("oinkExportBtn").addEventListener("click", saveOinkFile);
+    document.getElementById("oinkImportInput").addEventListener("change", handleOinkFileSelect);
+    document.getElementById("loadFileInput").addEventListener("change", handleImportGame);
+    document.getElementById("saveBtn").addEventListener("click", saveGame);
+    document.getElementById("exportPngBtn").addEventListener("click", exportAsPng);
+}
+exports.setupImportExportUI = setupImportExportUI;
 
 
 /***/ }),
@@ -59702,13 +60834,12 @@ exports.all_keymaps = exports.traceKeymap = exports.pgEditingMappings = exports.
 const graphEvents_1 = __webpack_require__(/*! ../events/graphEvents */ "./src/events/graphEvents.ts");
 const toast_1 = __webpack_require__(/*! ../ui/toast */ "./src/ui/toast.ts");
 const keymapTypes_1 = __webpack_require__(/*! ./keymapTypes */ "./src/keymap/keymapTypes.ts");
-const manual_1 = __webpack_require__(/*! ./manual */ "./src/keymap/manual.ts");
+const manual_1 = __webpack_require__(/*! ../ui/manual */ "./src/ui/manual.ts");
 exports.otherMappings = new keymapTypes_1.KeyMap("Other mappings");
 exports.otherMappings.push(new keymapTypes_1.KeyMapping(["?", "/"], "Toggle manual", (args) => {
     (0, manual_1.toggleManual)();
 }));
 exports.otherMappings.push(new keymapTypes_1.KeyMapping(["Escape"], "Exit trace or manual", (args) => {
-    const manual_overlay = document.getElementById("manual-overlay");
     if ((0, manual_1.isManualOpen)()) {
         (0, manual_1.closeManual)();
     }
@@ -59745,7 +60876,7 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["o", "w"], "Add odd
     (0, graphEvents_1.addNodeAtPosition)(args.cy, args.ur, args.modelX, args.modelY, false);
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["q"], "Toggle the owner of selected nodes", ({ cy, ur }) => {
-    var selectedNodes = cy
+    const selectedNodes = cy
         .$("node:selected")
         .filter((node) => !node.isParent());
     if (selectedNodes.length > 0) {
@@ -59753,13 +60884,13 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["q"], "Toggle the o
     }
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["Backspace", "Delete"], "Remove selected elements", ({ cy, ur }) => {
-    var selectedElements = cy.$(":selected");
+    const selectedElements = cy.$(":selected");
     if (selectedElements.length > 0) {
         ur.do("remove", selectedElements);
     }
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["+", "="], "Increment priority", ({ cy, ur }) => {
-    var selectedNodes = cy
+    const selectedNodes = cy
         .$("node:selected")
         .filter((node) => !node.isParent());
     if (selectedNodes.length > 0) {
@@ -59767,7 +60898,7 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["+", "="], "Increme
     }
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["-"], "Decrement priority", ({ cy, ur }) => {
-    var selectedNodes = cy
+    const selectedNodes = cy
         .$("node:selected")
         .filter((node) => !node.isParent());
     if (selectedNodes.length > 0) {
@@ -59775,22 +60906,34 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["-"], "Decrement pr
     }
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["p"], "Set priority for selected nodes", ({ cy, ur }) => {
-    let input = prompt("Enter new priority", "");
-    let priority = Number(input);
-    if (input !== null && !isNaN(priority)) {
-        let selectedNodes = cy
-            .$("node:selected")
-            .filter((node) => !node.isParent());
-        if (selectedNodes.length > 0) {
+    const selectedNodes = cy
+        .$("node:selected")
+        .filter((node) => !node.isParent());
+    if (selectedNodes.length == 0) {
+        (0, toast_1.showToast)({
+            message: "No nodes selected",
+            variant: "warning",
+        });
+        return;
+    }
+    const input = prompt("Enter new priority", "");
+    if (input !== null) {
+        const priority = parseInt(input);
+        if (!isNaN(priority)) {
             ur.do("editPriority", {
                 nodes: selectedNodes,
                 priority: priority,
             });
+            return;
         }
     }
+    (0, toast_1.showToast)({
+        message: "Invalid priority value",
+        variant: "danger",
+    });
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["g"], "Group selected nodes - lock their relative positions and prevent them from being moved by automatic layout", ({ cy, ur }) => {
-    var selectedNodes = cy.$("node:selected");
+    const selectedNodes = cy.$("node:selected");
     let inGroup = false;
     if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
         ur.do("ungroup", { groupId: selectedNodes[0].id() });
@@ -59812,9 +60955,9 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["g"], "Group select
     }
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["l", "c"], "Edit label of selected node(s)", ({ cy, ur }) => {
-    let label = prompt("Enter new label", "");
+    const label = prompt("Enter new label", "");
     if (label !== null) {
-        let selectedNodes = cy.$("node:selected");
+        const selectedNodes = cy.$("node:selected");
         if (selectedNodes.length > 0) {
             ur.do("editLabels", {
                 nodes: selectedNodes,
@@ -59893,71 +61036,6 @@ exports.buildKeyMap = buildKeyMap;
 
 /***/ }),
 
-/***/ "./src/keymap/manual.ts":
-/*!******************************!*\
-  !*** ./src/keymap/manual.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.toggleManual = exports.isManualOpen = exports.closeManual = exports.openManual = exports.fillManual = void 0;
-const keymap_1 = __webpack_require__(/*! ./keymap */ "./src/keymap/keymap.ts");
-function fillManual() {
-    const manual = document.getElementById("manual-keybinds");
-    manual.innerHTML = "";
-    for (const km of keymap_1.all_keymaps) {
-        manual.appendChild(document.createElement("h3")).textContent =
-            km.manualDescription;
-        for (const kb of km.keyMappings) {
-            const entryDiv = document.createElement("div");
-            entryDiv.className = "manual-entry";
-            const keysDiv = document.createElement("div");
-            keysDiv.className = "manual-keys";
-            for (let key of kb.keys) {
-                const keyDiv = document.createElement("div");
-                keyDiv.className = "manual-key";
-                keyDiv.textContent = km.key_to_string(key);
-                keysDiv.appendChild(keyDiv);
-            }
-            entryDiv.appendChild(keysDiv);
-            entryDiv.appendChild(document.createTextNode(kb.description));
-            manual.appendChild(entryDiv);
-        }
-    }
-}
-exports.fillManual = fillManual;
-const manual_overlay = document.getElementById("manual-overlay");
-const manual_button = document.getElementById("manual-open-button");
-function openManual() {
-    manual_overlay.style.display = "";
-    manual_button.innerHTML = "✕";
-}
-exports.openManual = openManual;
-function closeManual() {
-    manual_overlay.style.display = "none";
-    manual_button.innerHTML = "?";
-}
-exports.closeManual = closeManual;
-function isManualOpen() {
-    return manual_overlay.style.display !== "none";
-}
-exports.isManualOpen = isManualOpen;
-function toggleManual() {
-    if (isManualOpen()) {
-        closeManual();
-    }
-    else {
-        openManual();
-    }
-}
-exports.toggleManual = toggleManual;
-manual_button.addEventListener("click", toggleManual);
-
-
-/***/ }),
-
 /***/ "./src/layout/breadthfirstLayout.ts":
 /*!******************************************!*\
   !*** ./src/layout/breadthfirstLayout.ts ***!
@@ -59967,9 +61045,10 @@ manual_button.addEventListener("click", toggleManual);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.breadthfirstLayout = void 0;
-exports.breadthfirstLayout = {
+exports.breadthFirstLayout = void 0;
+exports.breadthFirstLayout = {
     name: "breadthfirst",
+    displayName: "Breadth first",
     fit: true, // whether to fit the viewport to the graph
     directed: false, // whether the tree is directed downwards (or edges can point in any direction if false)
     padding: 30, // padding on fit
@@ -60009,6 +61088,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.colaLayout = void 0;
 exports.colaLayout = {
     name: "cola",
+    displayName: "Force directed",
     // refresh: 2, // number of ticks per frame; higher is faster but more jerky
     animate: true, // whether to show the layout as it's running
     ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
@@ -60057,6 +61137,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.gridLayout = void 0;
 exports.gridLayout = {
     name: "grid",
+    displayName: "Grid layout",
     fit: true, // whether to fit the viewport to the graph
     padding: 30, // padding used on fit
     boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
@@ -60112,83 +61193,64 @@ class Group {
         this.locked = false;
     }
 }
+const layoutSelect = document.getElementById("layoutSelect");
+layoutSelect.addEventListener('click', (e) => {
+    window.layoutManager.changeLayout(e.target.value);
+    // decheck the layout on layoutOnDragCheckbox
+    const toggle = document.getElementById("layoutOnDragCheckbox");
+    toggle.checked = false;
+    window.layoutManager.setRunOnDrag(false);
+});
+const layoutOnDragContainer = document.getElementById("layoutOnDragContainer");
 class LayoutManager {
-    constructor(cyInstance, defaultLayout) {
+    constructor(cyInstance) {
         this.lockedGroups = [];
         this.groups = [];
-        this.colaLayoutOptions = colaLayout_1.colaLayout;
-        this.layouts = {
-            "Force directed": colaLayout_1.colaLayout,
-            "Grid layout": gridLayout_1.gridLayout,
-            "Breadth first": breadthfirstLayout_1.breadthfirstLayout,
-            "Random for fun": randomLayout_1.randomLayout,
-        };
+        this.layouts = [
+            colaLayout_1.colaLayout,
+            gridLayout_1.gridLayout,
+            breadthfirstLayout_1.breadthFirstLayout,
+            randomLayout_1.randomLayout,
+        ];
         this.cy = cyInstance;
         this.runOnDrag = false;
-        this.currentLayout = this.layouts[defaultLayout] || colaLayout_1.colaLayout;
-        let this1 = this;
-        document.addEventListener("DOMContentLoaded", function () {
-            const layoutSelect = document.getElementById("layout-select");
-            // Dynamically populate the layout select dropdown
-            for (const layoutName in this1.layouts) {
-                if (this1.layouts.hasOwnProperty(layoutName)) {
-                    const option = document.createElement("option");
-                    option.value = layoutName;
-                    option.textContent = layoutName;
-                    layoutSelect.appendChild(option);
-                }
-            }
-            // This is ugly, but better than broken (Han)
-            layoutSelect.value = defaultLayout || "Force directed";
-        });
+        this.currentLayout = colaLayout_1.colaLayout;
+        // Dynamically populate the layout select dropdown
+        for (const lo of this.layouts) {
+            const option = document.createElement("option");
+            option.value = lo.name;
+            option.textContent = lo.displayName;
+            layoutSelect.appendChild(option);
+        }
         document
-            .getElementById("layout-on-drag")
-            .addEventListener("change", function () {
-            this1.setRunOnDrag(this.checked);
-        });
+            .getElementById("layoutOnDragCheckbox")
+            .addEventListener("change", function (e) {
+            this.setRunOnDrag(e.target.checked);
+        }.bind(this));
+        document.getElementById("runLayoutBtn").addEventListener("click", () => window.ur.do("runLayout", { nodes: window.cy.nodes() }));
+    }
+    setDefaultLayout() {
+        this.currentLayout = colaLayout_1.colaLayout;
     }
     setRunOnDrag(bool) {
         this.runOnDrag = bool;
         this.onDrag();
     }
-    changeLayout(layout) {
-        this.currentLayout = this.layouts[layout] || this.colaLayoutOptions;
-        if (layout == "Force directed") {
+    changeLayout(layoutName) {
+        const candidate = this.layouts.find((i) => i.name == layoutName);
+        if (!candidate) {
+            console.error(`Layout ${layoutName} not found`);
+            return;
+        }
+        this.currentLayout = candidate;
+        layoutSelect.value = layoutName;
+        if (layoutName == colaLayout_1.colaLayout.name) {
+            console.log("showing layout on drag");
             this.showLayoutOnDragElement();
         }
         else {
             this.hideLayoutOnDragElement();
         }
-    }
-    calculateBoundingBoxConstraints() {
-        const constraints = [];
-        this.lockedGroups.forEach((group) => {
-            const positions = group.leaves.map((id) => this.cy.getElementById(id).renderedPosition());
-            // Calculate the bounding box of the group
-            const minX = Math.min(...positions.map((pos) => pos.x));
-            const maxX = Math.max(...positions.map((pos) => pos.x));
-            const minY = Math.min(...positions.map((pos) => pos.y));
-            const maxY = Math.max(...positions.map((pos) => pos.y));
-            const padding = 10;
-            constraints.push({
-                left: minX - padding,
-                right: maxX + padding,
-                top: minY - padding,
-                bottom: maxY + padding,
-                type: "alignment",
-                axis: "x",
-                offsets: group.leaves.map((id) => ({ node: id, offset: 0 })),
-            }, {
-                left: minX - padding,
-                right: maxX + padding,
-                top: minY - padding,
-                bottom: maxY + padding,
-                type: "alignment",
-                axis: "y",
-                offsets: group.leaves.map((id) => ({ node: id, offset: 0 })),
-            });
-        });
-        return constraints;
     }
     onDrag() {
         if (this.runOnDrag) {
@@ -60196,9 +61258,6 @@ class LayoutManager {
         }
     }
     runOnce() {
-        // this.cy.layout(this.currentLayout).run();
-        const boundingBoxConstraints = this.calculateBoundingBoxConstraints();
-        // lock the nodes in the groups to keep their positions
         this.groups.forEach((group) => {
             group.nodes.forEach((node) => {
                 node.lock();
@@ -60218,13 +61277,14 @@ class LayoutManager {
         });
     }
     getCurrentLayoutOptions() {
-        return this.currentLayout;
+        return this.currentLayout.name;
     }
     hideLayoutOnDragElement() {
-        document.getElementById("layout-on-drag-container").style.display = "none";
+        layoutOnDragContainer.style.display = "none";
     }
     showLayoutOnDragElement() {
-        document.getElementById("layout-on-drag-container").style.display = "";
+        console.log("showing layout on drag");
+        layoutOnDragContainer.style.display = "";
     }
     groupNodes(nodes) {
         const groupId = `group_${+new Date()}`; // Example unique ID using timestamp
@@ -60246,7 +61306,7 @@ class LayoutManager {
             .nodes()
             .filter((node) => node.parent() === groupNode)
             .grabify();
-        let children = groupNode.children();
+        const children = groupNode.children();
         children.move({ parent: null });
         groupNode.remove();
         // remove from groups
@@ -60271,13 +61331,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.randomLayout = void 0;
 exports.randomLayout = {
     name: "random",
+    displayName: "Random",
     fit: true, // whether to fit to viewport
     padding: 30, // fit padding
     boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
     animate: false, // whether to transition the node positions
     animationDuration: 500, // duration of animation in ms if enabled
     animationEasing: undefined, // easing of animation if enabled
-    animateFilter: function (node, i) {
+    animateFilter: function () {
         return true;
     }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
     ready: undefined, // callback on layoutready
@@ -60290,9 +61351,135 @@ exports.randomLayout = {
 
 /***/ }),
 
-/***/ "./src/ui/PGNameEditing.ts":
+/***/ "./src/ui/algorithmSelect.ts":
+/*!***********************************!*\
+  !*** ./src/ui/algorithmSelect.ts ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.setupAlgorithmSelect = void 0;
+const algos_1 = __webpack_require__(/*! ../algos */ "./src/algos/index.ts");
+const parityGameParser_1 = __webpack_require__(/*! ../board/parityGameParser */ "./src/board/parityGameParser.ts");
+// populate the algorithm select options
+const algoSelect = document.getElementById("algorithmSelect");
+function setupAlgorithmSelect() {
+    Object.keys(algos_1.algos).forEach((key) => {
+        const option = document.createElement("option");
+        option.value = key;
+        option.text = algos_1.algos[key].name;
+        algoSelect.appendChild(option);
+    });
+    const algoStart = document.getElementById("startAlgorithmBtn");
+    algoStart.addEventListener("click", () => {
+        console.log("start algorithm");
+        // get the selected algorithm
+        const algoSelect = document.getElementById("algorithmSelect");
+        const selectedAlgorithm = algoSelect.value;
+        const res = algos_1.algos[selectedAlgorithm].run((0, parityGameParser_1.cyToPg)(window.cy));
+        // Update the trace with the result from the algorithm
+        if (res.trace) {
+            window.traceManager.setTrace(res.trace);
+        }
+    });
+}
+exports.setupAlgorithmSelect = setupAlgorithmSelect;
+
+
+/***/ }),
+
+/***/ "./src/ui/manual.ts":
+/*!**************************!*\
+  !*** ./src/ui/manual.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.toggleManual = exports.isManualOpen = exports.closeManual = exports.openManual = exports.fillManual = void 0;
+__webpack_require__(/*! ./manual.css */ "./src/ui/manual.css");
+const keymap_1 = __webpack_require__(/*! ../keymap/keymap */ "./src/keymap/keymap.ts");
+function fillManual() {
+    const manual = document.getElementById("manualKeybinds");
+    manual.innerHTML = "";
+    for (const km of keymap_1.all_keymaps) {
+        manual.appendChild(document.createElement("h3")).textContent =
+            km.manualDescription;
+        for (const kb of km.keyMappings) {
+            const entryDiv = document.createElement("div");
+            entryDiv.className = "manual-entry";
+            const keysDiv = document.createElement("div");
+            keysDiv.className = "manual-keys";
+            for (const key of kb.keys) {
+                const keyDiv = document.createElement("div");
+                keyDiv.className = "manual-key";
+                keyDiv.textContent = km.key_to_string(key);
+                keysDiv.appendChild(keyDiv);
+            }
+            entryDiv.appendChild(keysDiv);
+            entryDiv.appendChild(document.createTextNode(kb.description));
+            manual.appendChild(entryDiv);
+        }
+    }
+}
+exports.fillManual = fillManual;
+const manual_overlay = document.getElementById("manualOverlay");
+const manual_button = document.getElementById("manualOpenButton");
+function openManual() {
+    manual_overlay.style.display = "";
+    manual_button.innerHTML = "✕";
+}
+exports.openManual = openManual;
+function closeManual() {
+    manual_overlay.style.display = "none";
+    manual_button.innerHTML = "?";
+}
+exports.closeManual = closeManual;
+function isManualOpen() {
+    return manual_overlay.style.display !== "none";
+}
+exports.isManualOpen = isManualOpen;
+function toggleManual() {
+    if (isManualOpen()) {
+        closeManual();
+    }
+    else {
+        openManual();
+    }
+}
+exports.toggleManual = toggleManual;
+manual_button.addEventListener("click", toggleManual);
+
+
+/***/ }),
+
+/***/ "./src/ui/other.ts":
+/*!*************************!*\
+  !*** ./src/ui/other.ts ***!
+  \*************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.setupOtherUI = void 0;
+function setupOtherUI() {
+    document.getElementById("resetViewBtn").addEventListener("click", () => {
+        window.cy.reset();
+        window.cy.centre();
+    });
+}
+exports.setupOtherUI = setupOtherUI;
+
+
+/***/ }),
+
+/***/ "./src/ui/pgNameEditing.ts":
 /*!*********************************!*\
-  !*** ./src/ui/PGNameEditing.ts ***!
+  !*** ./src/ui/pgNameEditing.ts ***!
   \*********************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -60350,10 +61537,8 @@ function setupPGNameEditing() {
         inputElement.value = getPGName();
         inputElement.focus();
         inputElement.select();
-        // Define a function to handle keypress event
     });
     confirmEditButton.addEventListener('click', confirmEdit);
-    inputElement.addEventListener('blur', confirmEdit);
     inputElement.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             confirmEdit();
@@ -60377,6 +61562,7 @@ function setupPGNameEditing() {
         }
     }
     cancelEditButton.addEventListener('click', function () {
+        console.log("cancelEditButton clicked");
         displayGroupElement.hidden = false;
         editGroupElement.hidden = true;
     });
@@ -60390,12 +61576,15 @@ exports.setupPGNameEditing = setupPGNameEditing;
 /*!*************************!*\
   !*** ./src/ui/toast.ts ***!
   \*************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.showToast = void 0;
+// Taken from https://github.com/amolikvivian/ts-toast
+// License is missing, but intent clear
+__webpack_require__(/*! ./toast.css */ "./src/ui/toast.css");
 let currentToast = null;
 function showToast(options) {
     const { message, title, variant = "success", duration = 2000 } = options;
@@ -60461,10 +61650,13 @@ exports.updateGraphFileName = updateGraphFileName;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.setupUndoRedoActions = void 0;
-function setupUndoRedoActions(cy, ur, layoutManager) {
+exports.renderLabelsAndPriorities = exports.setupUndoRedoActions = void 0;
+function setupUndoRedoActions() {
+    const ur = window.ur;
+    const cy = window.cy;
+    const layoutManager = window.layoutManager;
     ur.action("runLayout", (args) => {
-        let oldPositions = args.nodes.map((node) => {
+        const oldPositions = args.nodes.map((node) => {
             return { node: node, position: Object.assign({}, node.position()) };
         });
         if (args.oldPositions === undefined) {
@@ -60477,7 +61669,7 @@ function setupUndoRedoActions(cy, ur, layoutManager) {
         }
         return { nodes: args.nodes, oldPositions: oldPositions };
     }, (args) => {
-        let oldPositions = args.nodes.map((node) => {
+        const oldPositions = args.nodes.map((node) => {
             return { node: node, position: Object.assign({}, node.position()) };
         });
         args.oldPositions.forEach((item) => item.node.position(item.position));
@@ -60486,105 +61678,92 @@ function setupUndoRedoActions(cy, ur, layoutManager) {
         return { nodes: args.nodes, oldPositions: oldPositions };
     });
     ur.action("editOwner", (args) => {
-        let nodes = args.nodes;
+        const nodes = args.nodes;
         // The do action: updating the owner
         nodes.forEach((node) => {
-            let currentIsEven = node.data("isEven");
+            const currentIsEven = node.data("isEven");
             node.data("isEven", currentIsEven === "true" ? "false" : "true");
         });
         return { nodes: nodes };
     }, (args) => {
-        let nodes = args.nodes;
+        const nodes = args.nodes;
         // The undo action: updating the owner
         nodes.forEach((node) => {
-            let currentIsEven = node.data("isEven");
+            const currentIsEven = node.data("isEven");
             node.data("isEven", currentIsEven === "true" ? "false" : "true");
         });
         return { nodes: nodes };
     });
     ur.action("editPriority", (args) => {
-        let nodes = args.nodes;
-        let priority = args.priority;
+        const nodes = args.nodes;
+        const priority = args.priority;
         // The do action: updating the priority
-        let oldPriorities = nodes.map((node) => {
+        const oldPriorities = nodes.map((node) => {
             return { node: node, priority: node.data("priority") };
         });
         nodes.forEach(function (n) {
             n.data("priority", priority);
         });
+        renderLabelsAndPriorities();
         return { nodes: nodes, oldPriorities: oldPriorities };
     }, (args) => {
         // The undo action: reverting to the old priorities
-        let oldPriorities = args.oldPriorities;
-        let newArgs = {
+        const oldPriorities = args.oldPriorities;
+        const newArgs = {
             nodes: args.nodes,
             priority: oldPriorities[0].node.data("priority"),
         };
         oldPriorities.forEach((item) => item.node.data("priority", item.priority));
+        renderLabelsAndPriorities();
         return newArgs;
     });
-    function renderLabelsAndPriorities(cy) {
-        const displayLabelsElement = document.getElementById("display-labels");
-        const showLabels = displayLabelsElement.checked; // Directly get the checked state
-        cy.nodes()
-            .filter((ele) => !ele.isParent())
-            .style({
-            label: showLabels
-                ? (ele) => `${ele.data("label")}\n${ele.data("priority")}`
-                : "",
-            "text-wrap": "wrap",
-        });
-        cy.nodes()
-            .filter((ele) => ele.isParent())
-            .style({
-            label: showLabels ? (ele) => `${ele.data("label")}` : "",
-            "text-wrap": "wrap",
-        });
-    }
     ur.action("editLabels", (args) => {
-        let nodes = args.nodes;
-        let label = args.label;
-        let cy = args.cy;
+        const nodes = args.nodes;
+        const label = args.label;
+        const cy = args.cy;
         // The do action: updating the label
-        let oldLabels = nodes.map((node) => {
+        const oldLabels = nodes.map((node) => {
             return { node: node, label: node.data("label") };
         });
         nodes.forEach(function (n) {
             n.data("label", label);
         });
-        renderLabelsAndPriorities(cy);
+        renderLabelsAndPriorities();
         return { nodes: nodes, oldLabels: oldLabels, cy: cy };
     }, (args) => {
         // The undo action: reverting to the old labels
-        let oldLabels = args.oldLabels;
-        let cy = args.cy;
-        let newArgs = {
+        const oldLabels = args.oldLabels;
+        const cy = args.cy;
+        const newArgs = {
             nodes: args.nodes,
             label: oldLabels[0].node.data("label"),
             cy: cy,
         };
         oldLabels.forEach((item) => item.node.data("label", item.label));
-        renderLabelsAndPriorities(cy);
+        renderLabelsAndPriorities();
         return newArgs;
     });
     ur.action("changePriority", (args) => {
-        let nodes = args.nodes;
-        let value = args.value;
+        console.log('changePriority', args);
+        const nodes = args.nodes;
+        const value = args.value;
         // The do action: updating the priority
-        let oldPriorities = nodes.map((node) => {
+        const oldPriorities = nodes.map((node) => {
             return { node: node, priority: node.data("priority") };
         });
         nodes.forEach(function (n) {
-            var priority = n.data("priority") || 0;
+            const priority = n.data("priority") || 0;
             n.data("priority", Math.max(0, priority + value));
         });
+        renderLabelsAndPriorities();
         return { nodes: nodes, value: value, oldPriorities: oldPriorities };
     }, (args) => {
         // The undo action: reverting to the old priorities
-        let nodes = args.nodes;
-        let value = args.value;
-        let oldPriorities = args.oldPriorities;
+        const nodes = args.nodes;
+        const value = args.value;
+        const oldPriorities = args.oldPriorities;
         oldPriorities.forEach((item) => item.node.data("priority", item.priority));
+        renderLabelsAndPriorities();
         return { nodes: nodes, value: value };
     });
     ur.action("group", (args) => {
@@ -60599,6 +61778,35 @@ function setupUndoRedoActions(cy, ur, layoutManager) {
     });
 }
 exports.setupUndoRedoActions = setupUndoRedoActions;
+const displayLabelsInput = document.getElementById("displayLabels");
+displayLabelsInput.addEventListener("change", renderLabelsAndPriorities);
+function renderLabelsAndPriorities() {
+    const displayNodeLabels = displayLabelsInput.checked;
+    function compositeLabel(ele) {
+        // Parent nodes are the groups of nodes created with "g".
+        if (ele.isParent()) {
+            if (false) {}
+            else {
+                return "";
+            }
+        }
+        let res = ele.data("priority").toString();
+        if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) {
+            // Skip line if there is trace label, to make it clear the label is trace label
+            res += `\n${ele.data("label")}`;
+        }
+        if (ele.data("traceLabel")) {
+            res += `\n${ele.data("traceLabel")}`;
+        }
+        return res;
+    }
+    window.cy.nodes()
+        .filter((ele) => !ele.isParent())
+        .style({
+        label: compositeLabel,
+    });
+}
+exports.renderLabelsAndPriorities = renderLabelsAndPriorities;
 
 
 /***/ }),
@@ -68589,7 +69797,7 @@ function entries(customStore = defaultGetStore()) {
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
+/******/ 			id: moduleId,
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
@@ -68602,6 +69810,18 @@ function entries(customStore = defaultGetStore()) {
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -68640,6 +69860,11 @@ function entries(customStore = defaultGetStore()) {
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/nonce */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nc = undefined;
 /******/ 	})();
 /******/ 	
 /************************************************************************/
