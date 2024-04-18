@@ -84,7 +84,7 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(
-    ["Backspace", "Delete"],
+    ["Backspace", "Delete", "d"],
     "Remove selected elements",
     ({ cy, ur }) => {
       const selectedElements = cy.$(":selected");
@@ -96,7 +96,7 @@ pgEditingMappings.push(
 );
 
 pgEditingMappings.push(
-  new KeyMapping(["+", "="], "Increment priority", ({ cy, ur }) => {
+  new KeyMapping(["+", "=", "2"], "Increment priority", ({ cy, ur }) => {
     const selectedNodes = cy
       .$("node:selected")
       .filter((node) => !node.isParent());
@@ -107,7 +107,7 @@ pgEditingMappings.push(
 );
 
 pgEditingMappings.push(
-  new KeyMapping(["-"], "Decrement priority", ({ cy, ur }) => {
+  new KeyMapping(["-", "1"], "Decrement priority", ({ cy, ur }) => {
     const selectedNodes = cy
       .$("node:selected")
       .filter((node) => !node.isParent());
@@ -118,34 +118,38 @@ pgEditingMappings.push(
 );
 
 pgEditingMappings.push(
-  new KeyMapping(["p"], "Set priority for selected nodes", ({ cy, ur }) => {
-    const selectedNodes = cy
-      .$("node:selected")
-      .filter((node) => !node.isParent());
+  new KeyMapping(
+    ["p", "x"],
+    "Set priority for selected nodes",
+    ({ cy, ur }) => {
+      const selectedNodes = cy
+        .$("node:selected")
+        .filter((node) => !node.isParent());
 
-    if (selectedNodes.length == 0) {
-      showToast({
-        message: "No nodes selected",
-        variant: "warning",
-      });
-      return;
-    }
-    const input = prompt("Enter new priority", "");
-    if (input !== null) {
-      const priority = parseInt(input);
-      if (!isNaN(priority)) {
-        ur.do("editPriority", {
-          nodes: selectedNodes,
-          priority: priority,
+      if (selectedNodes.length == 0) {
+        showToast({
+          message: "No nodes selected",
+          variant: "warning",
         });
-        return
+        return;
       }
+      const input = prompt("Enter new priority", "");
+      if (input !== null) {
+        const priority = parseInt(input);
+        if (!isNaN(priority)) {
+          ur.do("editPriority", {
+            nodes: selectedNodes,
+            priority: priority,
+          });
+          return;
+        }
+      }
+      showToast({
+        message: "Invalid priority value",
+        variant: "danger",
+      });
     }
-    showToast({
-      message: "Invalid priority value",
-      variant: "danger",
-    });
-  })
+  )
 );
 
 pgEditingMappings.push(
