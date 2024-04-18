@@ -24,7 +24,7 @@ declare global {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   const [cy, ur] = setupCytoscape("cy");
   window.cy = cy;
   window.ur = ur;
@@ -46,6 +46,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   window.cy.fit(cy.elements(), 50);
 
-  loadState(); // Load saved state
+  await loadState(); // Load saved state
   setInterval(saveState, 500);
 });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/serviceWorker.js").then(
+      (registration) => {
+        console.log(
+          "ServiceWorker registration successful with scope: ",
+          registration.scope
+        );
+      },
+      (err) => {
+        console.log("ServiceWorker registration failed: ", err);
+      }
+    );
+  });
+}

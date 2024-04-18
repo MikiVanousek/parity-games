@@ -8,7 +8,8 @@
   "scripts": {
     "test": "jest",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "start": "webpack serve --open"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
@@ -34,7 +35,8 @@
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.7.0",
     "webpack": "^5.90.2",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
     "@types/d3": "^7.4.3",
@@ -108,6 +110,7 @@
     "hasown": "^2.0.1",
     "html-escaper": "^2.0.2",
     "human-signals": "^2.1.0",
+    "idb-keyval": "^6.2.1",
     "import-local": "^3.1.0",
     "imurmurhash": "^0.1.4",
     "inflight": "^1.0.6",

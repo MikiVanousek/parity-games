@@ -3,6 +3,7 @@ import { Trace } from "../board/Trace";
 import { getPGName, setPGName } from "../ui/pgNameEditing";
 import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 import { resetBoardVisuals } from "./exportImport";
+import { set, get } from "idb-keyval";
 
 export function saveState() {
   if (!window.cy) return;
@@ -25,18 +26,29 @@ export function saveState() {
     pgName,
   };
 
-  localStorage.setItem('graphState', JSON.stringify(state));
+  localStorage.setItem("graphState", JSON.stringify(state));
+  set("graphState", JSON.stringify(state));
 }
 
-
-export function loadState() {
-  const savedState = localStorage.getItem('graphState');
+export async function loadState() {
+  let savedState = localStorage.getItem("graphState");
   if (!savedState) {
-    resetBoardVisuals(examplePg)
+    savedState = await get("graphState");
+  }
+  if (!savedState) {
+    resetBoardVisuals(examplePg);
     return;
   }
 
-  const { elements, layoutName, currentStepIndex, trace, zoom, pan, pgName } = JSON.parse(savedState);
+  const {
+    elements,
+    layoutName,
+    currentStepIndex,
+    trace,
+    zoom,
+    pan,
+    pgName,
+  } = JSON.parse(savedState);
   window.cy.zoom(zoom);
   window.cy.pan(pan);
 
@@ -47,7 +59,7 @@ export function loadState() {
   window.cy.elements().remove(); // Clear the current graph
   window.cy.add(elements); // Add the new elements
   if (trace) {
-    const t = new Trace((trace));
+    const t = new Trace(trace);
     window.traceManager.setTrace(t);
   }
 

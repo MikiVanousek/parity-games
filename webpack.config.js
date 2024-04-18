@@ -27,6 +27,10 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: "src/*.html", to: "[name][ext]" },
+        { from: "src/manifest.json", to: "[name][ext]" },
+        { from: "src/favicon.ico", to: "[name][ext]" },
+        { from: "src/*.png", to: "[name][ext]" },
+        { from: "src/serviceWorker.js", to: "[name][ext]" },
       ],
     }),
     new webpack.ProvidePlugin({
