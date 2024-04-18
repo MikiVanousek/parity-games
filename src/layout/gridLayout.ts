@@ -1,5 +1,6 @@
 export const gridLayout: any = {
   name: "grid",
+  displayName: "Grid layout",
 
   fit: true, // whether to fit the viewport to the graph
   padding: 30, // padding used on fit
@@ -11,7 +12,7 @@ export const gridLayout: any = {
   condense: false, // uses all available space on false, uses minimal space on true
   rows: undefined, // force num of rows in the grid
   cols: undefined, // force num of columns in the grid
-  position: function (node) {}, // returns { row, col } for element
+  position: function (node) { }, // returns { row, col } for element
   sort: undefined, // a sorting function to order the nodes; e.g. function(a, b){ return a.data('weight') - b.data('weight') }
   animate: false, // whether to transition the node positions
   animationDuration: 500, // duration of animation in ms if enabled

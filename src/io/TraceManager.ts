@@ -1,13 +1,9 @@
 import { showToast } from "../ui/toast";
 import { assert } from "../assert";
 import { Trace } from "../board/Trace";
-import { ParityGame } from "../board/ParityGame";
-import { examplePg, exampleTrace } from "../board/ExamplePG";
-import { deepEquals } from "./deepEquals";
-import { PGParser } from "../board/PGParser";
 import { resetBoardVisuals } from "./exportImport";
-import { colaLayout } from "../layout/colaLayout";
-import { refreshNodeLabels } from "..";
+import { cyToPg } from "../board/parityGameParser";
+import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 
 export class TraceManager {
   cy: any;
@@ -50,11 +46,9 @@ export class TraceManager {
   constructor(cy: any) {
     this.cy = cy;
 
-    this.listElement = document.getElementById("color-legend");
+    this.listElement = document.getElementById("colorLegend");
     this.listElement.parentElement.hidden = true;
-    this.controlElement = document.getElementById("trace_controls");
-    this.controlElement.hidden = true;
-    this.controlElement.style.display = "none";
+    this.controlElement = document.getElementById("traceControls");
 
     this.playStopButton = document.getElementById("playAction");
     this.playStopIcon = document.getElementById("playAction").children[0];
@@ -67,6 +61,37 @@ export class TraceManager {
     this.stepSlider.addEventListener("input", (e) => {
       this.setStep(parseInt(this.stepSlider.value));
     });
+
+    document
+      .getElementById("nextStepAction")
+      .addEventListener("click", this.nextStep.bind(this));
+    document
+      .getElementById("lastStepAction")
+      .addEventListener("click", this.prevStep.bind(this));
+    document
+      .getElementById("skipToBeginningAction")
+      .addEventListener("click", this.goToFirstStep.bind(this));
+    document
+      .getElementById("skipToEndAction")
+      .addEventListener("click", this.goToLastStep.bind(this));
+    document
+      .getElementById("closeButton")
+      .addEventListener("click", this.removeTrace.bind(this));
+
+    const fileInput = document.getElementById("fileInput");
+    fileInput.addEventListener("change", (e) => {
+      console.log("fileInput changed");
+
+      const target = e.target as HTMLInputElement;
+      window.traceManager.handleTraceFileSelect(e);
+
+      // Reset the file input value
+      if (target && target.value) {
+        target.value = '';
+      }
+
+    });
+
   }
 
   handleTraceFileSelect(event) {
@@ -107,7 +132,7 @@ export class TraceManager {
     }
 
     // Compare just the nodes and links, nextNodeId is irrelevant
-    const pg = PGParser.cyToPg(this.cy);
+    const pg = cyToPg(this.cy);
     if (!t.parity_game.sameAs(pg)) {
       console.log("This trace does not fit the current parity game.");
       const conf = window.confirm(
@@ -116,7 +141,7 @@ export class TraceManager {
       if (!conf) {
         return;
       }
-      resetBoardVisuals(this.cy, t.parity_game, window.layoutManager);
+      resetBoardVisuals(t.parity_game)
     }
 
     this.trace = t;
@@ -146,9 +171,11 @@ export class TraceManager {
     this.resetColor();
 
     for (const n of this.cy.nodes()) {
-      n.data("traceLabel", "");
+      if (!n.isParent()) {
+        n.data("traceLabel", "");
+      }
     }
-    refreshNodeLabels();
+    renderLabelsAndPriorities();
   }
 
   setStep(i) {
@@ -161,16 +188,19 @@ export class TraceManager {
 
     traceStep.node_sets.forEach((node_set, index) => {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       this.addListItem(this.listElement, node_set.name, color);
     });
 
     traceStep.link_sets.forEach((link_set, index) => {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       this.addListItem(this.listElement, link_set.name, color);
     });
     for (const n of this.cy.nodes()) {
+      if (n.isParent()) {
+        continue;
+      }
       const traceLabel = traceStep.node_labels[parseInt(n.id())];
       if (traceLabel) {
         n.data("traceLabel", traceStep.node_labels[parseInt(n.id())]);
@@ -178,8 +208,7 @@ export class TraceManager {
         n.data("traceLabel", "");
       }
     }
-    refreshNodeLabels();
-
+    renderLabelsAndPriorities();
     this.refreshColor();
   }
 
@@ -190,18 +219,18 @@ export class TraceManager {
   refreshColor() {
     assert(this.trace !== undefined);
     this.resetColor();
-    for (let [i, node_set] of this.trace.steps[this.step].node_sets.entries()) {
+    for (const node_set of this.trace.steps[this.step].node_sets) {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(node_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(node_set.name)) {
         for (const nid of node_set.node_ids) {
           this.colorNode(nid, color);
         }
       }
     }
-    for (let [i, link_set] of this.trace.steps[this.step].link_sets.entries()) {
+    for (const link_set of this.trace.steps[this.step].link_sets) {
       const setId = Array.from(this.setsEnabled.keys()).indexOf(link_set.name);
-      let color = this.colors[setId % this.colors.length];
+      const color = this.colors[setId % this.colors.length];
       if (this.setsEnabled.get(link_set.name)) {
         for (const [source, target] of link_set.link_source_target_ids) {
           this.colorLink(source, target, color);
@@ -243,10 +272,10 @@ export class TraceManager {
   }
 
   resetColor() {
-    for (let n of this.cy.$("node")) {
+    for (const n of this.cy.$("node")) {
       delete n.data().background_color;
     }
-    for (let l of this.cy.$("edge")) {
+    for (const l of this.cy.$("edge")) {
       delete l.data().line_color;
     }
     this.cy.style().update();

@@ -1,10 +1,10 @@
 import { updateGraphFileName } from "../ui/utils";
-import { PGParser } from "../board/PGParser";
 import { showToast } from "../ui/toast";
-import { getPGName, setPGName } from "../ui/PGNameEditing";
+import { getPGName, setPGName } from "../ui/pgNameEditing";
+import { importOinkFormat, cyToPg, exportOinkFormat, pgToCy } from "../board/parityGameParser";
 
-export function handleExportGame(cy, name = getPGName()) {
-  const cyState = cy.elements().jsons();
+export function saveGame(cy, name = getPGName()) {
+  const cyState = window.cy.elements().jsons();
 
   const exportData = {
     cytoscapeState: cyState,
@@ -20,7 +20,7 @@ export function handleExportGame(cy, name = getPGName()) {
   a.click();
 }
 
-export function handleImportGame(event, cy, ur) {
+export function handleImportGame(event) {
   const file = event.target.files[0];
 
   if (file) {
@@ -36,12 +36,10 @@ export function handleImportGame(event, cy, ur) {
         const fileContent = loadEvent.target.result as string;
         const importedData = JSON.parse(fileContent);
 
-        cy.elements().remove();
-        cy.add(importedData.cytoscapeState);
-        cy.fit(cy.elements(), 50);
-
-        var fileName = file.name.replace(/\.[^/.]+$/, "");
-        ur.reset();
+        window.cy.elements().remove();
+        window.cy.add(importedData.cytoscapeState);
+        window.cy.fit(window.cy.elements(), 50);
+        window.ur.reset();
       } catch (e) {
         console.error("Error loading game:", e);
         showToast({
@@ -56,15 +54,15 @@ export function handleImportGame(event, cy, ur) {
   }
 }
 
-export function exportAsPng(cy, name = getPGName()) {
-  const png = cy.png({ full: true });
+export function exportAsPng() {
+  const png = window.cy.png({ full: true });
   const a = document.createElement("a");
   a.href = png;
-  a.download = name + ".png";
+  a.download = getPGName() + ".png";
   a.click();
 }
 
-export function handleOinkFileSelect(event, cy, layoutManager, ur) {
+export function handleOinkFileSelect(event) {
   const file = event.target.files[0];
 
   if (file) {
@@ -80,8 +78,8 @@ export function handleOinkFileSelect(event, cy, layoutManager, ur) {
 
       let pg;
       try {
-        pg = PGParser.importOinkFormat(fileContent);
-        ur.reset();
+        pg = importOinkFormat(fileContent);
+        window.ur.reset();
       } catch (e) {
         console.error("Error importing game:", e);
         showToast({
@@ -91,28 +89,44 @@ export function handleOinkFileSelect(event, cy, layoutManager, ur) {
         });
         return;
       }
-      resetBoardVisuals(cy, pg, layoutManager);
+      resetBoardVisuals(pg)
     };
 
     reader.readAsText(file);
   }
 }
 
-export function saveOinkFile(cy, name = getPGName()) {
-  const pg = PGParser.cyToPg(cy);
-  const exportString = PGParser.exportOinkFormat(pg);
+export function saveOinkFile() {
+  const pg = cyToPg(window.cy);
+  const exportString = exportOinkFormat(pg);
 
   const file = new Blob([exportString], { type: "text/plain" });
 
   const a = document.createElement("a");
   a.href = URL.createObjectURL(file);
-  a.download = name + ".pg";
+  a.download = getPGName() + ".pg";
   a.click();
 }
 
-export function resetBoardVisuals(cy, pg, layoutManager) {
-  const elements = PGParser.pgToCy(pg);
-  cy.elements().remove(); // Clear the current graph
-  cy.add(elements); // Add the new elements
-  layoutManager.runOnce();
+export function resetBoardVisuals(pg) {
+  if (window.traceManager.hasTrace()) {
+    window.traceManager.removeTrace();
+  }
+  const elements = pgToCy(pg)
+  window.cy.elements().remove(); // Clear the current graph
+  window.cy.add(elements); // Add the new elements
+  window.layoutManager.setDefaultLayout();
+  window.layoutManager.runOnce();
+}
+
+export function setupImportExportUI() {
+  document.getElementById("oinkExportBtn").addEventListener("click", saveOinkFile);
+
+  document.getElementById("oinkImportInput").addEventListener("change", handleOinkFileSelect);
+
+  document.getElementById("loadFileInput").addEventListener("change", handleImportGame);
+  document.getElementById("saveBtn").addEventListener("click", saveGame);
+
+  document.getElementById("exportPngBtn").addEventListener("click", exportAsPng);
+
 }

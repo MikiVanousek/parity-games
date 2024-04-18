@@ -1,5 +1,6 @@
 export const colaLayout: any = {
   name: "cola",
+  displayName: "Force directed",
   // refresh: 2, // number of ticks per frame; higher is faster but more jerky
   animate: true, // whether to show the layout as it's running
   ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
@@ -9,8 +10,8 @@ export const colaLayout: any = {
   nodeDimensionsIncludeLabels: false, // whether labels should be included in determining the space used by a node
 
   // layout event callbacks
-  ready: function () {}, // on layoutready
-  stop: function () {}, // on layoutstop
+  ready: function () { }, // on layoutready
+  stop: function () { }, // on layoutstop
 
   // positioning options
   randomize: false, // use random node positions at beginning of layout

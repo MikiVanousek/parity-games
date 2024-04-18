@@ -1,7 +1,7 @@
 import { colaLayout } from "./colaLayout";
 import { randomLayout } from "./randomLayout";
 import { gridLayout } from "./gridLayout";
-import { breadthfirstLayout } from "./breadthfirstLayout";
+import { breadthFirstLayout } from "./breadthfirstLayout";
 
 // a class representing a group (subgraoh) of nodes, to manage its state and behavior
 class Group {
@@ -24,103 +24,75 @@ class Group {
   }
 }
 
+
+const layoutSelect = document.getElementById("layoutSelect") as HTMLSelectElement;
+layoutSelect.addEventListener('click', (e: any) => {
+  window.layoutManager.changeLayout(e.target.value);
+  // decheck the layout on layoutOnDragCheckbox
+  const toggle = document.getElementById("layoutOnDragCheckbox") as HTMLInputElement;
+  toggle.checked = false;
+  window.layoutManager.setRunOnDrag(false);
+});
+
+const layoutOnDragContainer = document.getElementById("layoutOnDragContainer")
+
 class LayoutManager {
   private cy: cytoscape.Core;
   private runOnDrag: boolean;
   private lockedGroups: Array<{ leaves: string[] }> = [];
   private groups: Group[] = [];
   public currentLayout: any;
-  private colaLayoutOptions: any = colaLayout;
-  public layouts = {
-    "Force directed": colaLayout,
-    "Grid layout": gridLayout,
-    "Breadth first": breadthfirstLayout,
-    "Random for fun": randomLayout,
-  };
+  private layouts = [
+    colaLayout,
+    gridLayout,
+    breadthFirstLayout,
+    randomLayout,
+  ];
 
-  constructor(cyInstance: any, defaultLayout?: string) {
+  constructor(cyInstance: any) {
     this.cy = cyInstance;
     this.runOnDrag = false;
-    this.currentLayout = this.layouts[defaultLayout] || colaLayout;
+    this.currentLayout = colaLayout;
 
-    let this1 = this;
-    document.addEventListener("DOMContentLoaded", function () {
-      const layoutSelect = document.getElementById(
-        "layout-select"
-      ) as HTMLSelectElement;
 
-      // Dynamically populate the layout select dropdown
-      for (const layoutName in this1.layouts) {
-        if (this1.layouts.hasOwnProperty(layoutName)) {
-          const option = document.createElement("option");
-          option.value = layoutName;
-          option.textContent = layoutName;
-          layoutSelect.appendChild(option);
-        }
-      }
-      // This is ugly, but better than broken (Han)
-      layoutSelect.value = defaultLayout || "Force directed";
-    });
+    // Dynamically populate the layout select dropdown
+    for (const lo of this.layouts) {
+      const option = document.createElement("option");
+      option.value = lo.name;
+      option.textContent = lo.displayName;
+      layoutSelect.appendChild(option);
+    }
 
     document
-      .getElementById("layout-on-drag")
-      .addEventListener("change", function () {
-        this1.setRunOnDrag((this as HTMLInputElement).checked);
-      });
+      .getElementById("layoutOnDragCheckbox")
+      .addEventListener("change", function (e) {
+        this.setRunOnDrag(e.target.checked);
+      }.bind(this));
+    document.getElementById("runLayoutBtn").addEventListener("click", () => window.ur.do("runLayout", { nodes: window.cy.nodes() }))
   }
 
+  public setDefaultLayout() {
+    this.currentLayout = colaLayout;
+  }
   public setRunOnDrag(bool: boolean) {
     this.runOnDrag = bool;
     this.onDrag();
   }
 
-  public changeLayout(layout: string) {
-    this.currentLayout = this.layouts[layout] || this.colaLayoutOptions;
-    if (layout == "Force directed") {
+  public changeLayout(layoutName: string) {
+    const candidate = this.layouts.find((i) => i.name == layoutName)
+    if (!candidate) {
+      console.error(`Layout ${layoutName} not found`);
+      return
+    }
+    this.currentLayout = candidate
+    layoutSelect.value = layoutName;
+    if (layoutName == colaLayout.name) {
+      console.log("showing layout on drag")
       this.showLayoutOnDragElement();
     } else {
       this.hideLayoutOnDragElement();
     }
-  }
-
-  private calculateBoundingBoxConstraints() {
-    const constraints = [];
-
-    this.lockedGroups.forEach((group) => {
-      const positions = group.leaves.map((id) =>
-        this.cy.getElementById(id).renderedPosition()
-      );
-      // Calculate the bounding box of the group
-      const minX = Math.min(...positions.map((pos) => pos.x));
-      const maxX = Math.max(...positions.map((pos) => pos.x));
-      const minY = Math.min(...positions.map((pos) => pos.y));
-      const maxY = Math.max(...positions.map((pos) => pos.y));
-
-      const padding = 10;
-
-      constraints.push(
-        {
-          left: minX - padding,
-          right: maxX + padding,
-          top: minY - padding,
-          bottom: maxY + padding,
-          type: "alignment",
-          axis: "x",
-          offsets: group.leaves.map((id) => ({ node: id, offset: 0 })),
-        },
-        {
-          left: minX - padding,
-          right: maxX + padding,
-          top: minY - padding,
-          bottom: maxY + padding,
-          type: "alignment",
-          axis: "y",
-          offsets: group.leaves.map((id) => ({ node: id, offset: 0 })),
-        }
-      );
-    });
-
-    return constraints;
   }
 
   public onDrag() {
@@ -130,10 +102,7 @@ class LayoutManager {
   }
 
   public runOnce() {
-    // this.cy.layout(this.currentLayout).run();
-    const boundingBoxConstraints = this.calculateBoundingBoxConstraints();
 
-    // lock the nodes in the groups to keep their positions
     this.groups.forEach((group) => {
       group.nodes.forEach((node) => {
         node.lock();
@@ -161,14 +130,15 @@ class LayoutManager {
   }
 
   public getCurrentLayoutOptions() {
-    return this.currentLayout;
+    return this.currentLayout.name;
   }
 
   private hideLayoutOnDragElement() {
-    document.getElementById("layout-on-drag-container").style.display = "none";
+    layoutOnDragContainer.style.display = "none";
   }
   private showLayoutOnDragElement() {
-    document.getElementById("layout-on-drag-container").style.display = "";
+    console.log("showing layout on drag")
+    layoutOnDragContainer.style.display = "";
   }
 
   public groupNodes(nodes: cytoscape.NodeCollection) {
@@ -195,7 +165,7 @@ class LayoutManager {
       .nodes()
       .filter((node) => node.parent() === groupNode)
       .grabify();
-    let children = groupNode.children();
+    const children = groupNode.children();
     children.move({ parent: null });
     groupNode.remove();
 

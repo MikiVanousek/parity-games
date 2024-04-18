@@ -1,7 +1,7 @@
-import { examplePg } from "../board/ExamplePG";
-import { PGParser } from "../board/PGParser";
+import { examplePg } from "../board/exampleParityGame";
 import { Trace } from "../board/Trace";
-import { getPGName, setPGName } from "../ui/PGNameEditing";
+import { getPGName, setPGName } from "../ui/pgNameEditing";
+import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 import { resetBoardVisuals } from "./exportImport";
 import { set, get } from "idb-keyval";
 
@@ -9,18 +9,16 @@ export function saveState() {
   if (!window.cy) return;
 
   const elements = window.cy.json().elements;
-  const layoutOptions = window.layoutManager.getCurrentLayoutOptions();
-  const currentStepIndex = window.traceManager
-    ? window.traceManager.getStep()
-    : 0;
+  const layoutName = window.layoutManager.getCurrentLayoutOptions();
+  const currentStepIndex = window.traceManager ? window.traceManager.getStep() : 0;
   const trace = window.traceManager ? window.traceManager.getTrace() : [];
   const pgName = getPGName();
 
   const zoom = window.cy.zoom();
   const pan = window.cy.pan();
-  let state = {
+  const state = {
     elements,
-    layoutOptions,
+    layoutName,
     currentStepIndex,
     trace,
     zoom,
@@ -38,13 +36,13 @@ export async function loadState() {
     savedState = await get("graphState");
   }
   if (!savedState) {
-    resetBoardVisuals(window.cy, examplePg, window.layoutManager);
+    resetBoardVisuals(examplePg);
     return;
   }
 
   const {
     elements,
-    layoutOptions,
+    layoutName,
     currentStepIndex,
     trace,
     zoom,
@@ -54,18 +52,19 @@ export async function loadState() {
   window.cy.zoom(zoom);
   window.cy.pan(pan);
 
-  // set the name of the parity game in the window object
+  window.layoutManager.changeLayout(layoutName)
+  console.log('layoutName', layoutName)
   setPGName(pgName);
 
-  if (window.cy) {
-    window.cy.json({ elements }); // Restore elements
-    if (trace) {
-      let t = new Trace(trace);
-      window.traceManager.setTrace(t);
-    }
-
-    if (window.traceManager && currentStepIndex !== undefined) {
-      window.traceManager.setStep(currentStepIndex); // Restore the current step
-    }
+  window.cy.elements().remove(); // Clear the current graph
+  window.cy.add(elements); // Add the new elements
+  if (trace) {
+    const t = new Trace(trace);
+    window.traceManager.setTrace(t);
   }
+
+  if (window.traceManager && currentStepIndex !== undefined) {
+    window.traceManager.setStep(currentStepIndex); // Restore the current step
+  }
+  renderLabelsAndPriorities();
 }

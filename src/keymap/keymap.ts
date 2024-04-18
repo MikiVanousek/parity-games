@@ -5,7 +5,7 @@ import {
 } from "../events/graphEvents";
 import { showToast } from "../ui/toast";
 import { KeyMap, KeyMapping } from "./keymapTypes";
-import { closeManual, isManualOpen, toggleManual } from "./manual";
+import { closeManual, isManualOpen, toggleManual } from "../ui/manual";
 
 export const otherMappings = new KeyMap("Other mappings");
 otherMappings.push(
@@ -15,7 +15,6 @@ otherMappings.push(
 );
 otherMappings.push(
   new KeyMapping(["Escape"], "Exit trace or manual", (args) => {
-    const manual_overlay = document.getElementById("manual-overlay");
     if (isManualOpen()) {
       closeManual();
     } else if (window.traceManager.hasTrace()) {
@@ -74,7 +73,7 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["q"], "Toggle the owner of selected nodes", ({ cy, ur }) => {
-    var selectedNodes = cy
+    const selectedNodes = cy
       .$("node:selected")
       .filter((node) => !node.isParent());
     if (selectedNodes.length > 0) {
@@ -88,7 +87,7 @@ pgEditingMappings.push(
     ["Backspace", "Delete"],
     "Remove selected elements",
     ({ cy, ur }) => {
-      var selectedElements = cy.$(":selected");
+      const selectedElements = cy.$(":selected");
       if (selectedElements.length > 0) {
         ur.do("remove", selectedElements);
       }
@@ -98,7 +97,7 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["+", "="], "Increment priority", ({ cy, ur }) => {
-    var selectedNodes = cy
+    const selectedNodes = cy
       .$("node:selected")
       .filter((node) => !node.isParent());
     if (selectedNodes.length > 0) {
@@ -109,7 +108,7 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["-"], "Decrement priority", ({ cy, ur }) => {
-    var selectedNodes = cy
+    const selectedNodes = cy
       .$("node:selected")
       .filter((node) => !node.isParent());
     if (selectedNodes.length > 0) {
@@ -120,19 +119,32 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["p"], "Set priority for selected nodes", ({ cy, ur }) => {
-    let input = prompt("Enter new priority", "");
-    let priority = Number(input);
-    if (input !== null && !isNaN(priority)) {
-      let selectedNodes = cy
-        .$("node:selected")
-        .filter((node) => !node.isParent());
-      if (selectedNodes.length > 0) {
+    const selectedNodes = cy
+      .$("node:selected")
+      .filter((node) => !node.isParent());
+
+    if (selectedNodes.length == 0) {
+      showToast({
+        message: "No nodes selected",
+        variant: "warning",
+      });
+      return;
+    }
+    const input = prompt("Enter new priority", "");
+    if (input !== null) {
+      const priority = parseInt(input);
+      if (!isNaN(priority)) {
         ur.do("editPriority", {
           nodes: selectedNodes,
           priority: priority,
         });
+        return
       }
     }
+    showToast({
+      message: "Invalid priority value",
+      variant: "danger",
+    });
   })
 );
 
@@ -141,7 +153,7 @@ pgEditingMappings.push(
     ["g"],
     "Group selected nodes - lock their relative positions and prevent them from being moved by automatic layout",
     ({ cy, ur }) => {
-      var selectedNodes = cy.$("node:selected");
+      const selectedNodes = cy.$("node:selected");
       let inGroup = false;
       if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
         ur.do("ungroup", { groupId: selectedNodes[0].id() });
@@ -168,9 +180,9 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["l", "c"], "Edit label of selected node(s)", ({ cy, ur }) => {
-    let label = prompt("Enter new label", "");
+    const label = prompt("Enter new label", "");
     if (label !== null) {
-      let selectedNodes = cy.$("node:selected");
+      const selectedNodes = cy.$("node:selected");
       if (selectedNodes.length > 0) {
         ur.do("editLabels", {
           nodes: selectedNodes,

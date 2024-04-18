@@ -1,5 +1,5 @@
 import { Trace, TraceStep, NodeSet, LinkSet } from "../src/board/Trace";
-import { examplePg, exampleTrace } from "../src/board/ExamplePG";
+import { examplePg, exampleTrace } from "../src/board/exampleParityGame";
 import * as fs from 'fs';
 import { ParityGame } from "../src/board/ParityGame";
 

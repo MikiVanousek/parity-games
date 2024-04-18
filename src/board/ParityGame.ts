@@ -2,7 +2,7 @@ import { Node, Player } from "./Node";
 import { Link } from "./Link";
 import { JSONObject } from "ts-json-object";
 import { assert } from "../assert";
-import { deepEquals } from "../io/deepEquals";
+import { deepEquals } from "./deepEquals";
 
 export class ParityGame extends JSONObject {
   @JSONObject.required
@@ -14,7 +14,7 @@ export class ParityGame extends JSONObject {
 
   // This is not serialized
   @JSONObject.custom((pg: ParityGame, key: string, value: number) => {
-    let res = new Map<Node, Set<Node>>();
+    const res = new Map<Node, Set<Node>>();
     pg.nodes.forEach((n) => res.set(n, new Set<Node>()));
     pg.links.forEach((l) => {
       res
@@ -78,15 +78,15 @@ export class ParityGame extends JSONObject {
   }
 
   attractorSet(targetNodes: Node[], player: Player): Node[] {
-    let attractor = new Set<Node>(targetNodes);
-    let attractorIds = Array.from(attractor).map((n) => n.id);
+    const attractor = new Set<Node>(targetNodes);
+    const attractorIds = Array.from(attractor).map((n) => n.id);
 
     let isNotEmpty = true;
     while (isNotEmpty) {
-      let nodesToAdd: Node[] = [];
+      const nodesToAdd: Node[] = [];
 
       this.nodes.forEach((node) => {
-        let successors = this.adjList.get(node);
+        const successors = this.adjList.get(node);
         if (attractorIds.includes(node.id)) {
           return;
         }
@@ -160,7 +160,7 @@ export class ParityGame extends JSONObject {
   addLink(link: Link): void {
     this.links.push(link);
     const source_node = this.find_node_by_id(link.source_id);
-    let s = this.adjList.get(source_node);
+    const s = this.adjList.get(source_node);
     s.add(this.find_node_by_id(link.target_id));
   }
 
@@ -243,7 +243,7 @@ export class ParityGame extends JSONObject {
   }
 
   find_node_by_id(id: number): Node {
-    let res = this.nodes.find((n) => n.id === id);
+    const res = this.nodes.find((n) => n.id === id);
     assert(res !== undefined);
     return res;
   }

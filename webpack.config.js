@@ -15,7 +15,13 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
   },
   module: {
-    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }],
+    rules: [
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+  ],
   },
   plugins: [
     new CopyPlugin({
@@ -25,7 +31,6 @@ module.exports = {
         { from: "src/favicon.ico", to: "[name][ext]" },
         { from: "src/*.png", to: "[name][ext]" },
         { from: "src/serviceWorker.js", to: "[name][ext]" },
-        { from: "src/**/*.css", to: "[name][ext]" },
       ],
     }),
     new webpack.ProvidePlugin({

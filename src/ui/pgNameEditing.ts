@@ -51,14 +51,8 @@ export function setupPGNameEditing(): void {
     inputElement.value = getPGName();
     inputElement.focus();
     inputElement.select();
-
-    // Define a function to handle keypress event
-
-
-
   });
   confirmEditButton.addEventListener('click', confirmEdit);
-  inputElement.addEventListener('blur', confirmEdit);
   inputElement.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
       confirmEdit();
@@ -84,6 +78,7 @@ export function setupPGNameEditing(): void {
   }
 
   cancelEditButton.addEventListener('click', function () {
+    console.log("cancelEditButton clicked")
     displayGroupElement.hidden = false;
     editGroupElement.hidden = true;
   });

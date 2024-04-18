@@ -1,8 +1,14 @@
-export function setupUndoRedoActions(cy, ur, layoutManager) {
+import { assert } from "../assert";
+
+export function setupUndoRedoActions() {
+  const ur = window.ur;
+  const cy = window.cy;
+  const layoutManager = window.layoutManager;
+
   ur.action(
     "runLayout",
     (args) => {
-      let oldPositions = args.nodes.map((node) => {
+      const oldPositions = args.nodes.map((node) => {
         return { node: node, position: { ...node.position() } };
       });
       if (args.oldPositions === undefined) {
@@ -15,7 +21,7 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
       return { nodes: args.nodes, oldPositions: oldPositions };
     },
     (args) => {
-      let oldPositions = args.nodes.map((node) => {
+      const oldPositions = args.nodes.map((node) => {
         return { node: node, position: { ...node.position() } };
       });
       args.oldPositions.forEach((item) => item.node.position(item.position));
@@ -28,19 +34,19 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
   ur.action(
     "editOwner",
     (args) => {
-      let nodes = args.nodes;
+      const nodes = args.nodes;
       // The do action: updating the owner
       nodes.forEach((node) => {
-        let currentIsEven = node.data("isEven");
+        const currentIsEven = node.data("isEven");
         node.data("isEven", currentIsEven === "true" ? "false" : "true");
       });
       return { nodes: nodes };
     },
     (args) => {
-      let nodes = args.nodes;
+      const nodes = args.nodes;
       // The undo action: updating the owner
       nodes.forEach((node) => {
-        let currentIsEven = node.data("isEven");
+        const currentIsEven = node.data("isEven");
         node.data("isEven", currentIsEven === "true" ? "false" : "true");
       });
       return { nodes: nodes };
@@ -50,79 +56,61 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
   ur.action(
     "editPriority",
     (args) => {
-      let nodes = args.nodes;
-      let priority = args.priority;
+      const nodes = args.nodes;
+      const priority = args.priority;
       // The do action: updating the priority
-      let oldPriorities = nodes.map((node) => {
+      const oldPriorities = nodes.map((node) => {
         return { node: node, priority: node.data("priority") };
       });
       nodes.forEach(function (n) {
         n.data("priority", priority);
       });
+      renderLabelsAndPriorities();
       return { nodes: nodes, oldPriorities: oldPriorities };
     },
     (args) => {
       // The undo action: reverting to the old priorities
-      let oldPriorities = args.oldPriorities;
-      let newArgs = {
+      const oldPriorities = args.oldPriorities;
+      const newArgs = {
         nodes: args.nodes,
         priority: oldPriorities[0].node.data("priority"),
       };
       oldPriorities.forEach((item) =>
         item.node.data("priority", item.priority)
       );
+      renderLabelsAndPriorities();
       return newArgs;
     }
   );
 
-  function renderLabelsAndPriorities(cy) {
-    const displayLabelsElement = document.getElementById(
-      "display-labels"
-    ) as HTMLInputElement;
-    const showLabels = displayLabelsElement.checked; // Directly get the checked state
 
-    cy.nodes()
-      .filter((ele: any) => !ele.isParent())
-      .style({
-        label: showLabels
-          ? (ele: any) => `${ele.data("label")}\n${ele.data("priority")}`
-          : "",
-        "text-wrap": "wrap",
-      });
-    cy.nodes()
-      .filter((ele: any) => ele.isParent())
-      .style({
-        label: showLabels ? (ele: any) => `${ele.data("label")}` : "",
-        "text-wrap": "wrap",
-      });
-  }
   ur.action(
     "editLabels",
     (args) => {
-      let nodes = args.nodes;
-      let label = args.label;
-      let cy = args.cy;
+      const nodes = args.nodes;
+      const label = args.label;
+      const cy = args.cy;
       // The do action: updating the label
-      let oldLabels = nodes.map((node) => {
+      const oldLabels = nodes.map((node) => {
         return { node: node, label: node.data("label") };
       });
       nodes.forEach(function (n) {
         n.data("label", label);
       });
-      renderLabelsAndPriorities(cy);
+      renderLabelsAndPriorities();
       return { nodes: nodes, oldLabels: oldLabels, cy: cy };
     },
     (args) => {
       // The undo action: reverting to the old labels
-      let oldLabels = args.oldLabels;
-      let cy = args.cy;
-      let newArgs = {
+      const oldLabels = args.oldLabels;
+      const cy = args.cy;
+      const newArgs = {
         nodes: args.nodes,
         label: oldLabels[0].node.data("label"),
         cy: cy,
       };
       oldLabels.forEach((item) => item.node.data("label", item.label));
-      renderLabelsAndPriorities(cy);
+      renderLabelsAndPriorities();
       return newArgs;
     }
   );
@@ -130,26 +118,29 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
   ur.action(
     "changePriority",
     (args) => {
-      let nodes = args.nodes;
-      let value = args.value;
+      console.log('changePriority', args)
+      const nodes = args.nodes;
+      const value = args.value;
       // The do action: updating the priority
-      let oldPriorities = nodes.map((node) => {
+      const oldPriorities = nodes.map((node) => {
         return { node: node, priority: node.data("priority") };
       });
       nodes.forEach(function (n) {
-        var priority = n.data("priority") || 0;
+        const priority = n.data("priority") || 0;
         n.data("priority", Math.max(0, priority + value));
       });
+      renderLabelsAndPriorities();
       return { nodes: nodes, value: value, oldPriorities: oldPriorities };
     },
     (args) => {
       // The undo action: reverting to the old priorities
-      let nodes = args.nodes;
-      let value = args.value;
-      let oldPriorities = args.oldPriorities;
+      const nodes = args.nodes;
+      const value = args.value;
+      const oldPriorities = args.oldPriorities;
       oldPriorities.forEach((item) =>
         item.node.data("priority", item.priority)
       );
+      renderLabelsAndPriorities();
       return { nodes: nodes, value: value };
     }
   );
@@ -171,4 +162,35 @@ export function setupUndoRedoActions(cy, ur, layoutManager) {
       return { groupId: layoutManager.groupNodes(args.nodes) };
     }
   );
+}
+
+const displayLabelsInput = document.getElementById("displayLabels") as HTMLInputElement;
+displayLabelsInput.addEventListener("change", renderLabelsAndPriorities);
+export function renderLabelsAndPriorities() {
+  const displayNodeLabels = displayLabelsInput.checked;
+  function compositeLabel(ele): string {
+    // Parent nodes are the groups of nodes created with "g".
+    if (ele.isParent()) {
+      if (false) {
+        return ele.data("label");
+      } else {
+        return "";
+      }
+    }
+    let res = ele.data("priority").toString();
+    if (displayNodeLabels && (ele.data("label") || ele.data("traceLabel"))) {
+      // Skip line if there is trace label, to make it clear the label is trace label
+      res += `\n${ele.data("label")}`;
+    }
+    if (ele.data("traceLabel")) {
+      res += `\n${ele.data("traceLabel")}`;
+    }
+    return res;
+  }
+
+  window.cy.nodes()
+    .filter((ele: any) => !ele.isParent())
+    .style({
+      label: compositeLabel,
+    });
 }

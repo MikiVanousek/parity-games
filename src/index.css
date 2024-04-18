@@ -144,7 +144,7 @@ html {
     --bc: var(--border);
   }
 
-  .checkbox-wrapper input[type="checkbox"]:disabled + label {
+  .checkbox-wrapper input[type="checkbox"]:disabled+label {
     cursor: not-allowed;
   }
 
@@ -168,7 +168,7 @@ html {
     --o: 1;
   }
 
-  .checkbox-wrapper input[type="checkbox"] + label {
+  .checkbox-wrapper input[type="checkbox"]+label {
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
@@ -242,6 +242,10 @@ html {
   font-size: 12px;
 }
 
+.button-square {
+  width: 3rem !important;
+}
+
 .navbar-group button:hover,
 .navbar-group .button:hover {
   opacity: 0.8;
@@ -265,32 +269,6 @@ html {
   color: white;
   font-size: 12px;
   cursor: pointer;
-}
-
-.custom-context-menu {
-  position: absolute;
-  z-index: 1000;
-  width: 200px;
-  background: rgb(38, 38, 38);
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  display: none;
-}
-
-.custom-context-menu ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.custom-context-menu ul li {
-  padding: 8px;
-  cursor: pointer;
-}
-
-.custom-context-menu ul li:hover {
-  background-color: #584d4d;
 }
 
 .bottom-bar {
@@ -406,6 +384,11 @@ textarea:focus {
     0 0 8px rgba(255, 255, 255, 0.3);
 }
 
+input[type="checkbox"]:focus {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(255, 255, 255, 0.3) !important;
+}
+
 i input[type="text"]:hover:not(:focus),
 textarea:hover:not(:focus) {
   opacity: 0.7;
@@ -419,73 +402,6 @@ textarea:hover:not(:focus) {
   /* Adjust the line height for better readability */
 }
 
-.manual-overlay {
-  backdrop-filter: blur(5px);
-  height: 100vh;
-  width: 100vw;
-  padding: 20px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.manual {
-  margin-inline: auto;
-  width: fit-content;
-  max-width: 60%;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-  margin-top: 20px;
-  margin-bottom: 20px;
-  text-align: start;
-  background-color: #333;
-}
-
-.manual-entry {
-  background-color: #1d1d1d;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: row;
-  gap: 2em;
-  align-items: center;
-  justify-content: space-between;
-  text-align: end;
-  text-wrap: balance;
-  padding: 10px;
-  margin-top: 10px;
-}
-
-.manual-txt-entry {
-  background-color: #1d1d1d;
-  border-radius: 8px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 10px;
-  margin-top: 10px;
-  font-size: medium;
-}
-
-.manual-key {
-  display: inline grid;
-  font-size: medium;
-  text-align: center;
-  align-items: center;
-  box-sizing: border-box;
-  min-height: 3rem;
-  min-width: 3rem;
-  max-width: 240px;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-weight: bold;
-  background-color: #555;
-  border-radius: 8px;
-}
-
-.manual-keys {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
 
 .pgname i {
   cursor: pointer;

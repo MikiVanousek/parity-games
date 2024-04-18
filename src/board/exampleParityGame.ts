@@ -2,83 +2,83 @@ import { Player } from "./Node";
 import { ParityGame } from "./ParityGame";
 import { LinkSet, NodeSet, Trace, TraceStep } from "./Trace";
 
-export let example_zielonka = ParityGame.emptyBoard();
+export const exampleZielonka = ParityGame.emptyBoard();
 
 // Add nodes with their respective players
-example_zielonka.addNodeWith(0, Player.Even);
-example_zielonka.addNodeWith(2, Player.Odd);
-example_zielonka.addNodeWith(7, Player.Even);
-example_zielonka.addNodeWith(1, Player.Odd);
-example_zielonka.addNodeWith(5, Player.Even);
-example_zielonka.addNodeWith(8, Player.Even);
-example_zielonka.addNodeWith(6, Player.Even);
-example_zielonka.addNodeWith(2, Player.Even);
-example_zielonka.addNodeWith(3, Player.Even);
+exampleZielonka.addNodeWith(0, Player.Even);
+exampleZielonka.addNodeWith(2, Player.Odd);
+exampleZielonka.addNodeWith(7, Player.Even);
+exampleZielonka.addNodeWith(1, Player.Odd);
+exampleZielonka.addNodeWith(5, Player.Even);
+exampleZielonka.addNodeWith(8, Player.Even);
+exampleZielonka.addNodeWith(6, Player.Even);
+exampleZielonka.addNodeWith(2, Player.Even);
+exampleZielonka.addNodeWith(3, Player.Even);
 
 // // Add links between nodes
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[0],
-  example_zielonka.nodes[1]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[0],
+  exampleZielonka.nodes[1]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[1],
-  example_zielonka.nodes[0]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[1],
+  exampleZielonka.nodes[0]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[2],
-  example_zielonka.nodes[1]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[2],
+  exampleZielonka.nodes[1]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[3],
-  example_zielonka.nodes[2]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[3],
+  exampleZielonka.nodes[2]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[3],
-  example_zielonka.nodes[4]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[3],
+  exampleZielonka.nodes[4]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[4],
-  example_zielonka.nodes[3]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[4],
+  exampleZielonka.nodes[3]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[1],
-  example_zielonka.nodes[5]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[1],
+  exampleZielonka.nodes[5]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[2],
-  example_zielonka.nodes[6]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[2],
+  exampleZielonka.nodes[6]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[7],
-  example_zielonka.nodes[3]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[7],
+  exampleZielonka.nodes[3]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[8],
-  example_zielonka.nodes[4]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[8],
+  exampleZielonka.nodes[4]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[4],
-  example_zielonka.nodes[8]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[4],
+  exampleZielonka.nodes[8]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[5],
-  example_zielonka.nodes[6]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[5],
+  exampleZielonka.nodes[6]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[6],
-  example_zielonka.nodes[7]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[6],
+  exampleZielonka.nodes[7]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[8],
-  example_zielonka.nodes[7]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[8],
+  exampleZielonka.nodes[7]
 );
-example_zielonka.addLinkFromNodes(
-  example_zielonka.nodes[7],
-  example_zielonka.nodes[8]
+exampleZielonka.addLinkFromNodes(
+  exampleZielonka.nodes[7],
+  exampleZielonka.nodes[8]
 );
 
 // Tests depend on the values of these two examples!
-export let examplePg = ParityGame.emptyBoard();
+export const examplePg = ParityGame.emptyBoard();
 examplePg.addNodeWith(1, Player.Even);
 examplePg.addNodeWith(8, Player.Odd);
 examplePg.addNodeWith(9, Player.Even);
