@@ -87,51 +87,12 @@ class LayoutManager {
     }
     this.currentLayout = candidate
     layoutSelect.value = layoutName;
-    if (layoutName == "Force directed") {
+    if (layoutName == colaLayout.name) {
+      console.log("showing layout on drag")
       this.showLayoutOnDragElement();
     } else {
       this.hideLayoutOnDragElement();
     }
-  }
-
-  private calculateBoundingBoxConstraints() {
-    const constraints = [];
-
-    this.lockedGroups.forEach((group) => {
-      const positions = group.leaves.map((id) =>
-        this.cy.getElementById(id).renderedPosition()
-      );
-      // Calculate the bounding box of the group
-      const minX = Math.min(...positions.map((pos) => pos.x));
-      const maxX = Math.max(...positions.map((pos) => pos.x));
-      const minY = Math.min(...positions.map((pos) => pos.y));
-      const maxY = Math.max(...positions.map((pos) => pos.y));
-
-      const padding = 10;
-
-      constraints.push(
-        {
-          left: minX - padding,
-          right: maxX + padding,
-          top: minY - padding,
-          bottom: maxY + padding,
-          type: "alignment",
-          axis: "x",
-          offsets: group.leaves.map((id) => ({ node: id, offset: 0 })),
-        },
-        {
-          left: minX - padding,
-          right: maxX + padding,
-          top: minY - padding,
-          bottom: maxY + padding,
-          type: "alignment",
-          axis: "y",
-          offsets: group.leaves.map((id) => ({ node: id, offset: 0 })),
-        }
-      );
-    });
-
-    return constraints;
   }
 
   public onDrag() {
@@ -174,9 +135,9 @@ class LayoutManager {
 
   private hideLayoutOnDragElement() {
     layoutOnDragContainer.style.display = "none";
-    // layoutOn yle.isplay = "none";
   }
   private showLayoutOnDragElement() {
+    console.log("showing layout on drag")
     layoutOnDragContainer.style.display = "";
   }
 
