@@ -87,9 +87,21 @@ pgEditingMappings.push(
     ["Backspace", "Delete", "d"],
     "Remove selected elements",
     ({ cy, ur }) => {
-      const selectedNodes = cy.nodes().filter((e) => e.selected() && !e.isParent());
-      if (selectedNodes.length > 0) {
-        ur.do("remove", selectedNodes);
+      const selectedElements = cy
+        .$(":selected")
+        .filter((ele) => !(ele.isNode && ele.isParent()));
+      const groupsToRemove = cy
+        .nodes()
+        .filter(
+          (ele) =>
+            ele.isParent() && ele.children().every((child) => child.selected())
+        );
+      const actionList = [
+        { name: "remove", param: selectedElements },
+        { name: "remove", param: groupsToRemove },
+      ];
+      if (selectedElements.length > 0) {
+        ur.do("batch", actionList);
       }
     }
   )
