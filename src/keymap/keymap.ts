@@ -180,16 +180,21 @@ pgEditingMappings.push(
 
 pgEditingMappings.push(
   new KeyMapping(["l", "c"], "Edit label of selected node(s)", ({ cy, ur }) => {
+    const selectedNodes = cy.nodes().filter((e) => e.selected() && !e.isParent());
+    if (selectedNodes.length === 0) {
+      showToast({
+        message: "No nodes selected",
+        variant: "warning",
+      })
+      return
+    }
     const label = prompt("Enter new label", "");
     if (label !== null) {
-      const selectedNodes = cy.$("node:selected");
-      if (selectedNodes.length > 0) {
-        ur.do("editLabels", {
-          nodes: selectedNodes,
-          label: label,
-          cy: cy,
-        });
-      }
+      ur.do("editLabels", {
+        nodes: selectedNodes,
+        label: label,
+        cy: cy,
+      });
     }
   })
 );
