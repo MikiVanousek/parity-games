@@ -87,9 +87,9 @@ pgEditingMappings.push(
     ["Backspace", "Delete", "d"],
     "Remove selected elements",
     ({ cy, ur }) => {
-      const selectedElements = cy.$(":selected");
-      if (selectedElements.length > 0) {
-        ur.do("remove", selectedElements);
+      const selectedNodes = cy.nodes().filter((e) => e.selected() && !e.isParent());
+      if (selectedNodes.length > 0) {
+        ur.do("remove", selectedNodes);
       }
     }
   )
