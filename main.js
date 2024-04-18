@@ -60883,13 +60883,13 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["q"], "Toggle the o
         ur.do("editOwner", { nodes: selectedNodes });
     }
 }));
-exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["Backspace", "Delete"], "Remove selected elements", ({ cy, ur }) => {
-    const selectedElements = cy.$(":selected");
-    if (selectedElements.length > 0) {
-        ur.do("remove", selectedElements);
+exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["Backspace", "Delete", "d"], "Remove selected elements", ({ cy, ur }) => {
+    const selectedNodes = cy.nodes().filter((e) => e.selected() && !e.isParent());
+    if (selectedNodes.length > 0) {
+        ur.do("remove", selectedNodes);
     }
 }));
-exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["+", "="], "Increment priority", ({ cy, ur }) => {
+exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["+", "=", "2"], "Increment priority", ({ cy, ur }) => {
     const selectedNodes = cy
         .$("node:selected")
         .filter((node) => !node.isParent());
@@ -60897,7 +60897,7 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["+", "="], "Increme
         ur.do("changePriority", { nodes: selectedNodes, value: 1 });
     }
 }));
-exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["-"], "Decrement priority", ({ cy, ur }) => {
+exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["-", "1"], "Decrement priority", ({ cy, ur }) => {
     const selectedNodes = cy
         .$("node:selected")
         .filter((node) => !node.isParent());
@@ -60905,7 +60905,7 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["-"], "Decrement pr
         ur.do("changePriority", { nodes: selectedNodes, value: -1 });
     }
 }));
-exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["p"], "Set priority for selected nodes", ({ cy, ur }) => {
+exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["p", "x"], "Set priority for selected nodes", ({ cy, ur }) => {
     const selectedNodes = cy
         .$("node:selected")
         .filter((node) => !node.isParent());
@@ -60955,16 +60955,21 @@ exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["g"], "Group select
     }
 }));
 exports.pgEditingMappings.push(new keymapTypes_1.KeyMapping(["l", "c"], "Edit label of selected node(s)", ({ cy, ur }) => {
+    const selectedNodes = cy.nodes().filter((e) => e.selected() && !e.isParent());
+    if (selectedNodes.length === 0) {
+        (0, toast_1.showToast)({
+            message: "No nodes selected",
+            variant: "warning",
+        });
+        return;
+    }
     const label = prompt("Enter new label", "");
     if (label !== null) {
-        const selectedNodes = cy.$("node:selected");
-        if (selectedNodes.length > 0) {
-            ur.do("editLabels", {
-                nodes: selectedNodes,
-                label: label,
-                cy: cy,
-            });
-        }
+        ur.do("editLabels", {
+            nodes: selectedNodes,
+            label: label,
+            cy: cy,
+        });
     }
 }));
 exports.traceKeymap = new keymapTypes_1.KeyMap("When trace is loaded");
