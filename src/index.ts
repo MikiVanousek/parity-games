@@ -1,4 +1,7 @@
-import "./index.css";
+import "./index.css"
+import "./trace.css"
+import "./navbar.css"
+import "./checkbox.css"
 
 import LayoutManager from "./layout/layoutManager";
 import { TraceManager } from "./io/TraceManager";
