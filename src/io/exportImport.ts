@@ -1,7 +1,7 @@
 import { updateGraphFileName } from "../ui/utils";
 import { showToast } from "../ui/toast";
 import { getPGName, setPGName } from "../ui/pgNameEditing";
-import { importOinkFormat, cyToPg, exportOinkFormat, pgToCy } from "../board/parityGameParser";
+import { importOinkFormat, cyToPg, exportOinkFormat, pgToCy } from "../pg/parityGameParser";
 
 export function saveGame(cy, name = getPGName()) {
   const cyState = window.cy.elements().jsons();

@@ -1,5 +1,5 @@
 import { algos } from "../algos";
-import { cyToPg } from "../board/parityGameParser";
+import { cyToPg } from "../pg/parityGameParser";
 
 // populate the algorithm select options
 const algoSelect = document.getElementById("algorithmSelect");

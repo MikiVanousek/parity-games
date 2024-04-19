@@ -1,7 +1,7 @@
-import { Trace, TraceStep, NodeSet, LinkSet } from "../src/board/Trace";
-import { examplePg, exampleTrace } from "../src/board/exampleParityGame";
+import { Trace, TraceStep, NodeSet, LinkSet } from "../src/trace/Trace";
+import { examplePg, exampleTrace } from "../src/pg/exampleParityGame";
 import * as fs from 'fs';
-import { ParityGame } from "../src/board/ParityGame";
+import { ParityGame } from "../src/pg/ParityGame";
 
 const dir = 'test/'
 

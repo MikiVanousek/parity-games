@@ -1,5 +1,5 @@
-import { examplePg } from "../board/exampleParityGame";
-import { Trace } from "../board/Trace";
+import { examplePg } from "../pg/exampleParityGame";
+import { Trace } from "../trace/Trace";
 import { getPGName, setPGName } from "../ui/pgNameEditing";
 import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 import { resetBoardVisuals } from "./exportImport";

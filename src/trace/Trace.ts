@@ -1,4 +1,4 @@
-import { ParityGame } from "./ParityGame";
+import { ParityGame } from "../pg/ParityGame";
 import { JSONObject } from "ts-json-object";
 
 type TraceStepFlexible =

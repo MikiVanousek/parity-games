@@ -1,5 +1,5 @@
-import { examplePg } from "../src/board/exampleParityGame";
-import { ParityGame } from "../src/board/ParityGame";
+import { examplePg } from "../src/pg/exampleParityGame";
+import { ParityGame } from "../src/pg/ParityGame";
 
 test('Check parsing of PG', () => {
   const pg = examplePg;

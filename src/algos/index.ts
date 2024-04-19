@@ -1,4 +1,4 @@
-import { ParityGame } from "../board/ParityGame";
+import { ParityGame } from "../pg/ParityGame";
 import { ZielonkaAlgorithm } from "./zielonka";
 
 export const algos = {

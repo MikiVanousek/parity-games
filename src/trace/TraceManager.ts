@@ -1,9 +1,10 @@
 import { showToast } from "../ui/toast";
 import { assert } from "../assert";
-import { Trace } from "../board/Trace";
-import { resetBoardVisuals } from "./exportImport";
-import { cyToPg } from "../board/parityGameParser";
+import { Trace } from "./Trace";
+import { resetBoardVisuals } from "../io/exportImport";
+import { cyToPg } from "../pg/parityGameParser";
 import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
+import "./trace.css"
 
 export class TraceManager {
   cy: any;
