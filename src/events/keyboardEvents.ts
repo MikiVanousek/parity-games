@@ -1,7 +1,7 @@
 // In this file, we keep track of the mouse movement, register key presses and trigger keymaps.
 import * as cytoscape from "cytoscape";
 import { showToast } from "../ui/toast";
-import { cmdMappings, otherMappings, pgEditingMappings, traceKeymap } from "../keymap/keymap";
+import { cmdMappings, otherMappings, pgEditingMappings, traceMappings } from "../keymap/keymap";
 
 export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
 
@@ -43,7 +43,7 @@ export function setupKeyboardEvents(cy: cytoscape.Core, ur) {
       event.preventDefault();
       event.stopPropagation();
     } else if (window.traceManager.hasTrace()) {
-      if (km = traceKeymap.keyMap.get(event.key)) {
+      if (km = traceMappings.keyMap.get(event.key)) {
         event.preventDefault();
         event.stopPropagation();
         km.action({ cy, ur, modelX, modelY, event });
