@@ -3,7 +3,7 @@ import { randomLayout } from "./randomLayout";
 import { gridLayout } from "./gridLayout";
 import { breadthFirstLayout } from "./breadthfirstLayout";
 
-// a class representing a group (subgraoh) of nodes, to manage its state and behavior
+// A class representing a group (subgraph) of nodes, which will have locked relative positions -- they will not be affected by the automatic layout.
 class Group {
   public id: string;
   public nodes: cytoscape.NodeCollection;
@@ -36,6 +36,7 @@ layoutSelect.addEventListener('click', (e: any) => {
 
 const layoutOnDragContainer = document.getElementById("layoutOnDragContainer")
 
+// This class will take care of switching the preferred layout and running it.
 class LayoutManager {
   private cy: cytoscape.Core;
   private runOnDrag: boolean;

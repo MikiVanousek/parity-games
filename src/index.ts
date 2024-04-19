@@ -1,3 +1,4 @@
+// This is the entry point of the app.
 import "./other.css"
 import "./navbar.css"
 import "./checkbox.css"

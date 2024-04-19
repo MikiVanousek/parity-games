@@ -1,3 +1,4 @@
+// A trace is meant to be a very general type, which allows for visualization of the steps of any parity game solver. In each step, the solver may highligh certain sets of vertices, sets of edges, and put labels to vertices. For example, the last step of each solver should only have 2 sets of vertices: the winning region of odd and the winning region of even.
 import { ParityGame } from "../pg/ParityGame";
 import { JSONObject } from "ts-json-object";
 

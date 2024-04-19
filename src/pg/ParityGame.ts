@@ -4,6 +4,8 @@ import { JSONObject } from "ts-json-object";
 import { assert } from "../assert";
 import { deepEquals } from "./deepEquals";
 
+// A class which represents a parity game and can be easily serialized. 
+// It doesn't store any information about what the diagram of the parity game looks like (node positions, edge shapes, etc).
 export class ParityGame extends JSONObject {
   @JSONObject.required
   @JSONObject.array(Node)

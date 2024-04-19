@@ -1,3 +1,4 @@
+// The types for defining keyboard shortcuts.
 import { assert } from "../assert";
 
 export type KeyActionArgs = {

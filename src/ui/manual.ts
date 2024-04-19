@@ -1,3 +1,4 @@
+// In this file we turn the keymaps into a manual entries. You can toggle the manual with '?','/' keys or the button with '?'
 import './manual.css';
 import {
   all_keymaps,

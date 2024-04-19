@@ -1,3 +1,4 @@
+// In this file, we keep track of the mouse movement, register key presses and trigger keymaps.
 import * as cytoscape from "cytoscape";
 import { showToast } from "../ui/toast";
 import { cmdMappings, otherMappings, pgEditingMappings, traceKeymap } from "../keymap/keymap";

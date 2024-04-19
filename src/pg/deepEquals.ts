@@ -1,3 +1,4 @@
+// Helper function useful in the (loose) equality checking of ParityGame
 export function deepEquals(a: any, b: any): boolean {
   if (a === null || b === null) {
     throw new Error("deepEquals does not support null values")

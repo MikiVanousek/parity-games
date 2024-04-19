@@ -6,6 +6,7 @@ import { cyToPg } from "../pg/parityGameParser";
 import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 import "./trace.css"
 
+// This class keeps track of all the state regarding the currently displayed trace and updates the UI accordingly.
 export class TraceManager {
   cy: any;
   private trace?: Trace;

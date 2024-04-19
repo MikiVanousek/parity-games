@@ -1,3 +1,4 @@
+// Here we define all keyboard shortcuts. They mappings are used to trigger the corresponding action and to create the manual entry.
 import {
   addNodeAtPosition,
   copySelectedElements,
