@@ -5,6 +5,7 @@ export enum Player {
   Even = 0,
 }
 
+// Node object which can be easily serialized.
 export class Node extends JSONObject {
   @JSONObject.required
   id: number;
@@ -38,8 +39,7 @@ export class Node extends JSONObject {
   }
 
   toString(): string {
-    return `Node ID: ${this.id}, Player: ${
-      this.player === Player.Even ? "Even" : "Odd"
-    }, Label: ${this.label}, Priority: ${this.priority}`;
+    return `Node ID: ${this.id}, Player: ${this.player === Player.Even ? "Even" : "Odd"
+      }, Label: ${this.label}, Priority: ${this.priority}`;
   }
 }

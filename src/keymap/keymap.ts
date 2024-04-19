@@ -1,3 +1,4 @@
+// Here we define all keyboard shortcuts. They mappings are used to trigger the corresponding action and to create the manual entry.
 import {
   addNodeAtPosition,
   copySelectedElements,
@@ -7,6 +8,7 @@ import { showToast } from "../ui/toast";
 import { KeyMap, KeyMapping } from "./keymapTypes";
 import { closeManual, isManualOpen, toggleManual } from "../ui/manual";
 
+// These are the shortcuts which are triggered regardless of context.
 export const otherMappings = new KeyMap("Other mappings");
 otherMappings.push(
   new KeyMapping(["?", "/"], "Toggle manual", (args) => {
@@ -26,7 +28,37 @@ otherMappings.push(
     }
   })
 );
+otherMappings.push(
+  new KeyMapping(
+    ["g"],
+    "Group selected nodes - lock their relative positions and prevent them from being moved by automatic layout",
+    ({ cy, ur }) => {
+      const selectedNodes = cy.$("node:selected");
+      let inGroup = false;
+      if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
+        ur.do("ungroup", { groupId: selectedNodes[0].id() });
+        return;
+      }
 
+      selectedNodes.forEach((node) => {
+        if (node.isParent() || !node.isOrphan()) {
+          inGroup = true;
+          showToast({
+            message: "Can not group nodes that are already in a group.",
+            variant: "danger",
+          });
+          return;
+        }
+      });
+      if (selectedNodes.length > 0 && !inGroup) {
+        // check each node if it is already in a group
+        ur.do("group", { nodes: selectedNodes });
+      }
+    }
+  )
+);
+
+// These shortcuts should be triggered when ctrl or ⌘ is pressed.
 export const cmdMappings = new KeyMap("Command mappings");
 cmdMappings.key_to_string = (key) => "⌘ + " + key;
 cmdMappings.push(
@@ -57,6 +89,7 @@ cmdMappings.push(
   })
 );
 
+// These shortcuts trigger actions which modify the parity game. They can't be used if viewing the trace (the trace would then make no sense).
 export const pgEditingMappings = new KeyMap("Parity game editing mappings");
 
 pgEditingMappings.push(
@@ -87,9 +120,21 @@ pgEditingMappings.push(
     ["Backspace", "Delete", "d"],
     "Remove selected elements",
     ({ cy, ur }) => {
-      const selectedNodes = cy.nodes().filter((e) => e.selected() && !e.isParent());
-      if (selectedNodes.length > 0) {
-        ur.do("remove", selectedNodes);
+      const selectedElements = cy
+        .$(":selected")
+        .filter((ele) => !(ele.isNode && ele.isParent()));
+      const groupsToRemove = cy
+        .nodes()
+        .filter(
+          (ele) =>
+            ele.isParent() && ele.children().every((child) => child.selected())
+        );
+      const actionList = [
+        { name: "remove", param: selectedElements },
+        { name: "remove", param: groupsToRemove },
+      ];
+      if (selectedElements.length > 0) {
+        ur.do("batch", actionList);
       }
     }
   )
@@ -152,35 +197,6 @@ pgEditingMappings.push(
   )
 );
 
-pgEditingMappings.push(
-  new KeyMapping(
-    ["g"],
-    "Group selected nodes - lock their relative positions and prevent them from being moved by automatic layout",
-    ({ cy, ur }) => {
-      const selectedNodes = cy.$("node:selected");
-      let inGroup = false;
-      if (selectedNodes.length === 1 && selectedNodes[0].isParent()) {
-        ur.do("ungroup", { groupId: selectedNodes[0].id() });
-        return;
-      }
-
-      selectedNodes.forEach((node) => {
-        if (node.isParent() || !node.isOrphan()) {
-          inGroup = true;
-          showToast({
-            message: "Can not group nodes that are already in a group.",
-            variant: "danger",
-          });
-          return;
-        }
-      });
-      if (selectedNodes.length > 0 && !inGroup) {
-        // check each node if it is already in a group
-        ur.do("group", { nodes: selectedNodes });
-      }
-    }
-  )
-);
 
 pgEditingMappings.push(
   new KeyMapping(["l", "c"], "Edit label of selected node(s)", ({ cy, ur }) => {
@@ -203,13 +219,14 @@ pgEditingMappings.push(
   })
 );
 
-export const traceKeymap = new KeyMap("When trace is loaded");
-traceKeymap.push(
+// These shortcuts are only triggered when viewing a trace.
+export const traceMappings = new KeyMap("When trace is loaded");
+traceMappings.push(
   new KeyMapping(["ArrowRight"], "Next step", () => {
     window.traceManager.nextStep();
   })
 );
-traceKeymap.push(
+traceMappings.push(
   new KeyMapping(["ArrowLeft"], "Next step", () => {
     window.traceManager.prevStep();
   })
@@ -219,5 +236,5 @@ export const all_keymaps = [
   otherMappings,
   cmdMappings,
   pgEditingMappings,
-  traceKeymap,
+  traceMappings,
 ];

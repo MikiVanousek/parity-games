@@ -1,6 +1,6 @@
-import { Player } from '../src/board/Node';
-import { examplePg } from '../src/board/exampleParityGame'
-import { exportOinkFormat, importOinkFormat } from '../src/board/parityGameParser'
+import { Player } from '../src/pg/Node';
+import { examplePg } from '../src/pg/exampleParityGame'
+import { exportOinkFormat, importOinkFormat } from '../src/pg/parityGameParser'
 import * as fs from 'fs';
 
 const PG_DIR = 'test/pg_examples/'

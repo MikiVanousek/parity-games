@@ -1,10 +1,12 @@
-import { examplePg } from "../board/exampleParityGame";
-import { Trace } from "../board/Trace";
+// Support for autosave -- state is preserved across reloads of the page.
+import { examplePg } from "../pg/exampleParityGame";
+import { Trace } from "../trace/Trace";
 import { getPGName, setPGName } from "../ui/pgNameEditing";
 import { renderLabelsAndPriorities } from "../undo-redo/urActionSetup";
 import { resetBoardVisuals } from "./exportImport";
 import { set, get } from "idb-keyval";
 
+// It is called periodically.
 export function saveState() {
   if (!window.cy) return;
 
@@ -30,6 +32,7 @@ export function saveState() {
   set("graphState", JSON.stringify(state));
 }
 
+// Called when the window is loaded
 export async function loadState() {
   let savedState = localStorage.getItem("graphState");
   if (!savedState) {

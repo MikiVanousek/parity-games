@@ -1,6 +1,6 @@
-import { ParityGame } from "../board/ParityGame";
-import { Node, Player } from "../board/Node";
-import { NodeSet, Trace, TraceStep } from "../board/Trace";
+import { ParityGame } from "../pg/ParityGame";
+import { Node, Player } from "../pg/Node";
+import { NodeSet, Trace, TraceStep } from "../trace/Trace";
 
 console.log("hello");
 

@@ -1,6 +1,7 @@
+// Programmatically create an example parity game and example trace. This is useful in development and in testing.
 import { Player } from "./Node";
 import { ParityGame } from "./ParityGame";
-import { LinkSet, NodeSet, Trace, TraceStep } from "./Trace";
+import { LinkSet, NodeSet, Trace, TraceStep } from "../trace/Trace";
 
 export const exampleZielonka = ParityGame.emptyBoard();
 

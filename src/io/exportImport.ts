@@ -1,7 +1,7 @@
-import { updateGraphFileName } from "../ui/utils";
+// Here we define callbacks for the various import/export buttons, inputs, etc.
 import { showToast } from "../ui/toast";
 import { getPGName, setPGName } from "../ui/pgNameEditing";
-import { importOinkFormat, cyToPg, exportOinkFormat, pgToCy } from "../board/parityGameParser";
+import { importOinkFormat, cyToPg, exportOinkFormat, pgToCy } from "../pg/parityGameParser";
 
 export function saveGame(cy, name = getPGName()) {
   const cyState = window.cy.elements().jsons();
@@ -24,8 +24,6 @@ export function handleImportGame(event) {
   const file = event.target.files[0];
 
   if (file) {
-    updateGraphFileName(file.name);
-
     // remove the file extension
     setPGName(file.name.replace(/\.[^/.]+$/, ""));
 
@@ -66,8 +64,6 @@ export function handleOinkFileSelect(event) {
   const file = event.target.files[0];
 
   if (file) {
-    updateGraphFileName(file.name);
-
     // remove the file extension
     setPGName(file.name.replace(/\.[^/.]+$/, ""));
 

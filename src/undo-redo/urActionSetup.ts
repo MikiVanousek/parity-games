@@ -1,6 +1,7 @@
-import { assert } from "../assert";
 
+// In this function we register cytoscape undo-redo events. Every action that can be undone with ctrl+c uses one of these events.
 export function setupUndoRedoActions() {
+
   const ur = window.ur;
   const cy = window.cy;
   const layoutManager = window.layoutManager;

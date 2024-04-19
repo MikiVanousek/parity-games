@@ -1,3 +1,4 @@
+// Here we register listeners trigged by cytoscape events. 
 import { showToast } from "../ui/toast";
 
 export function setupNodeEvents(cy, ur, layoutManager) {

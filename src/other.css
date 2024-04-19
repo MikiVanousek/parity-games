@@ -1,0 +1,68 @@
+/* Here are css classes, which don't belong to specific areas of the UI. */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #1d1d1d;
+  color: white;
+  font-size: 14px;
+}
+
+.card {
+  background-color: #333;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+  padding: 1.7rem;
+  color: white;
+}
+
+.icon {
+  margin-right: 0.5rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+#cy {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #1d1d1d;
+}
+
+input[type="text"],
+textarea {
+  color: white;
+  /* Color of the text */
+  background-color: #1d1d1d;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+input[type="checkbox"]:focus {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 0 8px rgba(255, 255, 255, 0.3) !important;
+}
+
+i input[type="text"]:hover:not(:focus),
+textarea:hover:not(:focus) {
+  opacity: 0.7;
+  /* Border color on hover */
+}

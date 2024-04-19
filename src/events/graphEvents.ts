@@ -1,3 +1,4 @@
+// In this file, we define some helper functions for modifying the parity game, which are used in keybinds.
 import * as cytoscape from "cytoscape";
 
 let copiedElements = [];

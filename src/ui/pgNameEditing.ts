@@ -1,3 +1,4 @@
+// This file supports the editing of the name of the parity game (pencil next to the title). This name will be used for filenames etc.
 import { showToast } from "./toast";
 
 

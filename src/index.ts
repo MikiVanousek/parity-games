@@ -1,7 +1,10 @@
-import "./index.css";
+// This is the entry point of the app.
+import "./other.css"
+import "./navbar.css"
+import "./checkbox.css"
 
 import LayoutManager from "./layout/layoutManager";
-import { TraceManager } from "./io/TraceManager";
+import { TraceManager } from "./trace/TraceManager";
 import { setupCytoscape } from "./cytoscape/cytoscapeSetup";
 import { setupKeyboardEvents } from "./events/keyboardEvents";
 import { setupNodeEvents } from "./events/nodeEvents";

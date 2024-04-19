@@ -1,6 +1,6 @@
 import { JSONObject } from 'ts-json-object'
-import { Node } from './Node'
 
+// Directed edge representation for the purposes of serialization.
 export class Link extends JSONObject {
   @JSONObject.required
   source_id: number;
